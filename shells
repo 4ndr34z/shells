@@ -274,7 +274,16 @@ Choose an option [1]:  "
     1)
         if [[ $OS == "Darwin" ]]
         then
-        printf "\n\n";$rlwrap -cAr $nc -lvn $PORT
+            netcat=`which netcat`
+
+            if [ "$?" == 1 ]
+            then
+                printf "\n\nRemember: The native nc on macOS, will not notify on incoming connections. Using netcat if installed. brew install netcat\n\n";
+                $rlwrap -cAr $nc -lvn $PORT
+            else
+                nc=$netcat
+                $rlwrap -cAr $nc -lvnp $PORT
+            fi
         else
         printf "\n\n";$rlwrap -cAr $nc -lvnp $PORT
         fi
@@ -283,7 +292,16 @@ Choose an option [1]:  "
     2)
         if [[ $OS == "Darwin" ]]
         then
-        printf "\n\n";$nc -lvn $PORT
+            netcat=`which netcat`
+
+            if [ "$?" == 1 ]
+            then
+                printf "\n\nRemember: The native nc on macOS, will not notify on incoming connections. Using netcat if installed. brew install netcat\n\n";
+                $nc -lvn $PORT
+            else
+                nc=$netcat
+                $nc -lvnp $PORT
+            fi
         else
         printf "\n\n";$nc -lvnp $PORT
         fi
@@ -302,7 +320,16 @@ Choose an option [1]:  "
     *)
         if [[ $OS == "Darwin" ]]
         then
-        printf "\n\n";$rlwrap -cAr $nc -lvn $PORT
+            netcat=`which netcat`
+
+            if [ "$?" == 1 ]
+            then
+                printf "\n\nRemember: The native nc on macOS, will not notify on incoming connections. Using netcat if installed. brew install netcat\n\n";
+                $rlwrap -cAr $nc -lvn $PORT
+            else
+                nc=$netcat
+                $rlwrap -cAr $nc -lvnp $PORT
+            fi
         else
         printf "\n\n";$rlwrap -cAr $nc -lvnp $PORT
         fi
