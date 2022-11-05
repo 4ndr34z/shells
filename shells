@@ -130,7 +130,8 @@ read -p "Please enter your listening port [$myport]: " PORT
 PORT=${PORT:-$myport}
 HEXIP=$(ip2hex $IP)
 LONGIP=$(ip2long $IP)
-echo -ne "$(blueprint 'Format of IP')
+echo -ne "
+$(blueprint 'Format of IP')
 $(greenprint '1)') Normal
 $(greenprint '2)') Hexadecimal
 $(greenprint '3)') Long
@@ -259,6 +260,7 @@ $(greenprint '2)') netcat
 $(greenprint '3)') no listener
 $(magentaprint '4)') Go Back to Main Menu
 $(redprint '0)') Exit
+
 Choose an option [1]:  "
     read -r -n 1 ans
 
@@ -316,6 +318,7 @@ $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
 $(magentaprint '5)') Go Back to Main Menu
 $(redprint '0)') Exit
+
 Choose an option:  "
     read -r -n 1 ans
     case $ans in
@@ -354,6 +357,7 @@ $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
 $(magentaprint '5)') Go Back to Main Menu
 $(redprint '0)') Exit
+
 Choose an option:  "
     read -r -n 1 ans
     case $ans in
@@ -393,6 +397,7 @@ $(greenprint '5)') Python2 - URL encoded
 $(greenprint '6)') Python2 - Double URL encoded
 $(magentaprint '7)') Go Back to Main Menu
 $(redprint '0)') Exit
+
 Choose an option:  "
     read -r -n 1 ans
     case $ans in
@@ -437,6 +442,7 @@ $(greenprint '2)') Netcat
 $(greenprint '3)') Bash
 $(greenprint '4)') Python
 $(redprint '0)') Exit
+
 Choose an option:  "
     read -r -n 1 ans
     case $ans in
