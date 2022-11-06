@@ -1,7 +1,7 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
 #Twitter handle: @4nqr34z
-#Shells v.1.2.4
+#Shells v.1.2.6
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -33,7 +33,8 @@ yellowprint "
 }
 #Checking OS
 OS=$(uname)
-
+killall ngrok
+usingngrok=0
 #Check dependencies
 benc=`which basenc`
 
@@ -83,6 +84,8 @@ Install on Debian: sudo apt install coreutils"
 
 exit
 fi
+
+
 
 nc=`which nc`
 
@@ -142,6 +145,52 @@ Install on Debian: sudo apt install rlwrap"
 read -p "Press any key to continue"
 fi
 
+jqcheck=`which jq`
+
+if [ "$?" == 1 ]
+then
+      header
+    if [[ $OS == "Darwin" ]]
+    then
+    redprint "$0 depends on jq for ngrok and this will not work.
+Install on macOS using homebrew: brew install jq"
+    yellowprint "Install now? y/n [y]"
+    read -r -n 1 ans
+    case $ans in
+    y)
+        echo
+        brew install jq
+        ;;
+    n)
+        echo
+        ;;
+    *)
+        echo
+        brew install jq
+        ;;
+    esac
+
+    else
+                redprint "$0 depends on jq for ngrok and this will not work.
+Install on Debian: sudo apt install jq"
+    yellowprint "Install now? y/n [y]"
+    read -r -n 1 ans
+    case $ans in
+    y)
+        echo
+        sudo apt install jq
+        ;;
+    n)
+        echo
+        ;;
+    *)
+        echo
+        sudo apt install jq
+        ;;
+    esac
+    fi
+read -p "Press any key to continue"
+fi
 
 
 urlencodeme() {
@@ -185,11 +234,18 @@ echo -n $1 | awk -F '.' '{printf "%d", ($1 * 2^24) + ($2 * 2^16) + ($3 * 2^8) + 
 }
 
 function input () {
+if [[ $usingngrok == 1 ]]
+then 
+echo "ngrok is running"
+else
 header
 read -p "Please enter your listening IP [$myip]: " IP
 IP=${IP:-$myip}
-read -p "Please enter your listening port [$myport]: " PORT
+read -p "Please enter your listening port [$myport]: " 
 PORT=${PORT:-$myport}
+if ! [[ "$1" == "ngrok" ]]
+then
+
 HEXIP=$(ip2hex $IP)
 LONGIP=$(ip2long $IP)
 echo -ne "
@@ -216,6 +272,32 @@ Choose an option [1]:  "
         IP=$IP
         ;;
     esac
+fi
+fi
+}
+
+function start_ngrok () {
+    if [[ $usingngrok == 0 ]]
+    then
+    ngrok tcp $PORT > /dev/null &
+    header
+    echo "Starting ngrok.."
+    while ! nc -z localhost 4040; do
+        sleep 1 # wait Ngrok to be available
+    done
+    public_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'|awk -F"//" {'print $2'})
+    local_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].config.addr')
+    IP=$(echo -n $public_url|awk -F":" {'print $1'})
+    PORT=$(echo -n $public_url|awk -F":" {'print $2'})
+    LOCALPORT=$(echo -n $local_url|awk -F":" {'print $2'})
+    usingngrok=1
+    mainmenu
+    else
+    killall ngrok
+    usingngrok=0
+    mainmenu
+    fi
+
 }
 
 
@@ -482,6 +564,10 @@ $(magentaprint '4)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option [1]:  "
+if [[ $usingngrok == 1 ]]
+then
+    PORT=$LOCALPORT
+fi
     read -r -n 1 ans
 
     case $ans in
@@ -911,6 +997,10 @@ Choose an option:  "
 
 mainmenu() {
 header
+if [ $usingngrok == 1 ]
+then 
+echo "ngrok is running"
+fi
     echo -ne "
 $(magentaprint 'MAIN MENU')
 $(greenprint '1)') Powershell
@@ -922,6 +1012,7 @@ $(greenprint '6)') Perl
 $(greenprint '7)') Telnet
 $(greenprint '8)') Zsh
 $(greenprint '9)') PHP
+$(greenprint 'n)') start/stop ngrok
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -962,6 +1053,10 @@ Choose an option:  "
     9)
         input
         submenu_php
+        ;;
+    n)
+        input "ngrok"
+        start_ngrok 
         ;;
     0)
         fn_bye
