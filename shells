@@ -1,7 +1,7 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
 #Twitter handle: @4nqr34z
-#Shells v.1.2.6
+#Shells v.1.2.7
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -45,40 +45,48 @@ then
       then
     redprint "$0 depends on basenc from coreutils and cannot continue.
 Install on MacOS using homebrew: brew install coreutils"
-    yellowprint "Install now? y/n [y]"
+    yellowprint "Install now? [Y/n]"
     read -r -n 1 ans
     case $ans in
     y)
+        echo
+        echo "Installing..."
         brew install coreutils
-        ;;
+        $0;;
     n)
-        exit
-        ;;
+        exit;;
+    "")
+        echo
+        echo "Installing..."
+        brew install coreutils
+        $0;;
     *)
-        exit
-        ;;
+        exit;;
     esac
 
 
     else
     redprint "$0 depends on on basenc from coreutils and cannot continue.
 Install on Debian: sudo apt install coreutils"
-    yellowprint "Install now? y/n [y]"
+    yellowprint "Install now? [Y/n]"
     read -r -n 1 ans
     case $ans in
     y)
+        echo
+        echo "Installing..."
         sudo apt install coreutils
-        ;;
+        $0;;
     n)
-        exit
-        ;;
+        exit;;
+    "")
+        echo
+        echo "Installing..."
+        sudo apt install coreutils
+        $0;;
     *)
-        exit
-        ;;
+        exit;;
     esac
 
-
-    
     fi
                 
 
@@ -107,42 +115,54 @@ then
     then
     redprint "$0 depends on rlwrap and cannot continue.
 Install on MacOS using homebrew: brew install rlwrap"
-    yellowprint "Install now? y/n [y]"
+    yellowprint "Install now? [Y/n]"
     read -r -n 1 ans
     case $ans in
     y)
         echo
+        echo "Installing..."
         brew install rlwrap
+        $0
         ;;
-    n)
+     n)
+        exit;;
+    "")
         echo
-        ;;
+        echo "Installing..."
+        brew install rlwrap
+        $0;;
+
     *)
-        echo
-        brew install rlwrap
-        ;;
+        exit;;
     esac
 
     else
                 redprint "$0 depends on rlwrap and cannot continue.
 Install on Debian: sudo apt install rlwrap"
-    yellowprint "Install now? y/n [y]"
+    yellowprint "Install now? [Y/n]"
     read -r -n 1 ans
     case $ans in
     y)
         echo
+        echo "Installing..."
         sudo apt install rlwrap
+        $0
         ;;
     n)
         echo
         ;;
+    "")
+        echo
+        echo "Installing..."
+        sudo apt install rlwrap
+        $0
+        ;;
     *)
         echo
-        sudo apt install rlwrap
         ;;
     esac
     fi
-read -p "Press any key to continue"
+#read -p "Press any key to continue"
 fi
 
 jqcheck=`which jq`
@@ -154,46 +174,60 @@ then
     then
     redprint "$0 depends on jq for ngrok and this will not work.
 Install on macOS using homebrew: brew install jq"
-    yellowprint "Install now? y/n [y]"
+    yellowprint "Install now? [Y/n]"
     read -r -n 1 ans
     case $ans in
     y)
         echo
+        echo "Installing..."
         brew install jq
+        $0
         ;;
     n)
         echo
         ;;
+    "")
+        echo
+        echo "Installing..."
+        brew install jq
+        $0
+        ;;
     *)
         echo
-        brew install jq
         ;;
     esac
 
     else
                 redprint "$0 depends on jq for ngrok and this will not work.
 Install on Debian: sudo apt install jq"
-    yellowprint "Install now? y/n [y]"
+    yellowprint "Install now? [Y/n]"
     read -r -n 1 ans
     case $ans in
     y)
         echo
+        echo "Installing..."
         sudo apt install jq
+        $0
         ;;
     n)
         echo
         ;;
+    "")
+        echo
+        echo "Installing..."
+        sudo apt install jq
+        $0
+        ;;
     *)
         echo
-        sudo apt install jq
         ;;
     esac
     fi
-read -p "Press any key to continue"
+#read -p "Press any key to continue"
 fi
 
 
-urlencodeme() {
+function urlencodeme() {
  
     local length="${#1}"
     for (( i = 0; i < length; i++ )); do
@@ -215,10 +249,6 @@ else
     myip=$(ip -4 a show dev $int |grep inet|awk -F "inet" {'print $2'}|cut -d/ -f1 | xargs)
 fi
 
-
-
-
-
 myport="4444"
 
 header
@@ -236,23 +266,24 @@ echo -n $1 | awk -F '.' '{printf "%d", ($1 * 2^24) + ($2 * 2^16) + ($3 * 2^8) + 
 function input () {
 if [[ $usingngrok == 1 ]]
 then 
-echo "ngrok is running"
+    echo "ngrok is running"
 else
-header
-read -p "Please enter your listening IP [$myip]: " IP
-IP=${IP:-$myip}
-read -p "Please enter your listening port [$myport]: " 
-PORT=${PORT:-$myport}
+    header
+    read -p "Please enter your listening IP [$myip]: " IP
+    IP=${IP:-$myip}
+    read -p "Please enter your listening port [$myport]: " 
+    PORT=${PORT:-$myport}
+
 if ! [[ "$1" == "ngrok" ]]
 then
 
-HEXIP=$(ip2hex $IP)
-LONGIP=$(ip2long $IP)
-echo -ne "
-$(blueprint 'Format of IP')
-$(greenprint '1)') Normal
-$(greenprint '2)') Hexadecimal
-$(greenprint '3)') Long
+    HEXIP=$(ip2hex $IP)
+    LONGIP=$(ip2long $IP)
+    echo -ne "
+    $(blueprint 'Format of IP')
+    $(greenprint '1)') Normal
+    $(greenprint '2)') Hexadecimal
+    $(greenprint '3)') Long
 
 Choose an option [1]:  "
     read -r -n 1 ans
@@ -278,24 +309,24 @@ fi
 
 function start_ngrok () {
     if [[ $usingngrok == 0 ]]
-    then
-    ngrok tcp $PORT > /dev/null &
-    header
-    echo "Starting ngrok.."
-    while ! nc -z localhost 4040; do
-        sleep 1 # wait Ngrok to be available
-    done
-    public_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'|awk -F"//" {'print $2'})
-    local_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].config.addr')
-    IP=$(echo -n $public_url|awk -F":" {'print $1'})
-    PORT=$(echo -n $public_url|awk -F":" {'print $2'})
-    LOCALPORT=$(echo -n $local_url|awk -F":" {'print $2'})
-    usingngrok=1
-    mainmenu
+        then
+            ngrok tcp $PORT > /dev/null &
+            header
+            echo "Starting ngrok.."
+        while ! nc -z localhost 4040; do
+            sleep 1 # wait Ngrok to become available
+        done
+        public_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'|awk -F"//" {'print $2'})
+        local_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].config.addr')
+        IP=$(echo -n $public_url|awk -F":" {'print $1'})
+        PORT=$(echo -n $public_url|awk -F":" {'print $2'})
+        LOCALPORT=$(echo -n $local_url|awk -F":" {'print $2'})
+        usingngrok=1
+        mainmenu
     else
-    killall ngrok
-    usingngrok=0
-    mainmenu
+        killall ngrok
+        usingngrok=0
+        mainmenu
     fi
 
 }
@@ -311,9 +342,9 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
-listen
+    listen
 }
 
 function netcat () {
@@ -341,7 +372,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 }
@@ -367,7 +398,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 }
@@ -392,7 +423,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 }
@@ -419,7 +450,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 }
@@ -458,7 +489,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 
@@ -485,7 +516,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 }
@@ -512,7 +543,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 }
@@ -544,7 +575,7 @@ if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
 else 
-echo -n $rev | xclip -sel c
+    echo -n $rev | xclip -sel c
 fi
 listen
 }
@@ -999,7 +1030,7 @@ mainmenu() {
 header
 if [ $usingngrok == 1 ]
 then 
-echo "ngrok is running"
+echo "🟢 ngrok is running"
 fi
     echo -ne "
 $(magentaprint 'MAIN MENU')
