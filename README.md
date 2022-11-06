@@ -3,10 +3,13 @@ A little script for generating revshells fast and easy.
 
 ### Screenshots
 
-![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/ShellsMacOS122.1.png?raw=true)
+![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/ShellsMacOS123.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
+
+### Version 1.2.3
+- Added a couple of PHP shells
 
 ### Version 1.2.2
 - Added shells for: Ruby, Perl, Telnet and zsh
