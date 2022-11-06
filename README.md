@@ -15,7 +15,7 @@ A little script for generating common revshells fast and easy.
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
 
 ### Version 1.2.7
--Fixed the install options not doing default option on enter
+- Fixed the install options not doing default option on enter
 
 ### Version 1.2.6
 - Added support for ngrok. This is not fully tested yet.
