@@ -1,5 +1,11 @@
 # shells
-A little script for generating revshells fast and easy. 
+A little script for generating common revshells fast and easy. 
+
+## To install
+	git clone https://github.com/4ndr34z/shells
+	cd shells
+	./install.sh
+
 
 ### Screenshots
 
@@ -7,6 +13,11 @@ A little script for generating revshells fast and easy.
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
+
+
+### Version 1.2.4
+- Added a install-script
+- Added install options for missing dependencies
 
 ### Version 1.2.3
 - Added a couple of PHP shells
