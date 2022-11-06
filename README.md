@@ -9,7 +9,7 @@ A little script for generating common revshells fast and easy.
 
 ### Screenshots
 
-![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/ShellsMacOS126.png?raw=true)
+![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/ShellsMacOS127.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
