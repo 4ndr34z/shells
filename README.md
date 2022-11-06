@@ -14,6 +14,8 @@ A little script for generating common revshells fast and easy.
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
 
+### Version 1.2.6
+- Added support for ngrok. This is not fully tested yet.
 
 ### Version 1.2.4
 - Added a install-script
