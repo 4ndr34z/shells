@@ -1,7 +1,7 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
 #Twitter handle: @4nqr34z
-#Shells v.1.2.8
+#Shells v.1.2.9
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -173,66 +173,68 @@ Install on Debian: sudo apt install rlwrap"
 #read -p "Press any key to continue"
 fi
 
-jqcheck=`which jq`
-
-if [ "$?" == 1 ]
+if [[ $ngrok_installed == 1 ]]
 then
-      header
-    if [[ $OS == "Darwin" ]]
-    then
-    redprint "$0 depends on jq for ngrok and this will not work.
-Install on macOS using homebrew: brew install jq"
-    yellowprint "Install now? [Y/n]"
-    read -r -n 1 ans
-    case $ans in
-    y)
-        echo
-        echo "Installing..."
-        brew install jq
-        $0
-        ;;
-    n)
-        echo
-        ;;
-    "")
-        echo
-        echo "Installing..."
-        brew install jq
-        $0
-        ;;
-    *)
-        echo
-        ;;
-    esac
+    jqcheck=`which jq`
 
-    else
-                redprint "$0 depends on jq for ngrok and this will not work.
-Install on Debian: sudo apt install jq"
-    yellowprint "Install now? [Y/n]"
-    read -r -n 1 ans
-    case $ans in
-    y)
-        echo
-        echo "Installing..."
-        sudo apt install jq
-        $0
-        ;;
-    n)
-        echo
-        ;;
-    "")
-        echo
-        echo "Installing..."
-        sudo apt install jq
-        $0
-        ;;
-    *)
-        echo
-        ;;
-    esac
+    if [ "$?" == 1 ]
+    then
+        header
+        if [[ $OS == "Darwin" ]]
+        then
+            redprint "$0 depends on jq for ngrok usage. If you wish to use ngrok, it needs to be installed. Install on macOS using homebrew: brew install jq"
+            yellowprint "Install now? [Y/n]"
+            read -r -n 1 ans
+            case $ans in
+            y)
+            echo
+            echo "Installing..."
+            brew install jq
+            $0
+            ;;
+            n)
+            echo
+            ;;
+            "")
+            echo
+            echo "Installing..."
+            brew install jq
+            $0
+            ;;
+            *)
+            echo
+            ;;
+            esac
+
+        else
+            redprint "$0 depends on jq for ngrok and this will not work. Install on Debian: sudo apt install jq"
+            yellowprint "Install now? [Y/n]"
+            read -r -n 1 ans
+            case $ans in
+            y)
+            echo
+            echo "Installing..."
+            sudo apt install jq
+            $0
+            ;;
+            n)
+            echo
+            ;;
+            "")
+            echo
+            echo "Installing..."
+            sudo apt install jq
+            $0
+            ;;
+            *)
+            echo
+            ;;
+            esac
+        fi
+
     fi
-#read -p "Press any key to continue"
 fi
+
 
 
 function urlencodeme() {
@@ -1038,7 +1040,12 @@ mainmenu() {
 header
 if [ $usingngrok == 1 ]
 then 
-echo "🟢 ngrok is running"
+    if [ $(ps -ef | grep -c ngrok) == 2 ]
+    then
+        echo "🟢 ngrok is running"
+    else
+        echo "🔴 ngrok is not running"
+    fi
 fi
 if [[ $ngrok_installed == 1 ]]
 then 

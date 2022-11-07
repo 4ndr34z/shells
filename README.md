@@ -14,6 +14,9 @@ A little script for generating common revshells fast and easy.
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
 
+### Version 1.2.9
+- Added ngrok running-status
+
 ### Version 1.2.8
 - Hiding ngrok choice if not installed
 
