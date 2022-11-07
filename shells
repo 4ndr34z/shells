@@ -1045,6 +1045,7 @@ then
         echo "🟢 ngrok is running"
     else
         echo "🔴 ngrok is not running"
+        usingngrok=0
     fi
 fi
 if [[ $ngrok_installed == 1 ]]
