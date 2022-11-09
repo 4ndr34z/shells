@@ -20,7 +20,6 @@ A little script for generating common revshells fast and easy.
 
 ### Version 1.3.3
 - Added Golang
-- Using UTF8 encoding in Powershell payload
 
 ### Version 1.3.2
 - Added OpenSSL
