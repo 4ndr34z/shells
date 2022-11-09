@@ -1323,7 +1323,7 @@ $(greenprint '6)') Perl
 $(greenprint '7)') Telnet
 $(greenprint '8)') Zsh
 $(greenprint '9)') PHP
-$(greenprint '10)') awk
+$(greenprint '10)') Awk
 $(greenprint '11)') OpenSSL
 $(greenprint '12)') Golang
 $ngrok_choice
