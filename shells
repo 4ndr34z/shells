@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-#Shells v.1.3.7
+version="1.3.7"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -30,9 +30,11 @@ yellowprint "
          \_____  \ |  |  \_/ __ \|  | |  |  /  ___/
          /        \|   Y  \  ___/|  |_|  |__\___ \ 
         /_______  /|___|  /\___  >____/____/____  >
-                \/      \/     \/               \/ By 4ndr34z
-        
+                \/      \/     \/               \/ By 4ndr34z         
+
+v.$version
 "
+
 }
 #Checking OS
 OS=$(uname)

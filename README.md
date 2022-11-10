@@ -9,10 +9,10 @@ A little script for generating common revshells fast and easy.
 
 ### Screenshots
 
-![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/ShellsMacOS127.png?raw=true)
-![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
-![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
-![alt text](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
+![screenshot1](https://github.com/4ndr34z/shells/blob/main/screenshots/macOS137.png?raw=true)
+![screenshot2](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
+![screenshot3](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
+![screenshot4](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
 
 ### Version 1.3.7
 - Using only native nc on macOS, because the one on homebrew doesn't work on incoming UDP
