@@ -14,6 +14,10 @@ A little script for generating common revshells fast and easy.
 ![screenshot3](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![screenshot4](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
 
+### Version 1.4.1
+- Removed AMSI. Not tested enough :-)
+
+
 ### Version 1.4
 - Added AMSI-bypass for the powershell payloads
 
