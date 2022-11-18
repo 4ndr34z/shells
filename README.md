@@ -10,7 +10,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - Windows Powershell and Core Powershell
 
 ## ngrok support
-- ngrok can be started/stopped from inside the scripts
+- ngrok can be started/stopped from inside the script
 - payloads will be genereated with the ngrok addresses
 
  
