@@ -1,7 +1,21 @@
 # shells
-A little script for generating common revshells fast and easy. 
+A little script for generating common revshells fast and easy. <br>
+Especially nice when in need of PowerShell and Python revshells, which can be a PITA getting correctly formated.<br><br> 
 
-## To install
+## PowerShell revshells<br> 
+- Shows username@computer, above the prompt and working-directory
+- Has a partial AMSI-bypass, making some stuff a bit easier
+- Upload function for easily uploading files. Type "help" inside the revshell for syntax
+- TCP and UDP 
+- Windows Powershell and Core Powershell
+
+## ngrok support
+- ngrok can be started/stopped from inside the scripts
+- payloads will be genereated with the ngrok addresses
+
+ 
+ 
+### To install
 	git clone https://github.com/4ndr34z/shells
 	cd shells
 	./install.sh
