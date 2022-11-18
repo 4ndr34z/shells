@@ -17,8 +17,8 @@ A little script for generating common revshells fast and easy.
 
 
 ### Version 1.4.2
-- Added a new "mini AMSI-bypass". It isn't a full bypass. Based on Matt Graebers Reflection method 
-- Added a "upload" function
+- PowerShell: Added a new "mini AMSI-bypass". (It is a partial bypass) Based on Matt Graebers Reflection method 
+- PowerShell: Added a "upload" function in the Powershell reverseshell
 
 ### Version 1.4.1
 - Removed AMSI. Not tested enough :-)
