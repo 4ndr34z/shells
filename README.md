@@ -30,28 +30,28 @@ A little script for generating common revshells fast and easy.
 ### Version 1.3.9
 - Fixed bug when setting port
 - Changed default port to 443
-- Powershell obfuscated even more
+- PowerShell: obfuscated some more
 
 
 ### Version 1.3.8
-- Minor changes to the Powershell UDP payload
+- PowerShell: Minor changes to the UDP payload
 
 
 ### Version 1.3.7
 - Using only native nc on macOS, because the one on homebrew doesn't work on incoming UDP
-- Added UDP Powershell-payloads
+- PowerShell: Added UDP payloads
 
 
 ### Version 1.3.6
-- Added more Powershell-payloads
+- PowerShell: Added more payloads
 
 
 ### Version 1.3.5
-- Added some randomization and obfuscation for the Powershell payload
+- PowerShell: Added some randomization and obfuscation for the payload
 
 
 ### Version 1.3.4
-- Using UTF8 encoding in Powershell payload
+- PowerShell: Using UTF8 encoding in payload
 
 
 ### Version 1.3.3
@@ -73,7 +73,7 @@ A little script for generating common revshells fast and easy.
 
 
 ### Version 1.2.9
-- Added ngrok running-status
+- Added a ngrok running-status
 
 
 ### Version 1.2.8
@@ -81,16 +81,16 @@ A little script for generating common revshells fast and easy.
 
 
 ### Version 1.2.7
-- Fixed the install options not doing default option on enter
+- Fixed the install options: not doing default option when pressing enter without making a choice
 
 
 ### Version 1.2.6
-- Added support for ngrok. This is not fully tested yet.
+- Added support for ngrok. 
 
 
 ### Version 1.2.4
 - Added a install-script
-- Added install options for missing dependencies
+- Added install options for checking and installing missing dependencies
 
 
 ### Version 1.2.3
@@ -103,7 +103,7 @@ A little script for generating common revshells fast and easy.
 
 ### Version 1.2.1
 - Added copy to clipboard using pbcopy on macOS
-- Added info om listening netcat as the macOS versions doesn't display that
+- Added info about listening netcat as the macOS versions doesn't display that
 
 
 ### Version 1.2
