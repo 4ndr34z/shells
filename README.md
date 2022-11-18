@@ -13,6 +13,12 @@ A little script for generating common revshells fast and easy.
 ![screenshot2](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
 ![screenshot3](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![screenshot4](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
+![screenshot5](https://github.com/4ndr34z/shells/blob/main/screenshots/upload.png?raw=true)
+
+
+### Version 1.4.2
+- Added a new "mini AMSI-bypass". It isn't a full bypass. Based on Matt Graebers Reflection method 
+- Added a "upload" function
 
 ### Version 1.4.1
 - Removed AMSI. Not tested enough :-)
