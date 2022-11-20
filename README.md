@@ -7,7 +7,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - Has a partial AMSI-bypass, making some stuff a bit easier
 - TCP and UDP 
 - Windows Powershell and Core Powershell
-- Functions for uploading and downloading files. (Using Updog by sc0tfree)
+- Functions for uploading and downloading files. (Using [Updog](https://github.com/sc0tfree/updog) by sc0tfree)
 
 ## ngrok support
 - ngrok can be started/stopped from inside the script
