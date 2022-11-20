@@ -33,7 +33,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ![screenshot3](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
 ![screenshot4](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![screenshot5](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
-![screenshot6](https://github.com/4ndr34z/shells/blob/main/screenshots/upload.png?raw=true)
+![screenshot6](https://github.com/4ndr34z/shells/blob/main/screenshots/upload2.png?raw=true)
 
 
 ### Version 1.4.3
