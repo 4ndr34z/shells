@@ -1,5 +1,5 @@
 # shells
-A little script for generating common revshells fast and easy. <br>
+A script for generating common revshells fast and easy. <br>
 Especially nice when in need of PowerShell and Python revshells, which can be a PITA getting correctly formated.<br><br> 
 
 ## PowerShell revshells<br> 
@@ -8,10 +8,15 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - Upload function for easily uploading files. Type "help" inside the revshell for syntax
 - TCP and UDP 
 - Windows Powershell and Core Powershell
+- Functions for uploading and downloading files. (Using Updog by sc0tfree)
 
 ## ngrok support
 - ngrok can be started/stopped from inside the script
 - payloads will be genereated with the ngrok addresses
+
+## Updog support
+- you can start/stop Updog from inside the script
+- The PowerShell revshells have upload/download function embedded
 
  
  
@@ -29,6 +34,12 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ![screenshot4](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![screenshot5](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
 ![screenshot6](https://github.com/4ndr34z/shells/blob/main/screenshots/upload.png?raw=true)
+
+
+### Version 1.4.3
+- Added Updog support
+- Added Netcat binaries. 
+- Powershell: Created upload/download functionality (upload requires Updog for receiving files)
 
 
 ### Version 1.4.2
