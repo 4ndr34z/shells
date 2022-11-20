@@ -5,7 +5,6 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ## PowerShell revshells<br> 
 - Shows username@computer, above the prompt and working-directory
 - Has a partial AMSI-bypass, making some stuff a bit easier
-- Upload function for easily uploading files. Type "help" inside the revshell for syntax
 - TCP and UDP 
 - Windows Powershell and Core Powershell
 - Functions for uploading and downloading files. (Using Updog by sc0tfree)
@@ -40,7 +39,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - Added Updog support
 - Added Netcat binaries. 
 - Powershell: Created upload/download functionality (upload requires Updog for receiving files)
-
+- Added more information about running ngrok and Updog. 
 
 ### Version 1.4.2
 - PowerShell: Added a new "mini AMSI-bypass". (It is a partial bypass) Based on Matt Graebers Reflection method 
