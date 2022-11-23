@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.4.3"
+version="1.4.4"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -72,7 +72,13 @@ then
     esac
 else
     updog_installed=1
-    ps -ef | grep updog |cut -d" " -f4| while read -r pid;do kill "$pid";done #> /dev/null 2>&1
+    
+    if [ $(ps -ef | grep -c updog) == 2 ]
+    then
+        ps -ef | grep updog |cut -d" " -f4| while read -r pid;do kill "$pid";done > /dev/null 2>&1
+    fi
+
+    
 fi
 
 
@@ -337,12 +343,15 @@ else
         updog_port=${updog_port:-$myupdport}
     
     else
-
+        if [[ "$1" == "updog" ]]
+        then
+                echo 
+        else 
         read -p "Please enter your listening IP [$myip]: " IP
         IP=${IP:-$myip}
         read -p "Please enter your listening port [$myport]: " PORT
         PORT=${PORT:-$myport}
-
+        fi
      fi  
 
     
@@ -736,7 +745,7 @@ header
 case $1 in
 
     Linux64)
-    printf "Enter path for binary or press enter for current directory:"  
+    printf "Enter path for binary or press enter for $PWD:" 
     read -r ans
         case $ans in
         "")
@@ -757,7 +766,7 @@ case $1 in
     ;;
 
     Linux32)
-    printf "Enter path for binary or press enter for current directory:"  
+    printf "Enter path for binary or press enter for $PWD:"  
     read -r ans
         case $ans in
         "")
@@ -778,7 +787,7 @@ case $1 in
     ;;
 
     Linuxarm64)
-    printf "Enter path for binary or press enter for current directory:"  
+    printf "Enter path for binary or press enter for $PWD:"  
     read -r ans
         case $ans in
         "")
@@ -799,7 +808,7 @@ case $1 in
     ;;
     
     Macosintel)
-    printf "Enter path for binary or press enter for current directory:"  
+     printf "Enter path for binary or press enter for $PWD:"   
     read -r ans
         case $ans in
         "")
@@ -821,7 +830,7 @@ case $1 in
 
     Windows32)
     echo -n $ncWindos64 | base64 -d > /tmp/nc.exe
-     printf "Enter path for binary or press enter for current directory:"  
+    printf "Enter path for binary or press enter for $PWD:"   
     read -r ans
         case $ans in
         "")
@@ -843,7 +852,7 @@ case $1 in
     
     Windows64)
     echo -n $ncWindos64 | base64 -d > /tmp/nc.exe
-     printf "Enter path for binary or press enter for current directory:"  
+    printf "Enter path for binary or press enter for $PWD:"   
     read -r ans
         case $ans in
         "")
@@ -1642,7 +1651,7 @@ Choose an option:  "
         nc_binaries "Macosintel"
         ;;
     5)
-        nc_binaries "Windows64"
+        nc_binaries "Windows32"
         ;;
     6)
         nc_binaries "Windows64"

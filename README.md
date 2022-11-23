@@ -37,6 +37,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ![screenshot6](https://github.com/4ndr34z/shells/blob/main/screenshots/upload2.png?raw=true)
 
 
+### Version 1.4.4
+- Fixed the handling of starting/stopping Updog
+
+
 ### Version 1.4.3
 - Added Updog support
 - Added Netcat binaries. 
