@@ -40,6 +40,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 [Link](https://youtu.be/HDrzqiyKQtA)
 
 
+### Version 1.4.5
+- Added 2 c++ revshell binaries for Windows 32 and 64 bit. 
+
+
 ### Version 1.4.4
 - Fixed the handling of starting/stopping Updog
 
