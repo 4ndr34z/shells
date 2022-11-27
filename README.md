@@ -39,6 +39,9 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+### Version 1.4.6
+- Added webshells (ASPX, PHP, JSP)
+
 
 ### Version 1.4.5
 - Added 2 c++ revshell binaries for Windows 32 and 64 bit. 
