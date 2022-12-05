@@ -39,6 +39,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+### Version 1.4.8
+- Sometimes less is more. Removed most of the obfuscating on TCP PowerShell revshell, because it triggers e.g. Defender ATP
+
+
 ### Version 1.4.6
 - Added webshells (ASPX, PHP, JSP)
 
