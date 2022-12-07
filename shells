@@ -1612,7 +1612,7 @@ Choose an option:  "
 submenu_powershell_reflective() {
 header
     echo -ne "
-$(blueprint 'Reflective SharpOffensiveShell')
+$(blueprint 'Reflective SharpOffensiveShell (Load and run in memory)')
 $(greenprint '1)') Reverse TCP - Windows 
 $(greenprint '2)') Bind TCP - Windows 
 $(magentaprint 'm)') Go Back to Main Menu
