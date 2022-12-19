@@ -36,6 +36,7 @@ v.$version
 "
 if [ $usingngrok == 1 ]
 then 
+  
     if [ $(ps -ef | grep -c ngrok) == 2 ]
     then
         echo "🟢 ngrok is forwarding: $public_url to localport: $LOCALPORT"
@@ -57,6 +58,7 @@ fi
     fi
 echo
 }
+
 #Checking OS
 OS=$(uname)
 ngrok_installed=$(which ngrok)
@@ -479,12 +481,16 @@ function start_ngrok () {
         while ! nc -z localhost 4040; do
             sleep 1 # wait ngrok to become available
         done
+        sleep 2
         public_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'|awk -F"//" {'print $2'})
         local_url=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].config.addr')
         ngrokIP=$(echo -n $public_url|awk -F":" {'print $1'})
         ngrokPORT=$(echo -n $public_url|awk -F":" {'print $2'})
         LOCALPORT=$(echo -n $local_url|awk -F":" {'print $2'})
         usingngrok=1
+      
+        
+
         mainmenu
     else
         killall ngrok > /dev/null 2>&1
@@ -735,7 +741,7 @@ fi
                 yellowprint "You need to serve the C# Shell exefile somewhere."
                 yellowprint "You can generate the exe from main menu item 13. \"Files\" and serve somewhere or localy using Updog"
                 yellowprint "You should also generate Rastamouse Full AMSI bypass from main menu item 13. \"Files\" and serve localy using Updog."
-                yellowprint "Important: This shell will be stopped if you don't "
+                yellowprint "Important: This shell will not run without a full AMSI bypass"
            fi
         
         
@@ -2381,29 +2387,7 @@ Choose an option:  "
 
 mainmenu() {
 header
-#if [ $usingngrok == 1 ]
-#then 
-#    if [ $(ps -ef | grep -c ngrok) == 2 ]
-#    then
-#        echo "🟢 ngrok is forwarding: $public_url to localport: $LOCALPORT"
-#        echo
-#    else
-#        echo "🔴 ngrok is not running"
-#        usingngrok=0
-#    fi
-#fi
 
-#if [ $usingupdog == 1 ]
-#then 
-#    if [ $(ps -ef | grep -c updog) == 2 ]
-#    then
-#        echo "🟢 Updog is listening on $updog_port, serving folder: $updog_dir"
-#        
-#    else
-#        echo "🔴 Updog is not running"
-#        usingupdog=0
-#    fi
-#fi
 
 if [[ $ngrok_installed == 1 ]]
 then 
@@ -2508,5 +2492,6 @@ Choose an option:  "
         ;;
     esac
 }
+
 
 mainmenu

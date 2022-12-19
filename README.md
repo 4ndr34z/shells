@@ -46,6 +46,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - Added Rastamouse's full AMSI Bypass
 - PowerShell: You can automatically upload and run full AMSI bypass. The partitial AMSI bypass makes this possible.
 - C# Shell: Automatically upload and run full AMSI bypass before loading it into memory
+- Updog and ngrok status showing in every menu
 
 
 ### Version 1.4.8
