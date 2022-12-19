@@ -4,8 +4,8 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 ## PowerShell revshells<br> 
 - Shows username@computer, above the prompt and working-directory
-- Has a partial AMSI-bypass, making some stuff a bit easier
-- TCP and UDP 
+- Has a partial AMSI-bypass making some stuff a bit easier, like loading a full AMSI bypass.
+- TCP and UDP shells 
 - Windows Powershell and Core Powershell
 - Functions for uploading and downloading files. (Using [Updog](https://github.com/sc0tfree/updog) by sc0tfree)
 
@@ -40,10 +40,14 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 [Link](https://youtu.be/HDrzqiyKQtA)
 
 
+### Version 1.5.0
+- Added some node.js payloads
+
+
 ### Version 1.4.9
 - Added a simple C# shell.  
 - Added payload for reflective loading the C# shell into memory. (Needs full AMSI bypass)
-- Added Rastamouse's full AMSI Bypass
+- Covering this by adding Rastamouse's full AMSI Bypass
 - PowerShell: You can automatically upload and run full AMSI bypass. The partitial AMSI bypass makes this possible.
 - C# Shell: Automatically upload and run full AMSI bypass before loading it into memory
 - Updog and ngrok status showing in every menu
