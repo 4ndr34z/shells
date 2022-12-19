@@ -41,8 +41,12 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 
 ### Version 1.4.9
-- Added the SharpOffensiveShell by darkr4y [https://github.com/darkr4y/SharpOffensiveShell](https://github.com/darkr4y/SharpOffensiveShell)
-- Added payload for reflective loading SharpOffensiveShell into memory.
+- Added a simple C# shell.  
+- Added payload for reflective loading the C# shell into memory. (Needs full AMSI bypass)
+- Added Rastamouse's full AMSI Bypass
+- PowerShell: You can automatically upload and run full AMSI bypass. The partitial AMSI bypass makes this possible.
+- C# Shell: Automatically upload and run full AMSI bypass before loading it into memory
+
 
 ### Version 1.4.8
 - Sometimes less is more. Removed the obfuscating on TCP/UDP PowerShell revshells, because it actually triggers AV more than it bypasses and the payload got really big :-) Still using randomization.
