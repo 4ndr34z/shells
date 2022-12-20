@@ -1856,15 +1856,15 @@ submenu_powershell() {
 header
     echo -ne "
 $(blueprint 'Powershell')
-$(greenprint '1)') Powershell TCP - Windows 
-$(greenprint '2)') Powershell TCP - Windows URL encoded
-$(greenprint '3)') Powershell TCP - Windows Double URL encoded
-$(greenprint '4)') Powershell TCP - Windows Core
-$(greenprint '5)') Powershell TCP - Windows Core URL encoded
-$(greenprint '6)') Powershell TCP - Windows Core Double URL encoded
-$(greenprint '7)') Powershell TCP - Core
-$(greenprint '8)') Powershell TCP - Core URL encoded
-$(greenprint '9)') Powershell TCP - Core Double URL encoded
+$(greenprint '1)')  Powershell TCP - Windows 
+$(greenprint '2)')  Powershell TCP - Windows URL encoded
+$(greenprint '3)')  Powershell TCP - Windows Double URL encoded
+$(greenprint '4)')  Powershell TCP - Windows Core
+$(greenprint '5)')  Powershell TCP - Windows Core URL encoded
+$(greenprint '6)')  Powershell TCP - Windows Core Double URL encoded
+$(greenprint '7)')  Powershell TCP - Core
+$(greenprint '8)')  Powershell TCP - Core URL encoded
+$(greenprint '9)')  Powershell TCP - Core Double URL encoded
 $(greenprint '10)') Powershell UDP - Windows 
 $(greenprint '11)') Powershell UDP - Windows URL encoded
 $(greenprint '12)') Powershell UDP - Windows Double URL encoded
@@ -1874,8 +1874,8 @@ $(greenprint '15)') Powershell UDP - Windows Core Double URL encoded
 $(greenprint '16)') Powershell UDP - Core
 $(greenprint '17)') Powershell UDP - Core URL encoded
 $(greenprint '18)') Powershell UDP - Core Double URL encoded
-$(magentaprint 'm)') Go Back to Main Menu
-$(redprint '0)') Exit
+$(magentaprint 'm)')  Go Back to Main Menu
+$(redprint '0)')  Exit
 
 Choose an option:  "
     read -r -n 2 ans
@@ -2297,18 +2297,18 @@ submenu_ncbinaries() {
 header
     echo -ne "
 $(blueprint 'Files')
-$(greenprint '1)') nc Linux 64-bit
-$(greenprint '2)') nc Linux 32-bit
-$(greenprint '3)') nc Linux ARM 64-bit
-$(greenprint '4)') nc MacOS Intel 
-$(greenprint '5)') nc Windows 32-bit
-$(greenprint '6)') nc Windows 64-bit
-$(greenprint '7)') c++ Powershell Windows 32-bit
-$(greenprint '8)') c++ Powershell Windows 64-bit
-$(greenprint '9)') sharpShell 64-bit
+$(greenprint '1)')  nc Linux 64-bit
+$(greenprint '2)')  nc Linux 32-bit
+$(greenprint '3)')  nc Linux ARM 64-bit
+$(greenprint '4)')  nc MacOS Intel 
+$(greenprint '5)')  nc Windows 32-bit
+$(greenprint '6)')  nc Windows 64-bit
+$(greenprint '7)')  c++ Powershell Windows 32-bit
+$(greenprint '8)')  c++ Powershell Windows 64-bit
+$(greenprint '9)')  sharpShell 64-bit
 $(greenprint '10)') Rastamouse AMSI Bypass
-$(magentaprint 'm)') Go Back to Main Menu
-$(redprint '0)') Exit
+$(magentaprint 'm)')  Go Back to Main Menu
+$(redprint '0)')  Exit
 
 Choose an option:  "
     read -r -n 2 ans
@@ -2416,20 +2416,20 @@ submenu_python() {
 header
     echo -ne "
 $(blueprint 'Python')
-$(greenprint '1)') Python3 - No encoding
-$(greenprint '2)') Python3 - URL encoded
-$(greenprint '3)') Python3 - Double URL encoded
-$(greenprint '4)') Python2 - No encoding
-$(greenprint '5)') Python2 - URL encoded
-$(greenprint '6)') Python2 - Double URL encoded
-$(greenprint '7)') Windows Python3 - No encoding
-$(greenprint '8)') Windows Python3 - URL encoded
-$(greenprint '9)') Windows Python3 - Double URL encoded
+$(greenprint '1)')  Python3 - No encoding
+$(greenprint '2)')  Python3 - URL encoded
+$(greenprint '3)')  Python3 - Double URL encoded
+$(greenprint '4)')  Python2 - No encoding
+$(greenprint '5)')  Python2 - URL encoded
+$(greenprint '6)')  Python2 - Double URL encoded
+$(greenprint '7)')  Windows Python3 - No encoding
+$(greenprint '8)')  Windows Python3 - URL encoded
+$(greenprint '9)')  Windows Python3 - Double URL encoded
 $(greenprint '10)') Windows Python2 - No encoding
 $(greenprint '11)') Windows Python2 - URL encoded
 $(greenprint '12)') Windows Python2 - Double URL encoded
-$(magentaprint 'm)') Go Back to Main Menu
-$(redprint '0)') Exit
+$(magentaprint 'm)')  Go Back to Main Menu
+$(redprint '0)')  Exit
 
 Choose an option:  "
     read -r -n 2 ans
@@ -2490,20 +2490,20 @@ header
 
 if [[ $ngrok_installed == 1 ]]
 then 
-    ngrok_choice="$(greenprint 'n)') Start/Stop ngrok"
+    ngrok_choice="$(greenprint 'n)')  Start/Stop ngrok"
 fi
 
     echo -ne "
 $(magentaprint 'MAIN MENU')
-$(greenprint '1)') Powershell
-$(greenprint '2)') Netcat
-$(greenprint '3)') Bash
-$(greenprint '4)') Python
-$(greenprint '5)') Ruby
-$(greenprint '6)') Perl
-$(greenprint '7)') Telnet
-$(greenprint '8)') Zsh
-$(greenprint '9)') PHP
+$(greenprint '1)')  Powershell
+$(greenprint '2)')  Netcat
+$(greenprint '3)')  Bash
+$(greenprint '4)')  Python
+$(greenprint '5)')  Ruby
+$(greenprint '6)')  Perl
+$(greenprint '7)')  Telnet
+$(greenprint '8)')  Zsh
+$(greenprint '9)')  PHP
 $(greenprint '10)') Awk
 $(greenprint '11)') OpenSSL
 $(greenprint '12)') Golang
@@ -2511,9 +2511,9 @@ $(greenprint '13)') Files
 $(greenprint '14)') Webshells 
 $(greenprint '15)') Reflective C# Shell
 $(greenprint '16)') node.js
-$(greenprint 'u)') Start/Stop Updog 
+$(greenprint 'u)')  Start/Stop Updog 
 $ngrok_choice
-$(redprint '0)') Exit
+$(redprint '0)')  Exit
 
 Choose an option:  "
     read -r -n 2 ans
