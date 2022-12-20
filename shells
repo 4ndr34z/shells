@@ -2296,7 +2296,7 @@ Choose an option:  "
 submenu_ncbinaries() {
 header
     echo -ne "
-$(blueprint 'Binaries')
+$(blueprint 'Files')
 $(greenprint '1)') nc Linux 64-bit
 $(greenprint '2)') nc Linux 32-bit
 $(greenprint '3)') nc Linux ARM 64-bit
