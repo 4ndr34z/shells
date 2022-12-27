@@ -41,6 +41,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 
 ### Version 1.5.0
+- PowerShell: Added VBA payloads for MS Office Macros
 - Added some node.js payloads
 
 

