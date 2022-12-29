@@ -39,6 +39,9 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.5.1
+- PowerShell: Disabling scriptblock logging and CheckSuspiciousContent
+
 
 ### Version 1.5.0
 - PowerShell: Added VBA payloads for MS Office Macros
