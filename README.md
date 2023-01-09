@@ -39,6 +39,11 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+
+## Version 1.5.2
+- PowerShell: Changed revshel a tiny bit
+
+
 ## Version 1.5.1
 - PowerShell: Disabling scriptblock logging and CheckSuspiciousContent
 - PowerShell: Clears PowerShell eventlogs (if the user has access)

