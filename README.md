@@ -41,12 +41,13 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 
 ## Version 1.5.2
-- PowerShell: Changed revshel a tiny bit
+- PowerShell: Changed revshell for bypassing more AV vendors
+- Powershell: Added firewall-rule, preventing MS ATP from phoning home (if the running user has access)
 
 
 ## Version 1.5.1
 - PowerShell: Disabling scriptblock logging and CheckSuspiciousContent
-- PowerShell: Clears PowerShell eventlogs (if the user has access)
+- PowerShell: Clears PowerShell eventlogs (if the running user has access)
 
 ### Version 1.5.0
 - PowerShell: Added VBA payloads for MS Office Macros
