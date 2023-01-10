@@ -699,13 +699,14 @@ rev="cmd /c \"set ${pwsh}=${pw_sh} & set ${space}=\" \" $mssense & call %${pwsh}
 
 if [[ $5 == "vba" ]] 
 then
-    split=$(echo $rev | fold -w50)
+    split=$(echo "${rev//\"/\"\"}" | fold -w55)
+
     l1=$(echo -n Str = \""$split" | head -n1)
     l1=$(printf "$l1\"\n")
     re=$(echo "$split" | sed 1d | while read line; do echo "Str = Str + \"$line\"";done)
     
 
-rev=$(printf "
+rev=$(echo -e "
 Sub autoopen()
     
 
