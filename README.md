@@ -30,7 +30,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 ![Main](https://github.com/4ndr34z/shells/blob/main/screenshots/macOS143.png?raw=true)
 ![Netcat](https://github.com/4ndr34z/shells/blob/main/screenshots/netcat1.png?raw=true)
-![pwsh](https://github.com/4ndr34z/shells/blob/main/screenshots/pwsh.png?raw=true)
+![pwsh](https://github.com/4ndr34z/shells/blob/main/screenshots/pwsh2.png?raw=true)
 ![screenshot3](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
 ![screenshot4](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![screenshot5](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
@@ -38,6 +38,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
+
+
+## Version 1.5.3
+- Powershell: Added options for payload in menu.
 
 
 ## Version 1.5.2
