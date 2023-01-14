@@ -40,7 +40,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 [Link](https://youtu.be/HDrzqiyKQtA)
 
 ## Version 1.5.5
-- Added option on other payloads for entering shell to use 
+- Added option on other payloads for changing shell 
 
 
 ## Version 1.5.4
