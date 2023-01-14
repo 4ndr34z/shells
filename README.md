@@ -39,6 +39,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.5.4
+- Powershell: Fixed the NIX payload
+- Powershell: Updated the payload for reflective loading C#  
+
 
 ## Version 1.5.3
 - Powershell: Added options for payload in menu.
