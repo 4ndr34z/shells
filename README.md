@@ -1,6 +1,6 @@
 # shells
 A script for generating common revshells fast and easy. <br>
-Especially nice when in need of PowerShell and Python revshells, which can be a PITA getting correctly formated.<br><br> 
+Especially nice when in need of PowerShell and Python revshells, which can be a PITA getting correctly formatted.<br><br> 
 
 ## PowerShell revshells<br> 
 - Shows username@computer, above the prompt and working-directory
