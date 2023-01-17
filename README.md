@@ -39,6 +39,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.5.7
+- PowerShell: Buildt a unique TCP revshell, that is not using Net.Sockets.TCPClient 
+- PowerShell: Remote errormessages now being properly displayed
+
 ## Version 1.5.6
 - PHP: added options and more payloads
 
