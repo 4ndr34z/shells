@@ -10,7 +10,7 @@ sudo cp -Rvp ./shells.sh /usr/local/share/shells/
 
 echo "[+] creating wrapper script"
 echo -e '#!/bin/sh\ncd /usr/local/share/shells/\nexec ./shells.sh "$@"' \
-  | sudo tee /usr/local/bin/shells ; echo
+  | sudo tee /usr/local/bin/shells > /dev/null
 
 echo "[+] setting permissions on shells wrapper"
 sudo chmod a+x "/usr/local/bin/shells"
