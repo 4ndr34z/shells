@@ -1,11 +1,12 @@
-# shells
+# Shells
 A script for generating common revshells fast and easy. <br>
 Especially nice when in need of PowerShell and Python revshells, which can be a PITA getting correctly formatted.<br><br> 
 
 ## PowerShell revshells<br> 
-- Shows username@computer, above the prompt and working-directory
+- Shows username@computer.(domain), above the prompt and working-directory
 - Has a partial AMSI-bypass making some stuff a bit easier, like loading a full AMSI bypass.
 - TCP and UDP shells 
+- New custom TCP revshell!
 - Windows Powershell and Core Powershell
 - Functions for uploading and downloading files. (Using [Updog](https://github.com/sc0tfree/updog) by sc0tfree)
 
@@ -36,8 +37,18 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ![screenshot5](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
 ![screenshot6](https://github.com/4ndr34z/shells/blob/main/screenshots/SimpleRevshell.png?raw=true)
 
+#### Required dependencies
+netcat, rlwrap, jq, basenc (coreutils)
+
+#### Optional dependencies
+updog, ngrok
+
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
+
+## Version 1.5.8
+- Updated installer
+
 
 ## Version 1.5.7
 - PowerShell: Buildt a unique TCP revshell, that is not using Net.Sockets.TCPClient 

