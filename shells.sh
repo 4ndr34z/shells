@@ -3,7 +3,7 @@
 #Twitter: @4nqr34z
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
-
+DIR="$1"
 version="1.5.8"
 
 ### Colors ##
@@ -34,6 +34,11 @@ yellowprint "
 
 v.$version
 "
+
+if [ ! -z "$DIR" ]
+then
+    PWD="$DIR"
+fi
 
 
 

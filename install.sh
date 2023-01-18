@@ -9,7 +9,7 @@ echo "[+] moving 'shells.sh' into /usr/local/share/shells/"
 sudo cp -Rvp ./shells.sh /usr/local/share/shells/
 
 echo "[+] creating wrapper script"
-echo -e '#!/bin/sh\ncd /usr/local/share/shells/\nexec ./shells.sh "$@"' \
+echo -e "#!/bin/sh\nDIR=\$PWD\ncd /usr/local/share/shells/\nexec ./shells.sh \"\$DIR\"" \
   | sudo tee /usr/local/bin/shells > /dev/null
 
 echo "[+] setting permissions on shells wrapper"
