@@ -1,3 +1,4 @@
+#!/bin/bash
 # check for pre existing installation --
 if [ -d "/usr/local/share/shells" ] || [ -f "/usr/local/bin/shells" ]
 then
