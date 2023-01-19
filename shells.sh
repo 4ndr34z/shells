@@ -845,7 +845,7 @@ else
 fi
 if [[ $1 == "url" ]] 
 then
-    rev=$(urlencodeme $rev)
+    rev=$(urlencodeme "$rev")
 elif [[ $1 == "urlx2" ]] 
 then
     rev=$(urlencodeme "$rev")
