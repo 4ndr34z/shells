@@ -5,8 +5,9 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ## PowerShell revshells<br> 
 - Shows username@computer.(domain), above the prompt and working-directory
 - Has a partial AMSI-bypass making some stuff a bit easier, like loading a full AMSI bypass.
-- TCP and UDP shells 
+- TCP, UDP and SSL shells 
 - New custom TCP revshell!
+- New custom SSL revshell!
 - Windows Powershell and Core Powershell
 - Functions for uploading and downloading files. (Using [Updog](https://github.com/sc0tfree/updog) by sc0tfree)
 
@@ -31,7 +32,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 ![Main](https://github.com/4ndr34z/shells/blob/main/screenshots/macOS143.png?raw=true)
 ![Netcat](https://github.com/4ndr34z/shells/blob/main/screenshots/netcat1.png?raw=true)
-![pwsh](https://github.com/4ndr34z/shells/blob/main/screenshots/pwsh2.png?raw=true)
+![pwsh](https://github.com/4ndr34z/shells/blob/main/screenshots/pwsh3.png?raw=true)
 ![screenshot3](https://github.com/4ndr34z/shells/blob/main/screenshots/shells2.png?raw=true)
 ![screenshot4](https://github.com/4ndr34z/shells/blob/main/screenshots/shells3.png?raw=true)
 ![screenshot5](https://github.com/4ndr34z/shells/blob/main/screenshots/shells4.png?raw=true)
@@ -46,9 +47,13 @@ updog, ngrok
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
-## Version 1.5.8
-- Updated installer
+## Version 1.5.9
+- PowerShell: New custom SSL shell
+- PowerShell: Added options for choosing TCP/UDP/SSL
+- PowerShell/OpenSSL: Defaulting to correct listener vhen using SSL
 
+## Version 1.5.8
+- Updated installer to use wrapper-script (remember to delete /usr/local/bin/shells when upgrading from < 1.5.8)
 
 ## Version 1.5.7
 - PowerShell: Buildt a unique TCP revshell, that is not using Net.Sockets.TCPClient 
