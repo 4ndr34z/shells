@@ -1724,7 +1724,7 @@ fi
         openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=google.com" >/dev/null 2>&1
         echo
         echo "Listening on port: $PORT"
-        openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
+        rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
         
         ;;
    
@@ -1750,7 +1750,7 @@ fi
             openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=google.com" >/dev/null 2>&1
             echo
             echo "Listening on port: $PORT"
-            openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
+            rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
         fi
         ;;
     esac
