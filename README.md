@@ -8,6 +8,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - TCP, UDP and SSL shells 
 - New custom TCP revshell!
 - New custom SSL revshell!
+- Reflective loading [theart42's](https://twitter.com/theart42) <b>amazing</b> [Sharpcat! ](https://github.com/theart42/Sharpcat)
 - Windows Powershell and Core Powershell
 - Functions for uploading and downloading files. (Using [Updog](https://github.com/sc0tfree/updog) by sc0tfree)
 
@@ -46,6 +47,9 @@ updog, ngrok
 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
+
+## Version 1.6
+- Powershell: Added option for reflective loading Sharpcat
 
 ## Version 1.5.9
 - PowerShell: New custom SSL shell
