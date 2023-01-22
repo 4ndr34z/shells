@@ -1736,9 +1736,10 @@ fi
         else
             for terminal in "$TERMINAL" x-terminal-emulator mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm uxterm xterm roxterm termite lxterminal terminology st qterminal lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
             if command -v "$terminal" > /dev/null 2>&1; then
-                exec "$terminal" "$rlwrap -cAr $nc $prot -lvnp $PORT"
+                exec "$terminal $rlwrap -cAr $nc $prot -lvnp $PORT"
             fi
             done
+        mainmenu
         #printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
         fi
         
