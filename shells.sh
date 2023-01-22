@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.6"
+version="1.6.1"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -1730,19 +1730,25 @@ fi
     1)
         if [[ $OS == "Darwin" ]]
         then
-            
-                printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
-                $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate"
+                mainmenu
+                #$rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
         else
-        printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
+            for terminal in "$TERMINAL" x-terminal-emulator mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm uxterm xterm roxterm termite lxterminal terminology st qterminal lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
+            if command -v "$terminal" > /dev/null 2>&1; then
+                exec "$terminal" "$rlwrap -cAr $nc $prot -lvnp $PORT"
+            fi
+            done
+        #printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
         fi
         
         ;;
     2)
         if [[ $OS == "Darwin" ]]
         then
-                printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
-                $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate"
+                mainmenu
+
         else
         printf "\n\n";$nc $prot -lvnp $PORT
         fi
@@ -1751,10 +1757,15 @@ fi
     3)
         echo -e "Generating certificate..."
         openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=google.com" >/dev/null 2>&1
-        echo
-        echo "Listening on port: $PORT"
-        rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
         
+        if [[ $OS == "Darwin" ]]
+        then
+            osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT\n\" activate"
+            mainmenu
+        else
+            $rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
+        fi
+
         ;;
    
     m)
@@ -1769,17 +1780,23 @@ fi
         then
             if [[ $OS == "Darwin" ]]
             then
-                printf "\n\nRemember: macOS nc does not notify on incoming connections.\nListening on port: $PORT\n\n";
-                $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate"
+                mainmenu
+                
             else
                 printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
             fi
         else
             echo -e "Generating certificate..."
             openssl req -x509 -newkey rsa:4096 -keyout /tmp/k.pem -out /tmp/c.pem -days 365 -nodes -subj "/C=US/ST=*/L=*/O=*/CN=google.com" >/dev/null 2>&1
-            echo
-            echo "Listening on port: $PORT"
-            rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
+            if [[ $OS == "Darwin" ]]
+            then
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT\n\" activate"
+                mainmenu
+            else
+            $rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
+            fi
+            
         fi
         ;;
     esac
