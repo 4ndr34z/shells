@@ -1805,7 +1805,9 @@ fi
                 read -r -n 1 ans
                 case $ans in
             y)
-                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
+                echo -en "#!/bin/bash\n$rlwrap -cAr /usr/bin/nc $prot -lvn $PORT" > /tmp/listen && chmod +x /tmp/listen
+                term=$(ps -p $(ps -o ppid= $$) -o comm=)
+                $term -e "/tmp/listen" &
                 mainmenu
                 ;;
             n)
