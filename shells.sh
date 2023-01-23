@@ -1738,7 +1738,7 @@ fi
                 read -r -n 1 ans
                 case $ans in
             y)
-                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT"
+                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
                 mainmenu
                 ;;
             n)
