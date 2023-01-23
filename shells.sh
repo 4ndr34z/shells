@@ -1732,9 +1732,10 @@ fi
         then
                 osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate "
                 mainmenu
-                #$rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
+               
         else
-                yellowprint "\nDo you wish to listen in a new xterm window [Y/n]"
+                echo
+                yellowprint "Do you wish to listen in a new xterm window [Y/n]"
                 read -r -n 1 ans
                 case $ans in
             y)
@@ -1742,6 +1743,7 @@ fi
                 mainmenu
                 ;;
             n)
+                echo
                 $rlwrap -cAr $nc $prot -lvnp $PORT
                 ;;
             "")
@@ -1753,7 +1755,7 @@ fi
                 ;;
             esac
                 
-        #printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
+       
         fi
         
         ;;
@@ -1798,7 +1800,26 @@ fi
                 mainmenu
                 
             else
-                printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
+                echo
+                yellowprint "Do you wish to listen in a new xterm window [Y/n]"
+                read -r -n 1 ans
+                case $ans in
+            y)
+                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
+                mainmenu
+                ;;
+            n)
+                echo
+                $rlwrap -cAr $nc $prot -lvnp $PORT
+                ;;
+            "")
+                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
+                mainmenu
+                ;;
+            *)
+                echo
+                ;;
+            esac
             fi
         else
             echo -e "Generating certificate..."
