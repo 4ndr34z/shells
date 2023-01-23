@@ -1730,16 +1730,29 @@ fi
     1)
         if [[ $OS == "Darwin" ]]
         then
-                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate"
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate "
                 mainmenu
                 #$rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
         else
-            for terminal in "$TERMINAL" x-terminal-emulator mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm uxterm xterm roxterm termite lxterminal terminology st qterminal lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
-            if command -v "$terminal" > /dev/null 2>&1; then
-                exec "$terminal" -e "bash -c \"$rlwrap -cAr nc -lvnp $PORT\""
-            fi
-            done
-        mainmenu
+                yellowprint "Do you wish to listen in a new xterm window [Y/n]"
+                read -r -n 1 ans
+                case $ans in
+            y)
+                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT"
+                mainmenu
+                ;;
+            n)
+                $rlwrap -cAr $nc $prot -lvnp $PORT
+                ;;
+            "")
+                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT"
+                mainmenu
+                ;;
+            *)
+                echo
+                ;;
+            esac
+                
         #printf "\n\n";$rlwrap -cAr $nc $prot -lvnp $PORT
         fi
         
