@@ -1734,7 +1734,7 @@ fi
                 mainmenu
                 #$rlwrap -cAr /usr/bin/nc $prot -lvn $PORT
         else
-                yellowprint "Do you wish to listen in a new xterm window [Y/n]"
+                yellowprint "\nDo you wish to listen in a new xterm window [Y/n]"
                 read -r -n 1 ans
                 case $ans in
             y)
@@ -1745,7 +1745,7 @@ fi
                 $rlwrap -cAr $nc $prot -lvnp $PORT
                 ;;
             "")
-                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT"
+                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
                 mainmenu
                 ;;
             *)
