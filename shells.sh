@@ -1801,7 +1801,7 @@ fi
                 
             else
                 echo
-                yellowprint "Do you wish to listen in a new xterm window [Y/n]"
+                yellowprint "Do you wish to listen in a new terminal window [Y/n]"
                 read -r -n 1 ans
                 case $ans in
             y)
