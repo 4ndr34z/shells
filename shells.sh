@@ -1806,7 +1806,7 @@ fi
                 case $ans in
             y)
                 echo -en "#!/bin/bash\n$rlwrap -cAr /usr/bin/nc $prot -lvn $PORT" > /tmp/listen && chmod +x /tmp/listen
-                term=$(ps -p $(ps -o ppid= $$) -o comm=)
+                term=$(ps -p \$(ps -o ppid= $$) -o comm=)
                 $term -e "/tmp/listen" &
                 mainmenu
                 ;;
