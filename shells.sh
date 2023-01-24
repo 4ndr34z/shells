@@ -1934,7 +1934,7 @@ fi
                 $rlwrap -cAr $nc $prot -lvnp $PORT
                 ;;
             "")
-                echo -en "#!/bin/bash\nsleep 0.5\necho \"Listening on:$PORT\"\n$rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT\n" > /tmp/listen && chmod +x /tmp/listen
+                echo -en "#!/bin/bash\nsleep 0.5\necho \"Listening on:$PORT\"\n$rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT\n\n" > /tmp/listen && chmod +x /tmp/listen
                 for terminal in "$TERMINAL" x-terminal-emulator qterminal mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm roxterm termite lxterminal terminology st lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
                     if command -v "$terminal" > /dev/null 2>&1
                     then
