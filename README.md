@@ -43,10 +43,14 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 netcat, rlwrap, jq, basenc (coreutils)
 
 #### Optional dependencies
-updog, ngrok
+updog, ngrok, xclip
 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
+
+## Version 1.6.1
+- Listener started in new window. (Optional on Linux)
+
 
 ## Version 1.6
 - Powershell: Added option for reflective loading Sharpcat
@@ -54,7 +58,7 @@ updog, ngrok
 ## Version 1.5.9
 - PowerShell: New custom SSL shell
 - PowerShell: Added options for choosing TCP/UDP/SSL
-- PowerShell/OpenSSL: Defaulting to correct listener vhen using SSL
+- PowerShell/OpenSSL: Defaulting to correct listener when using SSL
 
 ## Version 1.5.8
 - Updated installer to use wrapper-script (remember to delete /usr/local/bin/shells when upgrading from < 1.5.8)
