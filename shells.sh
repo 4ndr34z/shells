@@ -112,6 +112,18 @@ else
     
 fi
 
+ if [[ ! $OS == "Darwin" ]]
+      then
+            xclipinstalled=$(which xclip)
+            if [ "$?" == 1 ]
+            then
+                cyanprint "$0 are using xclip for copying revshells to clipboard. You don't seem to have xclip installed."
+                sleep 1
+    
+            fi
+ 
+    
+fi
 
 usingngrok=0
 usingupdog=0
