@@ -1735,7 +1735,7 @@ fi
                
         else
                 echo
-                yellowprint "Do you wish to listen in a new xterm window [Y/n]"
+                yellowprint "Do you wish to listen in a new terminal window [Y/n]"
                 read -r -n 1 ans
                 case $ans in
             y)
@@ -1744,7 +1744,7 @@ fi
                     if command -v "$terminal" > /dev/null 2>&1
                     then
                         "$terminal" -e "/tmp/listen" &
-                fi
+                    fi
                 done
                 mainmenu
                 ;;
@@ -1753,7 +1753,13 @@ fi
                 $rlwrap -cAr $nc $prot -lvnp $PORT
                 ;;
             "")
-                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
+                echo -en "#!/bin/bash\n$rlwrap -cAr $nc $prot -lvn $PORT" > /tmp/listen && chmod +x /tmp/listen
+                for terminal in "$TERMINAL" x-terminal-emulator mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm uxterm xterm roxterm termite lxterminal terminology st qterminal lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
+                    if command -v "$terminal" > /dev/null 2>&1
+                    then
+                        "$terminal" -e "/tmp/listen" &
+                    fi
+                done
                 mainmenu
                 ;;
             *)
@@ -1826,7 +1832,13 @@ fi
                 $rlwrap -cAr $nc $prot -lvnp $PORT
                 ;;
             "")
-                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
+                echo -en "#!/bin/bash\n$rlwrap -cAr $nc $prot -lvn $PORT" > /tmp/listen && chmod +x /tmp/listen
+                for terminal in "$TERMINAL" x-terminal-emulator mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm uxterm xterm roxterm termite lxterminal terminology st qterminal lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
+                    if command -v "$terminal" > /dev/null 2>&1
+                    then
+                        "$terminal" -e "/tmp/listen" &
+                    fi
+                done
                 mainmenu
                 ;;
             *)
