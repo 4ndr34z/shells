@@ -1730,7 +1730,7 @@ fi
     1)
         if [[ $OS == "Darwin" ]]
         then
-                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate "
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvnp $PORT \n\" activate "
                 mainmenu
                
         else
@@ -1739,7 +1739,13 @@ fi
                 read -r -n 1 ans
                 case $ans in
             y)
-                xterm -e "$rlwrap -cAr $nc $prot -lvnp $PORT" &
+                echo -en "#!/bin/bash\n$rlwrap -cAr $nc $prot -lvn $PORT" > /tmp/listen && chmod +x /tmp/listen
+                for terminal in "$TERMINAL" x-terminal-emulator mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm uxterm xterm roxterm termite lxterminal terminology st qterminal lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
+                    if command -v "$terminal" > /dev/null 2>&1
+                    then
+                        "$terminal" -e "/tmp/listen" &
+                fi
+                done
                 mainmenu
                 ;;
             n)
@@ -1796,7 +1802,8 @@ fi
         then
             if [[ $OS == "Darwin" ]]
             then
-                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate"
+                echo $nc
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr $nc $prot -lvnp $PORT \n\" activate"
                 mainmenu
                 
             else
@@ -1805,9 +1812,13 @@ fi
                 read -r -n 1 ans
                 case $ans in
             y)
-                echo -en "#!/bin/bash\n$rlwrap -cAr /usr/bin/nc $prot -lvn $PORT" > /tmp/listen && chmod +x /tmp/listen
-                term=$(ps -p \$(ps -o ppid= $$) -o comm=)
-                $term -e "/tmp/listen" &
+                echo -en "#!/bin/bash\n$rlwrap -cAr $nc $prot -lvn $PORT" > /tmp/listen && chmod +x /tmp/listen
+                for terminal in "$TERMINAL" x-terminal-emulator mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm uxterm xterm roxterm termite lxterminal terminology st qterminal lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
+                    if command -v "$terminal" > /dev/null 2>&1
+                    then
+                        "$terminal" -e "/tmp/listen" &
+                fi
+                done
                 mainmenu
                 ;;
             n)
