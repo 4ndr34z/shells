@@ -118,7 +118,7 @@ fi
             if [ "$?" == 1 ]
             then
                 cyanprint "$0 are using xclip for copying revshells to clipboard. You don't seem to have xclip installed."
-                sleep 1
+                sleep 2
     
             fi
  
