@@ -1949,7 +1949,7 @@ fi
                 echo
                 ;;
             esac
-            #$rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
+            
             fi
             
         fi
