@@ -1745,6 +1745,7 @@ fi
                     then
 
                         "$terminal" -e "/tmp/listen"&
+                        break
                 fi
                 done
                 mainmenu
@@ -1760,6 +1761,7 @@ fi
                     then
 
                         "$terminal" -e "/tmp/listen"&
+                        break
                 fi
                 done
                 mainmenu
@@ -1826,6 +1828,7 @@ fi
                     then
 
                         "$terminal" -e "/tmp/listen"&
+                        break
                 fi
                 done
                 mainmenu
@@ -1841,6 +1844,7 @@ fi
                     then
 
                         "$terminal" -e "/tmp/listen"&
+                        break
                 fi
                 done
                 mainmenu
