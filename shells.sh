@@ -1830,7 +1830,7 @@ fi
                 echo
                 ;;
             esac
-        
+        printf "\n\n";$nc $prot -lvnp $PORT
         fi
         
         ;;
@@ -1843,43 +1843,7 @@ fi
             osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT\n\" activate"
             mainmenu
         else
-            echo
-                yellowprint "Do you wish to listen in a new terminal window [Y/n]"
-                read -r -n 1 ans
-                case $ans in
-            y)
-                 echo -en "#!/bin/bash\nsleep 0.5\necho \"Listening on port:$PORT\"\n$rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT" > /tmp/listen && chmod +x /tmp/listen
-                for terminal in "$TERMINAL" x-terminal-emulator qterminal mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm roxterm termite lxterminal terminology st lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
-                    if command -v "$terminal" > /dev/null 2>&1
-                    then
-
-                        "$terminal" -e "/tmp/listen"&
-                        break
-                fi
-                done
-                mainmenu
-                ;;
-            n)
-                echo
-                $rlwrap -cAr $nc $prot -lvnp $PORT
-                ;;
-            "")
-                echo -en "#!/bin/bash\nsleep 0.5\necho \"Listening on port:$PORT\"\n$rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT" > /tmp/listen && chmod +x /tmp/listen
-                for terminal in "$TERMINAL" x-terminal-emulator qterminal mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm roxterm termite lxterminal terminology st lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
-                    if command -v "$terminal" > /dev/null 2>&1
-                    then
-
-                        "$terminal" -e "/tmp/listen"&
-                        break
-                fi
-                done
-                mainmenu
-                ;;
-            *)
-                echo
-                ;;
-            esac
-            
+            $rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port "$PORT"
         fi
 
         ;;
@@ -1901,12 +1865,12 @@ fi
                 mainmenu
                 
             else
-               echo
+                echo
                 yellowprint "Do you wish to listen in a new terminal window [Y/n]"
                 read -r -n 1 ans
                 case $ans in
             y)
-                 echo -en "#!/bin/bash\nsleep 0.5\necho \"Listening on port:$PORT\"\n$rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT" > /tmp/listen && chmod +x /tmp/listen
+                echo -en "#!/bin/bash\nsleep 0.5\n$rlwrap -cAr $nc $prot -lvnp $PORT\n" > /tmp/listen && chmod +x /tmp/listen
                 for terminal in "$TERMINAL" x-terminal-emulator qterminal mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm roxterm termite lxterminal terminology st lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
                     if command -v "$terminal" > /dev/null 2>&1
                     then
@@ -1922,7 +1886,7 @@ fi
                 $rlwrap -cAr $nc $prot -lvnp $PORT
                 ;;
             "")
-                echo -en "#!/bin/bash\nsleep 0.5\necho \"Listening on port:$PORT\"\n$rlwrap -cAr openssl s_server -quiet -key /tmp/k.pem -cert /tmp/c.pem -port $PORT" > /tmp/listen && chmod +x /tmp/listen
+                echo -en "#!/bin/bash\nsleep 0.5\n$rlwrap -cAr $nc $prot -lvnp $PORT\n" > /tmp/listen && chmod +x /tmp/listen
                 for terminal in "$TERMINAL" x-terminal-emulator qterminal mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm roxterm termite lxterminal terminology st lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
                     if command -v "$terminal" > /dev/null 2>&1
                     then
