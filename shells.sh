@@ -1744,7 +1744,7 @@ fi
     1)
         if [[ $OS == "Darwin" ]]
         then
-                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvnp $PORT \n\" activate "
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate "
                 mainmenu
                
         else
@@ -1899,7 +1899,7 @@ fi
             if [[ $OS == "Darwin" ]]
             then
                 echo $nc
-                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr $nc $prot -lvnp $PORT \n\" activate"
+                osascript -e "tell app \"Terminal\" to do script \"clear && echo \\\"Listening on port: $PORT\\\" && $rlwrap -cAr /usr/bin/nc $prot -lvn $PORT \n\" activate"
                 mainmenu
                 
             else
