@@ -1262,6 +1262,7 @@ case $1 in
             mainmenu
         ;;
         esac
+        
     ;;
     RastamouseAmsi)
      if [ $(ps -ef | grep -c updog) == 2 ]
