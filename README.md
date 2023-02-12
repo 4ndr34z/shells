@@ -23,10 +23,13 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 ```curl -F path="absolute path for Updog-folder" -F file=filename http://UpdogIP/upload```
  
  
-### To install Shells
+### To install Shells from git
 	git clone https://github.com/4ndr34z/shells
 	cd shells
 	./install.sh
+	
+### To install shells on BlackArch:
+	pacman -S shellz
 
 
 ### Screenshots
