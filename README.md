@@ -1,4 +1,4 @@
-# Shells
+# Shellz
 A script for generating common revshells fast and easy. <br>
 Especially nice when in need of PowerShell and Python revshells, which can be a PITA getting correctly formatted.<br><br> 
 
@@ -50,6 +50,9 @@ updog, ngrok, xclip
 
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
+
+## Version 1.6.2
+- Renaming to Shellz
 
 ## Version 1.6.1
 - Listener started in new window. (Optional on Linux)
