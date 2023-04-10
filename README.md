@@ -51,6 +51,9 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.6.4
+- Fixed Powershell SSL-shell
+
 ## Version 1.6.3
 - Added variable expansion on the powershell payload, making it run from e.g. batch-files without modifying it
 
