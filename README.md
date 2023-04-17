@@ -51,6 +51,10 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.6.5
+- Added Powershell ETW-patch
+
+
 ## Version 1.6.4
 - Fixed Powershell SSL-shell
 

