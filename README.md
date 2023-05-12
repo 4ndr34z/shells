@@ -4,7 +4,7 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 
 ## PowerShell revshells<br> 
 - Shows username@computer.(domain), above the prompt and working-directory
-- Has a partial AMSI-bypass making some stuff a bit easier, like loading a full AMSI bypass.
+- Has a partial and full AMSI-bypass.
 - TCP, UDP and SSL shells 
 - New custom TCP revshell!
 - New custom SSL revshell!
@@ -53,6 +53,8 @@ updog, ngrok, xclip
 
 ## Version 1.6.5
 - Added Powershell ETW-patch
+- Added Powershell embedded full AMSI-bypass.
+- Added payload length check. The maximum length of the string that you can use at the Windows command prompt (cmd.exe) is 8191 character. 
 
 
 ## Version 1.6.4
