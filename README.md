@@ -51,6 +51,10 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.6.6
+- Added option for rotate powershell-log. It will start a lot of powershell sessions, passing a long string and exit. This will fill the  log, by logging scriptblocks, effectively pushing out earlier log entries and thus removing the event of itself spawning. 
+- Fixed menu selections. Removed auto-enter on selection options on most menus.
+
 ## Version 1.6.5
 - Added Powershell ETW-patch
 - Added Powershell embedded full AMSI-bypass.
