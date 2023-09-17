@@ -1756,6 +1756,7 @@ echo -ne "
 $(greenprint '1)') rlwrap nc $1
 $(greenprint '2)') nc $1
 $(greenprint '3)') OpenSSL
+$(greenprint '4)') MSF Multi/Handler
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 Choose an option [$defChoice]:  "
@@ -1911,7 +1912,57 @@ fi
         fi
 
         ;;
-   
+    4)
+        if [[ $OS == "Darwin" ]]
+        then
+                osascript -e "tell app \"Terminal\" to do script \"clear && msfconsole -q -x \\\"use exploit/multi/handler;set ExitOnSession false;set LHOST $IP; set LPORT $PORT; run -j\\\" \n\" activate"
+                mainmenu
+
+        else
+             echo
+                yellowprint "Do you wish to listen in a new terminal window [Y/n]"
+                read -r -n 1 ans
+                case $ans in
+            y)
+                 echo -en "#!/bin/bash\nsleep 0.5\necho \"Starting Metasploit Framework...\"\nmsfconsole -q -x \"use exploit/multi/handler;set ExitOnSession false;set LHOST $IP; set LPORT $PORT; run -j\"" > /tmp/listen && chmod +x /tmp/listen
+                for terminal in "$TERMINAL" x-terminal-emulator qterminal mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm roxterm termite lxterminal terminology st lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
+                    if command -v "$terminal" > /dev/null 2>&1
+                    then
+
+                        "$terminal" -e "/tmp/listen"&
+                        break
+                fi
+                done
+                mainmenu
+                ;;
+            n)
+                echo
+                msfconsole -q -x "use exploit/multi/handler;set ExitOnSession false;set LHOST $IP; set LPORT $PORT; run -j"
+               
+                ;;
+            "")
+                echo -en "#!/bin/bash\nsleep 0.5\necho \"Starting Metasploit Framework...\"\nmsfconsole -q -x \"use exploit/multi/handler;set ExitOnSession false;set LHOST $IP; set LPORT $PORT; run -j\"" > /tmp/listen && chmod +x /tmp/listen
+                for terminal in "$TERMINAL" x-terminal-emulator qterminal mate-terminal gnome-terminal terminator xfce4-terminal urxvt rxvt termit Eterm aterm roxterm termite lxterminal terminology st lilyterm tilix terminix konsole kitty guake tilda alacritty hyper wezterm; do
+                    if command -v "$terminal" > /dev/null 2>&1
+                    then
+
+                        "$terminal" -e "/tmp/listen"&
+                        break
+                fi
+                done
+                mainmenu
+                ;;
+            *)
+                echo
+                ;;
+            esac
+        printf "\n\n";msfconsole -q -x "use exploit/multi/handler;set ExitOnSession false;set LHOST $IP; set LPORT $PORT; run -j"
+        fi
+        
+        ;;
+
+
+
     m)
         mainmenu
         ;;

@@ -52,8 +52,9 @@ updog, ngrok, xclip
 [Link](https://youtu.be/HDrzqiyKQtA)
 
 ## Version 1.6.6
-- Added option for rotate powershell-log. It will start a lot of powershell sessions, passing a long string and exit. This will fill the  log, by logging scriptblocks, effectively pushing out earlier log entries and thus removing the event of itself spawning. 
-- Fixed menu selections. Removed auto-enter on selection options on most menus.
+- Added option for filling powershell-log. It will start a bunch of powershell sessions, passing a long string and exit. This will fill the log, when scriptblock logging is enabled, effectively pushing out earlier log entries and thus removing the event of the shell itself spawning. Could prevent EDR detection. Tested with success on SentinelOne. 
+- Fixed confusing menu selections. Removed auto-enter on selecting options on most menus.
+- Added Metasploit Multi/handler Listener 
 
 ## Version 1.6.5
 - Added Powershell ETW-patch
