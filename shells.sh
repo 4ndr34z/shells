@@ -2314,9 +2314,9 @@ fi
 
 if [ "$logf" == 1 ]
 then 
-    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log (Works on SentinelOne) - $(redprint 'On')"
+    echo -ne "\n$(greenprint 'r)') Fill PowerShell Evt. log (EDR evation) - $(redprint 'On')"
 else 
-    echo -ne "\n$(greenprint 'r)') Rotate PowerShell Evt. log (Works on SentinelOne) - $(blueprint 'Off')"
+    echo -ne "\n$(greenprint 'r)') Fill PowerShell Evt. log (EDR evation) - $(blueprint 'Off')"
     logf=0
     
 fi
@@ -2501,10 +2501,10 @@ Choose an option:  "
         If you enable updog, you can have this file generated and served automatically. 
         You can of course choose to enter a url to any other script you would have run upon connection
 
-        r) Rotate PowerShell Evt. log (Works on SentinelOne)
+        r) Fill PowerShell Evt. log (EDR evation)
         Starts several new powershell processes, passing a long string then exits. 
         Effectivily growing the log over the default size of 15MB, 
-        pushing out the log entries showing this shell spawning. Not working on MSDefender For Endpoint
+        pushing out the log entries showing this shell spawning. Tested with success on Sentinel One.
 
         p) Protocol
         Choose between TCP, UDP and SSL
