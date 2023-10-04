@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.6.6"
+version="1.6.7"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -559,10 +559,15 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
+
 if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
@@ -589,10 +594,16 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
+
 if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
@@ -913,9 +924,14 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
+elif [[ $1 == "base64url" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64url -w0)
+
+
 elif [[ $1 == "base64" ]] 
 then
-    rev=$(echo $rev|$benc --base64url -w0)
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
 if [[ $OS == "Darwin" ]]
 then
@@ -945,10 +961,15 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
+
 if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
@@ -975,9 +996,13 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
 if [[ $OS == "Darwin" ]]
 then
@@ -1005,10 +1030,13 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
 
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 
 elif [[ $1 == "xss1" ]] 
 then
@@ -1056,10 +1084,15 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
+
 if [[ $OS == "Darwin" ]]
 then
    echo -n $rev | pbcopy
@@ -1544,9 +1577,13 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
 if [[ $OS == "Darwin" ]]
 then
@@ -1633,9 +1670,13 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
 if [[ $OS == "Darwin" ]]
 then
@@ -1665,9 +1706,13 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
 if [[ $OS == "Darwin" ]]
 then
@@ -1706,9 +1751,13 @@ then
     rev=$(urlencodeme "$rev")
     rev=$(urlencodeme "$rev")
 
-elif [[ $1 == "base64" ]] 
+elif [[ $1 == "base64url" ]] 
 then
     rev=$(echo -n $rev|$benc --base64url -w0)
+
+elif [[ $1 == "base64" ]] 
+then
+    rev=$(echo -n $rev|$benc --base64 -w0)
 fi
 if [[ $OS == "Darwin" ]]
 then
@@ -2082,15 +2131,16 @@ header
 $(blueprint 'Ruby')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded\n\n
+$(greenprint '3)') Base64 encoded URL-safe 
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded\n\n
 $(cyanprint "OPTIONS")
 $(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         ruby 
@@ -2099,9 +2149,13 @@ Choose an option:  "
         ruby "base64"
         ;;
     3)
+        ruby "base64url"
+        ;;
+    
+    4)
         ruby "url"
         ;;
-    4)
+    5)
         ruby "urlx2"
         ;;
     s)
@@ -2137,18 +2191,19 @@ header
 $(blueprint 'node.js')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
-$(greenprint '5)') XSS variant 1
-$(greenprint '6)') XSS variant 2
-$(greenprint '7)') Deserialize\n\n
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded
+$(greenprint '6)') XSS variant 1
+$(greenprint '7)') XSS variant 2
+$(greenprint '8)') Deserialize\n\n
 $(cyanprint "OPTIONS")
 $(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         node 
@@ -2157,18 +2212,21 @@ Choose an option:  "
         node "base64"
         ;;
     3)
-        node "url"
+        node "base64url"
         ;;
     4)
-        node "urlx2"
+        node "url"
         ;;
     5)
-        node "xss1"
+        node "urlx2"
         ;;
     6)
-        node "xss2"
+        node "xss1"
         ;;
     7)
+        node "xss2"
+        ;;
+    8)
         node "deserial"
         ;;
     s)
@@ -2574,15 +2632,16 @@ header
 $(blueprint 'Golang')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded\n\n
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded\n\n
 $(cyanprint "OPTIONS")
 $(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         go_lang 
@@ -2591,9 +2650,12 @@ Choose an option:  "
         go_lang "base64"
         ;;
     3)
-        go_lang "url"
+        go_lang "base64url"
         ;;
     4)
+        go_lang "url"
+        ;;
+    5)
         go_lang "urlx2"
         ;;
     s)
@@ -2678,8 +2740,9 @@ header
 $(blueprint 'PHP')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded\n\n
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded\n\n
 $(cyanprint "OPTIONS")
 $(greenprint 's)') Shell [$nshell]
 $(greenprint 'f)') Function [$efunc]
@@ -2687,7 +2750,7 @@ $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         php 
@@ -2696,9 +2759,12 @@ Choose an option:  "
         php "base64"
         ;;
     3)
-        php "url"
+        php "base64url"
         ;;
     4)
+        php "url"
+        ;;
+    5)
         php "urlx2"
         ;;
     s)
@@ -2736,6 +2802,7 @@ header
 $(blueprint 'Telnet')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
+$(greenprint '3)') Base64 encoded URL-safe
 $(greenprint '3)') URL encoded
 $(greenprint '4)') Double URL encoded\n\n
 $(cyanprint "OPTIONS")
@@ -2744,7 +2811,7 @@ $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         telnet 
@@ -2753,9 +2820,12 @@ Choose an option:  "
         telnet "base64"
         ;;
     3)
-        telnet "url"
+        telnet "base64url"
         ;;
     4)
+        telnet "url"
+        ;;
+    5)
         telnet "urlx2"
         ;;
     s)
@@ -2788,15 +2858,16 @@ header
 $(blueprint 'Perl')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded\n\n
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded\n\n
 $(cyanprint "OPTIONS")
 $(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         perl 
@@ -2805,9 +2876,12 @@ Choose an option:  "
         perl "base64"
         ;;
     3)
-        perl "url"
+        perl "base64"
         ;;
     4)
+        perl "url"
+        ;;
+    5)
         perl "urlx2"
         ;;
     s)
@@ -2837,13 +2911,14 @@ header
 $(blueprint 'Zsh')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         zsh
@@ -2852,9 +2927,12 @@ Choose an option:  "
         zsh "base64"
         ;;
     3)
-        zsh "url"
+        zsh "base64url"
         ;;
     4)
+        zsh "url"
+        ;;
+    5)
         zsh "urlx2"
         ;;
     m)
@@ -2877,17 +2955,19 @@ header
 $(blueprint 'Bash')
 $(greenprint '1)') No encoding TCP
 $(greenprint '2)') Base64 encoded TCP
-$(greenprint '3)') URL encoded TCP
-$(greenprint '4)') Double URL encoded TCP
-$(greenprint '5)') No encoding UDP
-$(greenprint '6)') Base64 encoded UDP
-$(greenprint '7)') URL encoded UDP
-$(greenprint '8)') Double URL encoded UDP
+$(greenprint '3)') Base64 encoded TCP URL-safe
+$(greenprint '4)') URL encoded TCP
+$(greenprint '5)') Double URL encoded TCP
+$(greenprint '6)') No encoding UDP
+$(greenprint '7)') Base64 encoded UDP
+$(greenprint '8)') Base64 encoded UDP URL-safe
+$(greenprint '9)') URL encoded UDP
+$(greenprint '10)') Double URL encoded UDP
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         bash_i "" "tcp"
@@ -2896,21 +2976,27 @@ Choose an option:  "
         bash_i "base64" "tcp"
         ;;
     3)
-        bash_i "url" "tcp"
+        bash_i "base64url" "tcp"
         ;;
     4)
-        bash_i "urlx2" "tcp"
+        bash_i "url" "tcp"
         ;;
     5)
-        bash_i "" "udp"
+        bash_i "urlx2" "tcp"
         ;;
     6)
-        bash_i "base64" "udp"
+        bash_i "" "udp"
         ;;
     7)
-        bash_i "url" "udp"
+        bash_i "base64" "udp"
         ;;
     8)
+        bash_i "base64url" "udp"
+        ;;
+    9)
+        bash_i "url" "udp"
+        ;;
+    10)
         bash_i "urlx2" "udp"
         ;;
     m)
@@ -2933,13 +3019,14 @@ header
 $(blueprint 'awk')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         awk_s 
@@ -2948,9 +3035,12 @@ Choose an option:  "
         awk_s "base64"
         ;;
     3)
-        awk_s "url"
+        awk_s "base64url"
         ;;
     4)
+        awk_s "url"
+        ;;
+    5)
         awk_s "urlx2"
         ;;
 
@@ -2978,15 +3068,16 @@ header
 $(blueprint 'OpenSSL')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded\n\n
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded\n\n
 $(cyanprint "OPTIONS")
 $(greenprint 's)') Which shell [$nshell]
 $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         open_s 
@@ -2995,9 +3086,12 @@ Choose an option:  "
         open_s "base64"
         ;;
     3)
-        open_s "url"
+        open_s "base64url"
         ;;
     4)
+        open_s "url"
+        ;;
+    5)
         open_s "urlx2"
         ;;
     s)
@@ -3095,12 +3189,14 @@ echo -ne "
 $(blueprint 'Netcat')
 $(greenprint '1)') No encoding
 $(greenprint '2)') Base64 encoded
-$(greenprint '3)') URL encoded
-$(greenprint '4)') Double URL encoded
-$(greenprint '5)') Looping, no encoding
-$(greenprint '6)') Looping, Base64 encoded
-$(greenprint '7)') Looping, URL encoded
-$(greenprint '8)') Looping, double URL encoded\n\n
+$(greenprint '3)') Base64 encoded URL-safe
+$(greenprint '4)') URL encoded
+$(greenprint '5)') Double URL encoded
+$(greenprint '6)') Looping, no encoding
+$(greenprint '7)') Looping, Base64 encoded
+$(greenprint '8)') Looping, Base64 encoded URL-safe
+$(greenprint '9)') Looping, URL encoded
+$(greenprint '10)') Looping, double URL encoded\n\n
 $(cyanprint "OPTIONS")
 $(greenprint 's)') Which shell [$nshell]
 
@@ -3108,7 +3204,7 @@ $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         netcat 
@@ -3117,21 +3213,27 @@ Choose an option:  "
         netcat "base64"
         ;;
     3)
-        netcat "url"
+        netcat "base64url"
         ;;
     4)
-        netcat "urlx2"
+        netcat "url"
         ;;
     5)
-        netcat "" "loop"
-        ;;
-    6)
-        netcat "base64" "loop"
+        netcat "urlx2"
         ;;
     7)
-        netcat "url" "loop"
+        netcat "" "loop"
+        ;;
+    7)
+        netcat "base64" "loop"
         ;;
     8)
+        netcat "base64url" "loop"
+        ;;
+    9)
+        netcat "url" "loop"
+        ;;
+    10)
         netcat "urlx2" "loop"
         ;;
     s)
