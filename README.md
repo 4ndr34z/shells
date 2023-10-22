@@ -51,6 +51,9 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.6.8
+- Filling "Microsoft-Windows-PowerShell/Operational" with even more entries, to be sure to push out the script initial execution. (Only works if scriptblock logging is enabled on target)
+
 ## Version 1.6.7
 - Had only URL-safe Base64 encoding. Added ordinary base64 encodig of payloads. 
 

