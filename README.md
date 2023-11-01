@@ -51,6 +51,10 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.6.9
+- Fixed error in block MDE command
+- Added init command options: cmd, conhost, powershell (If the payload is over 8191 characters, it has to be initiated from powershell directly)
+
 ## Version 1.6.8
 - Filling "Microsoft-Windows-PowerShell/Operational" with even more entries, to be sure to push out the script initial execution. (Only works if scriptblock logging is enabled on target)
 

