@@ -51,6 +51,12 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+
+## Version 1.7
+- Removed "updog is not running" message when it first hasn't been activated
+- Removed some more auto-enter selections in menus
+
+
 ## Version 1.6.9
 - Fixed error in block MDE command
 - Added init command options: cmd, conhost, powershell (If the payload is over 8191 characters, it has to be initiated from powershell directly)

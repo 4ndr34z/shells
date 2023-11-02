@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.6.9"
+version="1.7"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -55,6 +55,8 @@ then
     fi
 fi
 
+if [ $usingupdog == 1  ]
+then
   if [ $(ps -ef | grep -c updog) == 2 ]
     then
         echo "🟢 Updog is listening on $updog_port, serving folder: $updog_dir"
@@ -64,6 +66,7 @@ fi
         echo "🔴 Updog is not running"
               
     fi
+fi
 echo
 }
 
@@ -2289,7 +2292,7 @@ $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         webshells "Insomnia" 
@@ -2336,7 +2339,7 @@ $(magentaprint 'm)') Go Back to Main Menu
 $(redprint '0)') Exit
 
 Choose an option [1]:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         powershell_reflective 
@@ -2636,7 +2639,7 @@ $(greenprint '3)') UDP
 $(magentaprint 'b)') Go Back
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         poshproto="ssl"
@@ -2671,7 +2674,7 @@ $(greenprint '3)') powershell
 $(magentaprint 'b)') Go Back
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         poshinit="cmd"
@@ -2762,7 +2765,7 @@ $(greenprint '6)') proc_open
 $(magentaprint 'b)') Go Back
 
 Choose an option:  "
-    read -r -n 1 ans
+    read -r ans
     case $ans in
     1)
         efunc="exec"
