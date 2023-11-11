@@ -51,6 +51,9 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.7.1
+- Added PS to prompt in SSL shell
+- Shortened the full amsi bypass
 
 ## Version 1.7
 - Removed "updog is not running" message when it first hasn't been activated
