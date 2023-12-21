@@ -4,7 +4,7 @@
 #Mastadon: 4ndr34z@infosec.exchange
 #Web: https://f20.be
 DIR="$1"
-version="1.7.1"
+version="1.7.2"
 
 ### Colors ##
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
@@ -85,25 +85,25 @@ updog_installed=$(which updog)
 if [ "$?" == 1 ]
 then
     updog_installed=0
-    cyanprint "$0 has functions for using Updog to upload files. You don't seem to have Updog installed."
-    yellowprint "Install Updog now? [Y/n]"
-    read -r -n 1 ans
-    case $ans in
-    y)
-        echo
-        echo "Installing..."
-        pip3 install updog
-        $0;;
-    n)
-        ;;
-    "")
-        echo
-        echo "Installing..."
-        pip3 install updog
-        $0;;
-    *)
-        exit;;
-    esac
+    #cyanprint "$0 has functions for using Updog to upload files. You don't seem to have Updog installed."
+    #yellowprint "Install Updog now? [Y/n]"
+    #read -r -n 1 ans
+    #case $ans in
+    #y)
+    #    echo
+    #    echo "Installing..."
+    #    pip3 install updog
+    #    $0;;
+    #n)
+    #    ;;
+    #"")
+    #    echo
+    #    echo "Installing..."
+    #    pip3 install updog
+    #    $0;;
+    #*)
+    #    exit;;
+    #esac
 else
     updog_installed=1
     
