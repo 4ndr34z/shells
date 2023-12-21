@@ -545,6 +545,7 @@ if [[ $updog_installed == 1 ]]
    fi
 else
     echo "Updog is not installed"
+    sleep 5
     mainmenu
 fi
 
