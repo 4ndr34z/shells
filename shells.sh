@@ -525,7 +525,7 @@ function start_ngrok () {
 }
 
 function start_updog () {
-
+if [[ $updog_installed == 0 ]]
     if [[ $usingupdog == 0 ]]
         then
             updog -d $updog_dir -p $updog_port > /dev/null &
@@ -542,6 +542,7 @@ function start_updog () {
         usingupdog=0
         mainmenu
     fi
+fi
 
 }
 
