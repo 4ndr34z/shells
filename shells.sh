@@ -542,7 +542,9 @@ if [[ $updog_installed == 1 ]]
         header
         usingupdog=0
         mainmenu
-    fi
+   fi
+else
+    echo "Updog is not installed"
 fi
 
 }
