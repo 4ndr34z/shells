@@ -525,7 +525,7 @@ function start_ngrok () {
 }
 
 function start_updog () {
-if [[ $updog_installed == 0 ]]
+if [[ $updog_installed == 1 ]]
     then
     if [[ $usingupdog == 0 ]]
         then
