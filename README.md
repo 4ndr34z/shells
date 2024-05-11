@@ -51,6 +51,10 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.7.3
+- Fixed typo in Python3 payload for Windows
+- Added option for using Python Embedded to get a revshell on a Windows box not having Python installed and without using PowerShell. 
+
 ## Version 1.7.1
 - Added PS to prompt in SSL shell
 - Shortened the full amsi bypass
