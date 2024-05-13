@@ -52,7 +52,7 @@ updog, ngrok, xclip
 [Link](https://youtu.be/HDrzqiyKQtA)
 
 ## Version 1.7.4
-- Changed payload for Python Embedded. Not saving script to disk enymore
+- Changed payload for Python Embedded. Not saving script to disk anymore
 - Obfuscated the Python revshell some
 
 ## Version 1.7.3
