@@ -51,6 +51,10 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.7.4
+- Changed payload for Python Embedded. Not saving script to disk enymore
+- Obfuscated the Python revshell some
+
 ## Version 1.7.3
 - Fixed typo in Python3 payload for Windows
 - Added option for using Python Embedded to get a revshell on a Windows box not having Python installed and without using PowerShell. 
