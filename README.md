@@ -51,6 +51,11 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/HDrzqiyKQtA)
 
+## Version 1.7.5
+- Added option under PowerShell for staged loading of https://github.com/Sh3lldon/FullBypass.
+-- This has embedded Full AMSI Bypass and Constrained Language Mode bypass
+-- SSL option is not working atm.
+
 ## Version 1.7.4
 - Changed payload for Python Embedded. Not saving script to disk anymore
 - Obfuscated the Python revshell some
