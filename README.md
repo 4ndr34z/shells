@@ -52,8 +52,7 @@ updog, ngrok, xclip
 [Link](https://youtu.be/HDrzqiyKQtA)
 
 ## Version 1.7.5
-- Added option under PowerShell for staged loading of https://github.com/Sh3lldon/FullBypass.
--- This has embedded Full AMSI Bypass and Constrained Language Mode bypass
+- Added option under PowerShell for staged loading of a Constrained Language Mode bypass using msbuild.exe
 -- SSL option is not working atm.
 
 ## Version 1.7.4
