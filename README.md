@@ -53,7 +53,7 @@ updog, ngrok, xclip
 
 ## Version 1.7.5
 - Added option under PowerShell for staged loading of a Constrained Language Mode bypass using msbuild.exe
-- SSL option is not working atm.
+
 
 ## Version 1.7.4
 - Changed payload for Python Embedded. Not saving script to disk anymore
