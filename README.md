@@ -12,6 +12,10 @@ Especially nice when in need of PowerShell and Python revshells, which can be a 
 - Windows Powershell and Core Powershell
 - Functions for uploading and downloading files. (Using [Updog](https://github.com/sc0tfree/updog) by sc0tfree)
 
+## Python
+- No PowerShell? No problem! 
+  Load embedded Python. Signed files and trusted by Microsoft Intelligent Security Graph. 
+
 ## ngrok support
 - ngrok can be started/stopped from inside the script
 - payloads will be genereated with the ngrok addresses
@@ -49,11 +53,10 @@ netcat, rlwrap, jq, basenc (coreutils)
 updog, ngrok, xclip
 
 ### Youtube video
-[Link](https://youtu.be/HDrzqiyKQtA)
+[Link](https://youtu.be/E7poWD3Alfo?si=2Zf0LN4t9SPdAacs)
 
 ## Version 1.7.5
 - Added option under PowerShell for staged loading of a Constrained Language Mode bypass using msbuild.exe
-
 
 ## Version 1.7.4
 - Changed payload for Python Embedded. Not saving script to disk anymore
