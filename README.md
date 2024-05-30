@@ -55,6 +55,9 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/E7poWD3Alfo?si=2Zf0LN4t9SPdAacs)
 
+## Version 1.7.6
+- Added option under Python, for using Python Embedded in a VBA Macro
+
 ## Version 1.7.5
 - Added option under PowerShell for staged loading of a Constrained Language Mode bypass using msbuild.exe
 
