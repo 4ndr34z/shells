@@ -55,6 +55,9 @@ updog, ngrok, xclip
 ### Youtube video
 [Link](https://youtu.be/E7poWD3Alfo?si=2Zf0LN4t9SPdAacs)
 
+## Version 1.7.7
+- Added Windows Terminal Init option in the PowerShell section
+
 ## Version 1.7.6
 - Added option under Python, for using Python Embedded in a VBA Macro
 
