@@ -53,7 +53,7 @@ netcat, rlwrap, jq, basenc (coreutils)
 updog, ngrok, xclip
 
 ### Youtube video
-[Link](https://youtu.be/E7poWD3Alfo?si=2Zf0LN4t9SPdAacs)
+[Shellz 1.7.5](https://youtu.be/E7poWD3Alfo?si=2Zf0LN4t9SPdAacs)
 
 ## Version 1.7.7
 - Added Windows Terminal Init option in the PowerShell section
